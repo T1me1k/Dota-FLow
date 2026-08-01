@@ -68,7 +68,7 @@ export class OverwolfGepAdapter {
   }
 
   get available(): boolean {
-    return Boolean(app.overwolf?.packages?.gep);
+    return Boolean((app as unknown as { overwolf?: { packages?: { gep?: unknown } } }).overwolf?.packages?.gep);
   }
 
   #emit(envelope: Omit<GepEnvelope, 'receivedAt' | 'sourceSequence'>): void {
@@ -139,11 +139,11 @@ export class OverwolfGepAdapter {
 
   async start(): Promise<void> {
     if (this.#started) return;
-    const gep = app.overwolf?.packages?.gep as GepRuntime | undefined;
+    const gep = (app as unknown as { overwolf?: { packages?: { gep?: unknown } } }).overwolf?.packages?.gep as GepRuntime | undefined;
     if (!gep) {
       this.#emit({
         type: 'status',
-        payload: { mode: 'mock', available: false, message: 'Overwolf GEP runtime is unavailable. Start in mock mode.' }
+        payload: { mode: 'live', available: false, code: 'OVERWOLF_RUNTIME_UNAVAILABLE', message: 'Approved Overwolf GEP runtime is unavailable; LIVE_GEP failed closed.' }
       });
       return;
     }

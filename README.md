@@ -57,3 +57,7 @@ Dota Flow now presents one conflict-free `coachCall`, backed by a compact trace,
 ## v0.22.0 replay calibration
 
 Dota Flow now includes 30 synthetic replay-backed canonical scenarios, 90 checkpoints, six hero packs, explicit structured golden baselines, bilingual advice presentation, and a provider-driven Scenario Workbench. See [Replay Calibration](docs/REPLAY_CALIBRATION_SYSTEM.md) and [v0.22 status](docs/V022_PRODUCT_UX_STATUS.md). This is simulator-first evidence, not Windows or real Overwolf validation.
+
+## v0.23 Windows runtime
+
+Use explicit `DOTA_FLOW_RUNTIME_MODE=mock|replay|live`; live is fail-closed. Start with [Windows setup](docs/WINDOWS_DEVELOPMENT_SETUP.md), [runtime integration](docs/OVERWOLF_RUNTIME_INTEGRATION.md), and [first capture protocol](docs/FIRST_CAPTURE_PROTOCOL.md). Capture tooling: `capture:inspect`, `capture:validate`, `capture:replay`, and `capture:redact`. Real Windows/Overwolf/Dota/GEP validation is pending and is tracked in [the validation matrix](docs/V023_WINDOWS_VALIDATION_STATUS.md).

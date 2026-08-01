@@ -114,7 +114,11 @@ async function createWindows(): Promise<void> {
 function publishLiveSnapshot(snapshot: LiveBridgeSnapshot): void {
   mainWindow?.webContents.send('dota-flow:live-snapshot', snapshot);
   overlayWindow?.webContents.send('dota-flow:live-snapshot', snapshot);
+  mainWindow?.webContents.send('runtime:snapshot', { ...snapshot, runtimeMode: 'LIVE_GEP' });
+  overlayWindow?.webContents.send('runtime:snapshot', { ...snapshot, runtimeMode: 'LIVE_GEP' });
 }
+
+function requireObject(payload: unknown): Record<string, unknown> { if (!payload || typeof payload !== 'object' || Array.isArray(payload)) throw Object.assign(new Error('Payload must be an object'), { code: 'INVALID_IPC_PAYLOAD' }); return payload as Record<string, unknown>; }
 
 function publishOverlaySettings(): void {
   mainWindow?.webContents.send('dota-flow:overlay-settings', overlaySettings);
@@ -232,6 +236,19 @@ app.whenReady().then(async () => {
     const safePayload = payload && typeof payload === 'object' && !Array.isArray(payload) ? payload as Record<string, unknown> : {};
     return applyCoachEvent(String(eventType ?? ''), safePayload);
   });
+
+  ipcMain.handle('runtime:get-status', () => ({ runtimeMode: 'LIVE_GEP', status: liveBridge.snapshot().status }));
+  ipcMain.handle('runtime:get-snapshot', () => ({ ...liveBridge.snapshot(), runtimeMode: 'LIVE_GEP' }));
+  ipcMain.handle('runtime:start', () => ({ status: 'GEP_INITIALIZING' }));
+  ipcMain.handle('runtime:stop', () => liveBridge.stop('RENDERER_REQUEST'));
+  ipcMain.handle('capture:get-status', () => captureRecorder?.status() ?? null);
+  ipcMain.handle('capture:start', async (_event, payload) => captureRecorder?.start({ runtime:'overwolf-electron',gameId:DEFAULT_DOTA_GAME_ID,requestedBy:'renderer',...requireObject(payload ?? {}) }));
+  ipcMain.handle('capture:stop', () => captureRecorder?.stop('RENDERER_REQUEST'));
+  ipcMain.handle('capture:open-folder', async () => { await mkdir(recordingsPath(),{recursive:true}); return { opened: (await shell.openPath(recordingsPath())) === '' }; });
+  ipcMain.handle('manual-context:send', (_event,payload) => { const x=requireObject(payload);return applyManualContext(String(x.type??'')); });
+  ipcMain.handle('coach-timer:start', (_event,payload) => { const x=requireObject(payload);if(!Number.isFinite(x.durationSec))throw Object.assign(new Error('durationSec must be finite'),{code:'INVALID_IPC_PAYLOAD'});return applyCoachEvent('COACH_TIMER_STARTED',x); });
+  ipcMain.handle('diagnostics:get', () => ({ runtimeMode:'LIVE_GEP', bridge:liveBridge.snapshot().diagnostics }));
+  ipcMain.handle('diagnostics:export', () => ({ code:'EXPORT_REQUIRES_CAPTURE_REDACTION', message:'Use capture export; private paths are not returned to renderer.' }));
 
   publishOverlaySettings();
   publishLiveSnapshot(liveBridge.snapshot());

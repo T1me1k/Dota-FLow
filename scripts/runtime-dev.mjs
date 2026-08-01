@@ -1,0 +1,3 @@
+import { DotaFlowRuntimeService, safeError } from '../packages/core/src/runtime-v023.mjs';
+const mode=process.argv[2];const replayPath=process.argv[3];
+try{let replayEvents=[];if(mode==='replay'){if(!replayPath)throw new Error('Usage: npm run runtime:replay -- <jsonl-path>');const{readFile}=await import('node:fs/promises');replayEvents=(await readFile(replayPath,'utf8')).split(/\r?\n/).filter(Boolean).map(JSON.parse)}const runtime=new DotaFlowRuntimeService({mode,replayEvents});await runtime.start();console.log(JSON.stringify(runtime.getSnapshot(),null,2));await runtime.stop()}catch(error){console.error(JSON.stringify(safeError(error),null,2));process.exitCode=1}

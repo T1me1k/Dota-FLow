@@ -1,6 +1,6 @@
 {
   "name": "dota-flow-event-probe",
-  "version": "0.22.0",
+  "version": "0.23.0",
   "private": true,
   "type": "module",
   "scripts": {
@@ -34,7 +34,17 @@
     "scenarios:replay": "node scripts/scenarios-replay.mjs",
     "scenarios:golden": "node scripts/scenarios-golden.mjs",
     "scenarios:coverage": "node scripts/scenarios-coverage.mjs",
-    "advice:validate": "node scripts/advice-validate.mjs"
+    "advice:validate": "node scripts/advice-validate.mjs",
+    "desktop:typecheck": "npm --prefix apps/desktop run typecheck",
+    "electron:typecheck": "npm --prefix apps/overwolf-electron run typecheck",
+    "runtime:mock": "node scripts/runtime-dev.mjs mock",
+    "runtime:replay": "node scripts/runtime-dev.mjs replay",
+    "runtime:live": "node scripts/runtime-dev.mjs live",
+    "capture:inspect": "node scripts/capture-tool.mjs inspect",
+    "capture:validate": "node scripts/capture-tool.mjs validate",
+    "capture:replay": "node scripts/capture-tool.mjs replay",
+    "capture:redact": "node scripts/capture-tool.mjs redact",
+    "capture:first-match": "node scripts/capture-tool.mjs validate"
   },
   "engines": {
     "node": ">=20"

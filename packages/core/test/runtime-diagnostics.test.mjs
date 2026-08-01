@@ -1,0 +1,1 @@
+import test from'node:test';import assert from'node:assert/strict';import{RuntimeDiagnostics,DIAGNOSTIC_CODES}from'../src/runtime-v023.mjs';test('diagnostics bounded and structured',()=>{const d=new RuntimeDiagnostics(2);d.add('A');d.add('B');d.add('C');assert.equal(d.snapshot().length,2);assert.ok(DIAGNOSTIC_CODES.includes('GEP_PARTIAL'));assert.ok(d.snapshot()[0].occurredAt)})

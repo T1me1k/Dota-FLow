@@ -5,3 +5,5 @@ declare module 'react/jsx-runtime' { export const jsx:any;export const jsxs:any;
 declare module '@vitejs/plugin-react' { const plugin:()=>any; export default plugin; }
 declare module 'vite' { export function defineConfig(value:any):any; }
 declare module '*.css';
+
+interface ImportMeta { readonly env: Record<string, string | undefined>; }

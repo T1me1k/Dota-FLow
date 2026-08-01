@@ -1,0 +1,5 @@
+{"schemaVersion":1,"sessionId":"fixture","sequence":2,"receivedAt":"2026-08-01T18:00:01.000Z","gameTimeSec":0,"source":"canonical","payload":{"type":"MATCH_STARTED"}}
+{"schemaVersion":1,"sessionId":"fixture","sequence":3,"receivedAt":"2026-08-01T18:00:02.000Z","gameTimeSec":1,"source":"canonical","payload":{"type":"CLOCK","state":{"gameTimeSec":1}}}
+{"schemaVersion":1,"sessionId":"fixture","sequence":4,"receivedAt":"2026-08-01T18:00:03.000Z","gameTimeSec":2,"source":"canonical","payload":{"type":"HERO","state":{"heroId":"luna"},"role":"carry"}}
+{"schemaVersion":1,"sessionId":"fixture","sequence":5,"receivedAt":"2026-08-01T18:19:00.000Z","gameTimeSec":1140,"source":"canonical","payload":{"type":"MATCH_ENDED","coachCall":{"primaryAction":"RESET","confidence":0.8}}}
+{"schemaVersion":1,"sessionId":"fixture","sequence":6,"receivedAt":"2026-08-01T18:20:00.000Z","gameTimeSec":0,"source":"canonical","payload":{"type":"MATCH_RESET"}}

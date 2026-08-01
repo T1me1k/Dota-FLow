@@ -1,12 +1,13 @@
 {
   "name": "@dota-flow/overwolf-electron",
-  "version": "0.22.0",
+  "version": "0.23.0",
   "private": true,
   "type": "module",
   "main": "dist/main/main.js",
   "scripts": {
     "dev": "echo \"Run with the Overwolf Electron SDK after app whitelisting. See README.md\"",
-    "build": "tsc -p tsconfig.json"
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p ./tsconfig.json --noEmit"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",

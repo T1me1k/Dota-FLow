@@ -1,0 +1,1 @@
+import test from'node:test';import assert from'node:assert/strict';import{validateCapture}from'../src/runtime-v023.mjs';test('synthetic capture validates',async()=>{const x=await validateCapture('fixtures/captures/synthetic-v023');assert.notEqual(x.status,'FAIL')})
