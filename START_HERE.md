@@ -23,3 +23,7 @@ Read `docs/V020_INTEGRATION_AUDIT.md`, `docs/V020_TEST_COVERAGE.md`, and `docs/R
 ## v0.21 entry point
 
 Start with `docs/DECISION_ORCHESTRATOR_IMPLEMENTED.md`, then run `npm test` and `npm run scenarios`. Live Match consumes a single coach call; raw engine outputs are diagnostics only.
+
+## v0.22 calibration commands
+
+Run `npm run scenarios:replay`, `npm run scenarios:golden`, `npm run scenarios:coverage`, and `npm run advice:validate`. Golden updates require `npm run scenarios:golden -- --update`. The recordings are synthetic canonical fixtures; MANUAL/INFERRED limitations remain documented in `docs/V022_PRODUCT_UX_STATUS.md`.

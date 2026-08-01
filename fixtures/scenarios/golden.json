@@ -1,0 +1,2978 @@
+{
+  "carry-01-anti_mage": {
+    "checkpoints": [
+      {
+        "primaryAction": "PREPARE_ROSHAN",
+        "primaryDomain": "OBJECTIVE",
+        "urgency": "MEDIUM",
+        "reasonCodes": [
+          ""
+        ],
+        "missingSignals": [
+          "combatStats",
+          "ownAbilities",
+          "ownEconomy",
+          "ownInventory",
+          "ownLevel",
+          "ownVitals",
+          "playerIdentity",
+          "playerRole",
+          "roster",
+          "teamReady",
+          "visibleEnemies",
+          "wardStock"
+        ],
+        "dataQuality": "INFERRED",
+        "secondaryDomains": [
+          "LANE",
+          "MACRO",
+          "ROLE"
+        ]
+      },
+      {
+        "primaryAction": "PREPARE_ROSHAN",
+        "primaryDomain": "OBJECTIVE",
+        "urgency": "MEDIUM",
+        "reasonCodes": [
+          ""
+        ],
+        "missingSignals": [
+          "combatStats",
+          "laneState",
+          "ownAbilities",
+          "ownEconomy",
+          "ownLevel",
+          "ownVitals",
+          "playerIdentity",
+          "playerRole",
+          "roster",
+          "teamReady",
+          "visibleEnemies",
+          "wardStock"
+        ],
+        "dataQuality": "INFERRED",
+        "secondaryDomains": [
+          "LANE",
+          "MACRO",
+          "ROLE"
+        ]
+      },
+      {
+        "primaryAction": "PREPARE_ROSHAN",
+        "primaryDomain": "OBJECTIVE",
+        "urgency": "MEDIUM",
+        "reasonCodes": [
+          ""
+        ],
+        "missingSignals": [
+          "combatStats",
+          "laneState",
+          "ownAbilities",
+          "ownEconomy",
+          "ownLevel",
+          "ownVitals",
+          "playerIdentity",
+          "playerRole",
+          "roster",
+          "teamReady",
+          "visibleEnemies",
+          "wardStock"
+        ],
+        "dataQuality": "INFERRED",
+        "secondaryDomains": [
+          "LANE",
+          "MACRO",
+          "ROLE"
+        ]
+      }
+    ],
+    "finalCall": {
+      "primaryAction": "PREPARE_ROSHAN",
+      "primaryDomain": "OBJECTIVE",
+      "urgency": "MEDIUM",
+      "reasonCodes": [
+        ""
+      ],
+      "missingSignals": [
+        "combatStats",
+        "laneState",
+        "ownAbilities",
+        "ownEconomy",
+        "ownLevel",
+        "ownVitals",
+        "playerIdentity",
+        "playerRole",
+        "roster",
+        "teamReady",
+        "visibleEnemies",
+        "wardStock"
+      ],
+      "dataQuality": "INFERRED",
+      "secondaryDomains": [
+        "LANE",
+        "MACRO",
+        "ROLE"
+      ]
+    }
+  },
+  "carry-02-faceless_void": {
+    "checkpoints": [
+      {
+        "primaryAction": "PREPARE_ROSHAN",
+        "primaryDomain": "OBJECTIVE",
+        "urgency": "MEDIUM",
+        "reasonCodes": [
+          ""
+        ],
+        "missingSignals": [
+          "combatStats",
+          "ownAbilities",
+          "ownEconomy",
+          "ownInventory",
+          "ownLevel",
+          "ownVitals",
+          "playerIdentity",
+          "playerRole",
+          "roster",
+          "teamReady",
+          "visibleEnemies",
+          "wardStock"
+        ],
+        "dataQuality": "INFERRED",
+        "secondaryDomains": [
+          "LANE",
+          "MACRO",
+          "ROLE"
+        ]
+      },
+      {
+        "primaryAction": "RESET",
+        "primaryDomain": "MACRO",
+        "urgency": "CRITICAL",
+        "reasonCodes": [
+          ""
+        ],
+        "missingSignals": [
+          "combatStats",
+          "laneState",
+          "ownAbilities",
+          "ownEconomy",
+          "ownLevel",
+          "ownVitals",
+          "playerIdentity",
+          "playerRole",
+          "roster",
+          "teamReady",
+          "visibleEnemies",
+          "wardStock"
+        ],
+        "dataQuality": "UNKNOWN",
+        "secondaryDomains": [
+          "LANE",
+          "OBJECTIVE",
+          "ROLE"
+        ]
+      },
+      {
+        "primaryAction": "PREPARE_ROSHAN",
+        "primaryDomain": "OBJECTIVE",
+        "urgency": "MEDIUM",
+        "reasonCodes": [
+          ""
+        ],
+        "missingSignals": [
+          "combatStats",
+          "laneState",
+          "ownAbilities",
+          "ownEconomy",
+          "ownLevel",
+          "ownVitals",
+          "playerIdentity",
+          "playerRole",
+          "roster",
+          "teamReady",
+          "visibleEnemies",
+          "wardStock"
+        ],
+        "dataQuality": "INFERRED",
+        "secondaryDomains": [
+          "LANE",
+          "MACRO",
+          "ROLE"
+        ]
+      }
+    ],
+    "finalCall": {
+      "primaryAction": "PREPARE_ROSHAN",
+      "primaryDomain": "OBJECTIVE",
+      "urgency": "MEDIUM",
+      "reasonCodes": [
+        ""
+      ],
+      "missingSignals": [
+        "combatStats",
+        "laneState",
+        "ownAbilities",
+        "ownEconomy",
+        "ownLevel",
+        "ownVitals",
+        "playerIdentity",
+        "playerRole",
+        "roster",
+        "teamReady",
+        "visibleEnemies",
+        "wardStock"
+      ],
+      "dataQuality": "INFERRED",
+      "secondaryDomains": [
+        "LANE",
+        "MACRO",
+        "ROLE"
+      ]
+    }
+  },
+  "carry-03-medusa": {
+    "checkpoints": [
+      {
+        "primaryAction": "PREPARE_ROSHAN",
+        "primaryDomain": "OBJECTIVE",
+        "urgency": "MEDIUM",
+        "reasonCodes": [
+          ""
+        ],
+        "missingSignals": [
+          "combatStats",
+          "ownAbilities",
+          "ownEconomy",
+          "ownInventory",
+          "ownLevel",
+          "ownVitals",
+          "playerIdentity",
+          "playerRole",
+          "roster",
+          "teamReady",
+          "visibleEnemies",
+          "wardStock"
+        ],
+        "dataQuality": "INFERRED",
+        "secondaryDomains": [
+          "LANE",
+          "MACRO",
+          "ROLE"
+        ]
+      },
+      {
+        "primaryAction": "PREPARE_ROSHAN",
+        "primaryDomain": "OBJECTIVE",
+        "urgency": "MEDIUM",
+        "reasonCodes": [
+          ""
+        ],
+        "missingSignals": [
+          "combatStats",
+          "laneState",
+          "ownAbilities",
+          "ownEconomy",
+          "ownLevel",
+          "ownVitals",
+          "playerIdentity",
+          "playerRole",
+          "roster",
+          "teamReady",
+          "visibleEnemies",
+          "wardStock"
+        ],
+        "dataQuality": "INFERRED",
+        "secondaryDomains": [
+          "LANE",
+          "MACRO",
+          "ROLE"
+        ]
+      },
+      {
+        "primaryAction": "PREPARE_ROSHAN",
+        "primaryDomain": "OBJECTIVE",
+        "urgency": "MEDIUM",
+        "reasonCodes": [
+          ""
+        ],
+        "missingSignals": [
+          "combatStats",
+          "laneState",
+          "ownAbilities",
+          "ownEconomy",
+          "ownLevel",
+          "ownVitals",
+          "playerIdentity",
+          "playerRole",
+          "roster",
+          "teamReady",
+          "visibleEnemies",
+          "wardStock"
+        ],
+        "dataQuality": "INFERRED",
+        "secondaryDomains": [
+          "LANE",
+          "MACRO",
+          "ROLE"
+        ]
+      }
+    ],
+    "finalCall": {
+      "primaryAction": "PREPARE_ROSHAN",
+      "primaryDomain": "OBJECTIVE",
+      "urgency": "MEDIUM",
+      "reasonCodes": [
+        ""
+      ],
+      "missingSignals": [
+        "combatStats",
+        "laneState",
+        "ownAbilities",
+        "ownEconomy",
+        "ownLevel",
+        "ownVitals",
+        "playerIdentity",
+        "playerRole",
+        "roster",
+        "teamReady",
+        "visibleEnemies",
+        "wardStock"
+      ],
+      "dataQuality": "INFERRED",
+      "secondaryDomains": [
+        "LANE",
+        "MACRO",
+        "ROLE"
+      ]
+    }
+  },
+  "carry-04-phantom_assassin": {
+    "checkpoints": [
+      {
+        "primaryAction": "PREPARE_ROSHAN",
+        "primaryDomain": "OBJECTIVE",
+        "urgency": "MEDIUM",
+        "reasonCodes": [
+          ""
+        ],
+        "missingSignals": [
+          "combatStats",
+          "ownAbilities",
+          "ownEconomy",
+          "ownInventory",
+          "ownLevel",
+          "ownVitals",
+          "playerIdentity",
+          "playerRole",
+          "roster",
+          "teamReady",
+          "visibleEnemies",
+          "wardStock"
+        ],
+        "dataQuality": "INFERRED",
+        "secondaryDomains": [
+          "LANE",
+          "MACRO",
+          "ROLE"
+        ]
+      },
+      {
+        "primaryAction": "PREPARE_ROSHAN",
+        "primaryDomain": "OBJECTIVE",
+        "urgency": "MEDIUM",
+        "reasonCodes": [
+          ""
+        ],
+        "missingSignals": [
+          "combatStats",
+          "laneState",
+          "ownAbilities",
+          "ownEconomy",
+          "ownLevel",
+          "ownVitals",
+          "playerIdentity",
+          "playerRole",
+          "roster",
+          "teamReady",
+          "visibleEnemies",
+          "wardStock"
+        ],
+        "dataQuality": "INFERRED",
+        "secondaryDomains": [
+          "LANE",
+          "MACRO",
+          "ROLE"
+        ]
+      },
+      {
+        "primaryAction": "PREPARE_ROSHAN",
+        "primaryDomain": "OBJECTIVE",
+        "urgency": "MEDIUM",
+        "reasonCodes": [
+          ""
+        ],
+        "missingSignals": [
+          "combatStats",
+          "laneState",
+          "ownAbilities",
+          "ownEconomy",
+          "ownLevel",
+          "ownVitals",
+          "playerIdentity",
+          "playerRole",
+          "roster",
+          "teamReady",
+          "visibleEnemies",
+          "wardStock"
+        ],
+        "dataQuality": "INFERRED",
+        "secondaryDomains": [
+          "LANE",
+          "MACRO",
+          "ROLE"
+        ]
+      }
+    ],
+    "finalCall": {
+      "primaryAction": "PREPARE_ROSHAN",
+      "primaryDomain": "OBJECTIVE",
+      "urgency": "MEDIUM",
+      "reasonCodes": [
+        ""
+      ],
+      "missingSignals": [
+        "combatStats",
+        "laneState",
+        "ownAbilities",
+        "ownEconomy",
+        "ownLevel",
+        "ownVitals",
+        "playerIdentity",
+        "playerRole",
+        "roster",
+        "teamReady",
+        "visibleEnemies",
+        "wardStock"
+      ],
+      "dataQuality": "INFERRED",
+      "secondaryDomains": [
+        "LANE",
+        "MACRO",
+        "ROLE"
+      ]
+    }
+  },
+  "carry-05-luna": {
+    "checkpoints": [
+      {
+        "primaryAction": "PREPARE_ROSHAN",
+        "primaryDomain": "OBJECTIVE",
+        "urgency": "MEDIUM",
+        "reasonCodes": [
+          ""
+        ],
+        "missingSignals": [
+          "combatStats",
+          "ownAbilities",
+          "ownEconomy",
+          "ownInventory",
+          "ownLevel",
+          "ownVitals",
+          "playerIdentity",
+          "playerRole",
+          "roster",
+          "teamReady",
+          "visibleEnemies",
+          "wardStock"
+        ],
+        "dataQuality": "INFERRED",
+        "secondaryDomains": [
+          "LANE",
+          "MACRO",
+          "ROLE"
+        ]
+      },
+      {
+        "primaryAction": "PREPARE_ROSHAN",
+        "primaryDomain": "OBJECTIVE",
+        "urgency": "MEDIUM",
+        "reasonCodes": [
+          ""
+        ],
+        "missingSignals": [
+          "combatStats",
+          "laneState",
+          "ownAbilities",
+          "ownEconomy",
+          "ownLevel",
+          "ownVitals",
+          "playerIdentity",
+          "playerRole",
+          "roster",
+          "teamReady",
+          "visibleEnemies",
+          "wardStock"
+        ],
+        "dataQuality": "INFERRED",
+        "secondaryDomains": [
+          "LANE",
+          "MACRO",
+          "ROLE"
+        ]
+      },
+      {
+        "primaryAction": "PREPARE_ROSHAN",
+        "primaryDomain": "OBJECTIVE",
+        "urgency": "MEDIUM",
+        "reasonCodes": [
+          ""
+        ],
+        "missingSignals": [
+          "combatStats",
+          "laneState",
+          "ownAbilities",
+          "ownEconomy",
+          "ownLevel",
+          "ownVitals",
+          "playerIdentity",
+          "playerRole",
+          "roster",
+          "teamReady",
+          "visibleEnemies",
+          "wardStock"
+        ],
+        "dataQuality": "INFERRED",
+        "secondaryDomains": [
+          "LANE",
+          "MACRO",
+          "ROLE"
+        ]
+      }
+    ],
+    "finalCall": {
+      "primaryAction": "PREPARE_ROSHAN",
+      "primaryDomain": "OBJECTIVE",
+      "urgency": "MEDIUM",
+      "reasonCodes": [
+        ""
+      ],
+      "missingSignals": [
+        "combatStats",
+        "laneState",
+        "ownAbilities",
+        "ownEconomy",
+        "ownLevel",
+        "ownVitals",
+        "playerIdentity",
+        "playerRole",
+        "roster",
+        "teamReady",
+        "visibleEnemies",
+        "wardStock"
+      ],
+      "dataQuality": "INFERRED",
+      "secondaryDomains": [
+        "LANE",
+        "MACRO",
+        "ROLE"
+      ]
+    }
+  },
+  "carry-06-juggernaut": {
+    "checkpoints": [
+      {
+        "primaryAction": "PREPARE_ROSHAN",
+        "primaryDomain": "OBJECTIVE",
+        "urgency": "MEDIUM",
+        "reasonCodes": [
+          ""
+        ],
+        "missingSignals": [
+          "combatStats",
+          "ownAbilities",
+          "ownEconomy",
+          "ownInventory",
+          "ownLevel",
+          "ownVitals",
+          "playerIdentity",
+          "playerRole",
+          "roster",
+          "teamReady",
+          "visibleEnemies",
+          "wardStock"
+        ],
+        "dataQuality": "INFERRED",
+        "secondaryDomains": [
+          "LANE",
+          "MACRO",
+          "ROLE"
+        ]
+      },
+      {
+        "primaryAction": "PREPARE_ROSHAN",
+        "primaryDomain": "OBJECTIVE",
+        "urgency": "MEDIUM",
+        "reasonCodes": [
+          ""
+        ],
+        "missingSignals": [
+          "combatStats",
+          "laneState",
+          "ownAbilities",
+          "ownEconomy",
+          "ownLevel",
+          "ownVitals",
+          "playerIdentity",
+          "playerRole",
+          "roster",
+          "teamReady",
+          "visibleEnemies",
+          "wardStock"
+        ],
+        "dataQuality": "INFERRED",
+        "secondaryDomains": [
+          "LANE",
+          "MACRO",
+          "ROLE"
+        ]
+      },
+      {
+        "primaryAction": "PREPARE_ROSHAN",
+        "primaryDomain": "OBJECTIVE",
+        "urgency": "MEDIUM",
+        "reasonCodes": [
+          ""
+        ],
+        "missingSignals": [
+          "combatStats",
+          "laneState",
+          "ownAbilities",
+          "ownEconomy",
+          "ownLevel",
+          "ownVitals",
+          "playerIdentity",
+          "playerRole",
+          "roster",
+          "teamReady",
+          "visibleEnemies",
+          "wardStock"
+        ],
+        "dataQuality": "INFERRED",
+        "secondaryDomains": [
+          "LANE",
+          "MACRO",
+          "ROLE"
+        ]
+      }
+    ],
+    "finalCall": {
+      "primaryAction": "PREPARE_ROSHAN",
+      "primaryDomain": "OBJECTIVE",
+      "urgency": "MEDIUM",
+      "reasonCodes": [
+        ""
+      ],
+      "missingSignals": [
+        "combatStats",
+        "laneState",
+        "ownAbilities",
+        "ownEconomy",
+        "ownLevel",
+        "ownVitals",
+        "playerIdentity",
+        "playerRole",
+        "roster",
+        "teamReady",
+        "visibleEnemies",
+        "wardStock"
+      ],
+      "dataQuality": "INFERRED",
+      "secondaryDomains": [
+        "LANE",
+        "MACRO",
+        "ROLE"
+      ]
+    }
+  },
+  "hard-support-01-crystal_maiden": {
+    "checkpoints": [
+      {
+        "primaryAction": "PROTECT_CORE",
+        "primaryDomain": "LANE",
+        "urgency": "CRITICAL",
+        "reasonCodes": [
+          "CORE"
+        ],
+        "missingSignals": [
+          "carryThreat",
+          "teamReady",
+          "visibleEnemies"
+        ],
+        "dataQuality": "UNAVAILABLE",
+        "secondaryDomains": [
+          "MACRO",
+          "OBJECTIVE",
+          "ROLE"
+        ]
+      },
+      {
+        "primaryAction": "PROTECT_CORE",
+        "primaryDomain": "LANE",
+        "urgency": "CRITICAL",
+        "reasonCodes": [
+          ""
+        ],
+        "missingSignals": [
+          "carryThreat",
+          "teamReady",
+          "visibleEnemies"
+        ],
+        "dataQuality": "UNAVAILABLE",
+        "secondaryDomains": [
+          "MACRO",
+          "OBJECTIVE",
+          "ROLE"
+        ]
+      },
+      {
+        "primaryAction": "PROTECT_CORE",
+        "primaryDomain": "LANE",
+        "urgency": "CRITICAL",
+        "reasonCodes": [
+          ""
+        ],
+        "missingSignals": [
+          "carryThreat",
+          "teamReady",
+          "visibleEnemies"
+        ],
+        "dataQuality": "UNAVAILABLE",
+        "secondaryDomains": [
+          "MACRO",
+          "OBJECTIVE",
+          "ROLE"
+        ]
+      }
+    ],
+    "finalCall": {
+      "primaryAction": "PROTECT_CORE",
+      "primaryDomain": "LANE",
+      "urgency": "CRITICAL",
+      "reasonCodes": [
+        ""
+      ],
+      "missingSignals": [
+        "carryThreat",
+        "teamReady",
+        "visibleEnemies"
+      ],
+      "dataQuality": "UNAVAILABLE",
+      "secondaryDomains": [
+        "MACRO",
+        "OBJECTIVE",
+        "ROLE"
+      ]
+    }
+  },
+  "hard-support-02-lich": {
+    "checkpoints": [
+      {
+        "primaryAction": "PROTECT_CORE",
+        "primaryDomain": "LANE",
+        "urgency": "CRITICAL",
+        "reasonCodes": [
+          "CORE"
+        ],
+        "missingSignals": [
+          "carryThreat",
+          "teamReady",
+          "visibleEnemies"
+        ],
+        "dataQuality": "UNAVAILABLE",
+        "secondaryDomains": [
+          "MACRO",
+          "OBJECTIVE",
+          "ROLE"
+        ]
+      },
+      {
+        "primaryAction": "PROTECT_CORE",
+        "primaryDomain": "LANE",
+        "urgency": "CRITICAL",
+        "reasonCodes": [
+          ""
+        ],
+        "missingSignals": [
+          "carryThreat",
+          "teamReady",
+          "visibleEnemies"
+        ],
+        "dataQuality": "UNAVAILABLE",
+        "secondaryDomains": [
+          "MACRO",
+          "OBJECTIVE",
+          "ROLE"
+        ]
+      },
+      {
+        "primaryAction": "PROTECT_CORE",
+        "primaryDomain": "LANE",
+        "urgency": "CRITICAL",
+        "reasonCodes": [
+          ""
+        ],
+        "missingSignals": [
+          "carryThreat",
+          "teamReady",
+          "visibleEnemies"
+        ],
+        "dataQuality": "UNAVAILABLE",
+        "secondaryDomains": [
+          "MACRO",
+          "OBJECTIVE",
+          "ROLE"
+        ]
+      }
+    ],
+    "finalCall": {
+      "primaryAction": "PROTECT_CORE",
+      "primaryDomain": "LANE",
+      "urgency": "CRITICAL",
+      "reasonCodes": [
+        ""
+      ],
+      "missingSignals": [
+        "carryThreat",
+        "teamReady",
+        "visibleEnemies"
+      ],
+      "dataQuality": "UNAVAILABLE",
+      "secondaryDomains": [
+        "MACRO",
+        "OBJECTIVE",
+        "ROLE"
+      ]
+    }
+  },
+  "hard-support-03-oracle": {
+    "checkpoints": [
+      {
+        "primaryAction": "PROTECT_CORE",
+        "primaryDomain": "LANE",
+        "urgency": "CRITICAL",
+        "reasonCodes": [
+          "CORE"
+        ],
+        "missingSignals": [
+          "carryThreat",
+          "teamReady",
+          "visibleEnemies"
+        ],
+        "dataQuality": "UNAVAILABLE",
+        "secondaryDomains": [
+          "MACRO",
+          "OBJECTIVE",
+          "ROLE"
+        ]
+      },
+      {
+        "primaryAction": "PROTECT_CORE",
+        "primaryDomain": "LANE",
+        "urgency": "CRITICAL",
+        "reasonCodes": [
+          ""
+        ],
+        "missingSignals": [
+          "carryThreat",
+          "teamReady",
+          "visibleEnemies"
+        ],
+        "dataQuality": "UNAVAILABLE",
+        "secondaryDomains": [
+          "MACRO",
+          "OBJECTIVE",
+          "ROLE"
+        ]
+      },
+      {
+        "primaryAction": "PROTECT_CORE",
+        "primaryDomain": "LANE",
+        "urgency": "CRITICAL",
+        "reasonCodes": [
+          ""
+        ],
+        "missingSignals": [
+          "carryThreat",
+          "teamReady",
+          "visibleEnemies"
+        ],
+        "dataQuality": "UNAVAILABLE",
+        "secondaryDomains": [
+          "MACRO",
+          "OBJECTIVE",
+          "ROLE"
+        ]
+      }
+    ],
+    "finalCall": {
+      "primaryAction": "PROTECT_CORE",
+      "primaryDomain": "LANE",
+      "urgency": "CRITICAL",
+      "reasonCodes": [
+        ""
+      ],
+      "missingSignals": [
+        "carryThreat",
+        "teamReady",
+        "visibleEnemies"
+      ],
+      "dataQuality": "UNAVAILABLE",
+      "secondaryDomains": [
+        "MACRO",
+        "OBJECTIVE",
+        "ROLE"
+      ]
+    }
+  },
+  "hard-support-04-warlock": {
+    "checkpoints": [
+      {
+        "primaryAction": "PROTECT_CORE",
+        "primaryDomain": "LANE",
+        "urgency": "CRITICAL",
+        "reasonCodes": [
+          "CORE"
+        ],
+        "missingSignals": [
+          "carryThreat",
+          "teamReady",
+          "visibleEnemies"
+        ],
+        "dataQuality": "UNAVAILABLE",
+        "secondaryDomains": [
+          "MACRO",
+          "OBJECTIVE",
+          "ROLE"
+        ]
+      },
+      {
+        "primaryAction": "PROTECT_CORE",
+        "primaryDomain": "LANE",
+        "urgency": "CRITICAL",
+        "reasonCodes": [
+          ""
+        ],
+        "missingSignals": [
+          "carryThreat",
+          "teamReady",
+          "visibleEnemies"
+        ],
+        "dataQuality": "UNAVAILABLE",
+        "secondaryDomains": [
+          "MACRO",
+          "OBJECTIVE",
+          "ROLE"
+        ]
+      },
+      {
+        "primaryAction": "PROTECT_CORE",
+        "primaryDomain": "LANE",
+        "urgency": "CRITICAL",
+        "reasonCodes": [
+          ""
+        ],
+        "missingSignals": [
+          "carryThreat",
+          "teamReady",
+          "visibleEnemies"
+        ],
+        "dataQuality": "UNAVAILABLE",
+        "secondaryDomains": [
+          "MACRO",
+          "OBJECTIVE",
+          "ROLE"
+        ]
+      }
+    ],
+    "finalCall": {
+      "primaryAction": "PROTECT_CORE",
+      "primaryDomain": "LANE",
+      "urgency": "CRITICAL",
+      "reasonCodes": [
+        ""
+      ],
+      "missingSignals": [
+        "carryThreat",
+        "teamReady",
+        "visibleEnemies"
+      ],
+      "dataQuality": "UNAVAILABLE",
+      "secondaryDomains": [
+        "MACRO",
+        "OBJECTIVE",
+        "ROLE"
+      ]
+    }
+  },
+  "mid-01-puck": {
+    "checkpoints": [
+      {
+        "primaryAction": "PREPARE_ROSHAN",
+        "primaryDomain": "OBJECTIVE",
+        "urgency": "MEDIUM",
+        "reasonCodes": [
+          ""
+        ],
+        "missingSignals": [
+          "laneState",
+          "teamReady",
+          "visibleEnemies"
+        ],
+        "dataQuality": "INFERRED",
+        "secondaryDomains": [
+          "LANE",
+          "MACRO",
+          "ROLE"
+        ]
+      },
+      {
+        "primaryAction": "PREPARE_ROSHAN",
+        "primaryDomain": "OBJECTIVE",
+        "urgency": "MEDIUM",
+        "reasonCodes": [
+          ""
+        ],
+        "missingSignals": [
+          "laneState",
+          "teamReady",
+          "visibleEnemies"
+        ],
+        "dataQuality": "INFERRED",
+        "secondaryDomains": [
+          "LANE",
+          "MACRO",
+          "ROLE"
+        ]
+      },
+      {
+        "primaryAction": "PREPARE_ROSHAN",
+        "primaryDomain": "OBJECTIVE",
+        "urgency": "MEDIUM",
+        "reasonCodes": [
+          ""
+        ],
+        "missingSignals": [
+          "laneState",
+          "teamReady",
+          "visibleEnemies"
+        ],
+        "dataQuality": "INFERRED",
+        "secondaryDomains": [
+          "LANE",
+          "MACRO",
+          "ROLE"
+        ]
+      }
+    ],
+    "finalCall": {
+      "primaryAction": "PREPARE_ROSHAN",
+      "primaryDomain": "OBJECTIVE",
+      "urgency": "MEDIUM",
+      "reasonCodes": [
+        ""
+      ],
+      "missingSignals": [
+        "laneState",
+        "teamReady",
+        "visibleEnemies"
+      ],
+      "dataQuality": "INFERRED",
+      "secondaryDomains": [
+        "LANE",
+        "MACRO",
+        "ROLE"
+      ]
+    }
+  },
+  "mid-02-storm_spirit": {
+    "checkpoints": [
+      {
+        "primaryAction": "PREPARE_ROSHAN",
+        "primaryDomain": "OBJECTIVE",
+        "urgency": "MEDIUM",
+        "reasonCodes": [
+          ""
+        ],
+        "missingSignals": [
+          "laneState",
+          "teamReady",
+          "visibleEnemies"
+        ],
+        "dataQuality": "INFERRED",
+        "secondaryDomains": [
+          "LANE",
+          "MACRO",
+          "ROLE"
+        ]
+      },
+      {
+        "primaryAction": "PREPARE_ROSHAN",
+        "primaryDomain": "OBJECTIVE",
+        "urgency": "MEDIUM",
+        "reasonCodes": [
+          ""
+        ],
+        "missingSignals": [
+          "laneState",
+          "teamReady",
+          "visibleEnemies"
+        ],
+        "dataQuality": "INFERRED",
+        "secondaryDomains": [
+          "LANE",
+          "MACRO",
+          "ROLE"
+        ]
+      },
+      {
+        "primaryAction": "PREPARE_ROSHAN",
+        "primaryDomain": "OBJECTIVE",
+        "urgency": "MEDIUM",
+        "reasonCodes": [
+          ""
+        ],
+        "missingSignals": [
+          "laneState",
+          "teamReady",
+          "visibleEnemies"
+        ],
+        "dataQuality": "INFERRED",
+        "secondaryDomains": [
+          "LANE",
+          "MACRO",
+          "ROLE"
+        ]
+      }
+    ],
+    "finalCall": {
+      "primaryAction": "PREPARE_ROSHAN",
+      "primaryDomain": "OBJECTIVE",
+      "urgency": "MEDIUM",
+      "reasonCodes": [
+        ""
+      ],
+      "missingSignals": [
+        "laneState",
+        "teamReady",
+        "visibleEnemies"
+      ],
+      "dataQuality": "INFERRED",
+      "secondaryDomains": [
+        "LANE",
+        "MACRO",
+        "ROLE"
+      ]
+    }
+  },
+  "mid-03-queenofpain": {
+    "checkpoints": [
+      {
+        "primaryAction": "PREPARE_ROSHAN",
+        "primaryDomain": "OBJECTIVE",
+        "urgency": "MEDIUM",
+        "reasonCodes": [
+          ""
+        ],
+        "missingSignals": [
+          "laneState",
+          "teamReady",
+          "visibleEnemies"
+        ],
+        "dataQuality": "INFERRED",
+        "secondaryDomains": [
+          "LANE",
+          "MACRO",
+          "ROLE"
+        ]
+      },
+      {
+        "primaryAction": "PREPARE_ROSHAN",
+        "primaryDomain": "OBJECTIVE",
+        "urgency": "MEDIUM",
+        "reasonCodes": [
+          ""
+        ],
+        "missingSignals": [
+          "laneState",
+          "teamReady",
+          "visibleEnemies"
+        ],
+        "dataQuality": "INFERRED",
+        "secondaryDomains": [
+          "LANE",
+          "MACRO",
+          "ROLE"
+        ]
+      },
+      {
+        "primaryAction": "PREPARE_ROSHAN",
+        "primaryDomain": "OBJECTIVE",
+        "urgency": "MEDIUM",
+        "reasonCodes": [
+          ""
+        ],
+        "missingSignals": [
+          "laneState",
+          "teamReady",
+          "visibleEnemies"
+        ],
+        "dataQuality": "INFERRED",
+        "secondaryDomains": [
+          "LANE",
+          "MACRO",
+          "ROLE"
+        ]
+      }
+    ],
+    "finalCall": {
+      "primaryAction": "PREPARE_ROSHAN",
+      "primaryDomain": "OBJECTIVE",
+      "urgency": "MEDIUM",
+      "reasonCodes": [
+        ""
+      ],
+      "missingSignals": [
+        "laneState",
+        "teamReady",
+        "visibleEnemies"
+      ],
+      "dataQuality": "INFERRED",
+      "secondaryDomains": [
+        "LANE",
+        "MACRO",
+        "ROLE"
+      ]
+    }
+  },
+  "mid-04-ember_spirit": {
+    "checkpoints": [
+      {
+        "primaryAction": "PREPARE_ROSHAN",
+        "primaryDomain": "OBJECTIVE",
+        "urgency": "MEDIUM",
+        "reasonCodes": [
+          ""
+        ],
+        "missingSignals": [
+          "laneState",
+          "teamReady",
+          "visibleEnemies"
+        ],
+        "dataQuality": "INFERRED",
+        "secondaryDomains": [
+          "LANE",
+          "MACRO",
+          "ROLE"
+        ]
+      },
+      {
+        "primaryAction": "PREPARE_ROSHAN",
+        "primaryDomain": "OBJECTIVE",
+        "urgency": "MEDIUM",
+        "reasonCodes": [
+          ""
+        ],
+        "missingSignals": [
+          "laneState",
+          "teamReady",
+          "visibleEnemies"
+        ],
+        "dataQuality": "INFERRED",
+        "secondaryDomains": [
+          "LANE",
+          "MACRO",
+          "ROLE"
+        ]
+      },
+      {
+        "primaryAction": "PREPARE_ROSHAN",
+        "primaryDomain": "OBJECTIVE",
+        "urgency": "MEDIUM",
+        "reasonCodes": [
+          ""
+        ],
+        "missingSignals": [
+          "laneState",
+          "teamReady",
+          "visibleEnemies"
+        ],
+        "dataQuality": "INFERRED",
+        "secondaryDomains": [
+          "LANE",
+          "MACRO",
+          "ROLE"
+        ]
+      }
+    ],
+    "finalCall": {
+      "primaryAction": "PREPARE_ROSHAN",
+      "primaryDomain": "OBJECTIVE",
+      "urgency": "MEDIUM",
+      "reasonCodes": [
+        ""
+      ],
+      "missingSignals": [
+        "laneState",
+        "teamReady",
+        "visibleEnemies"
+      ],
+      "dataQuality": "INFERRED",
+      "secondaryDomains": [
+        "LANE",
+        "MACRO",
+        "ROLE"
+      ]
+    }
+  },
+  "mid-05-void_spirit": {
+    "checkpoints": [
+      {
+        "primaryAction": "PREPARE_ROSHAN",
+        "primaryDomain": "OBJECTIVE",
+        "urgency": "MEDIUM",
+        "reasonCodes": [
+          ""
+        ],
+        "missingSignals": [
+          "laneState",
+          "teamReady",
+          "visibleEnemies"
+        ],
+        "dataQuality": "INFERRED",
+        "secondaryDomains": [
+          "LANE",
+          "MACRO",
+          "ROLE"
+        ]
+      },
+      {
+        "primaryAction": "PREPARE_ROSHAN",
+        "primaryDomain": "OBJECTIVE",
+        "urgency": "MEDIUM",
+        "reasonCodes": [
+          ""
+        ],
+        "missingSignals": [
+          "laneState",
+          "teamReady",
+          "visibleEnemies"
+        ],
+        "dataQuality": "INFERRED",
+        "secondaryDomains": [
+          "LANE",
+          "MACRO",
+          "ROLE"
+        ]
+      },
+      {
+        "primaryAction": "PREPARE_ROSHAN",
+        "primaryDomain": "OBJECTIVE",
+        "urgency": "MEDIUM",
+        "reasonCodes": [
+          ""
+        ],
+        "missingSignals": [
+          "laneState",
+          "teamReady",
+          "visibleEnemies"
+        ],
+        "dataQuality": "INFERRED",
+        "secondaryDomains": [
+          "LANE",
+          "MACRO",
+          "ROLE"
+        ]
+      }
+    ],
+    "finalCall": {
+      "primaryAction": "PREPARE_ROSHAN",
+      "primaryDomain": "OBJECTIVE",
+      "urgency": "MEDIUM",
+      "reasonCodes": [
+        ""
+      ],
+      "missingSignals": [
+        "laneState",
+        "teamReady",
+        "visibleEnemies"
+      ],
+      "dataQuality": "INFERRED",
+      "secondaryDomains": [
+        "LANE",
+        "MACRO",
+        "ROLE"
+      ]
+    }
+  },
+  "mid-06-invoker": {
+    "checkpoints": [
+      {
+        "primaryAction": "PREPARE_ROSHAN",
+        "primaryDomain": "OBJECTIVE",
+        "urgency": "MEDIUM",
+        "reasonCodes": [
+          ""
+        ],
+        "missingSignals": [
+          "laneState",
+          "teamReady",
+          "visibleEnemies"
+        ],
+        "dataQuality": "INFERRED",
+        "secondaryDomains": [
+          "LANE",
+          "MACRO",
+          "ROLE"
+        ]
+      },
+      {
+        "primaryAction": "PREPARE_ROSHAN",
+        "primaryDomain": "OBJECTIVE",
+        "urgency": "MEDIUM",
+        "reasonCodes": [
+          ""
+        ],
+        "missingSignals": [
+          "laneState",
+          "teamReady",
+          "visibleEnemies"
+        ],
+        "dataQuality": "INFERRED",
+        "secondaryDomains": [
+          "LANE",
+          "MACRO",
+          "ROLE"
+        ]
+      },
+      {
+        "primaryAction": "PREPARE_ROSHAN",
+        "primaryDomain": "OBJECTIVE",
+        "urgency": "MEDIUM",
+        "reasonCodes": [
+          ""
+        ],
+        "missingSignals": [
+          "laneState",
+          "teamReady",
+          "visibleEnemies"
+        ],
+        "dataQuality": "INFERRED",
+        "secondaryDomains": [
+          "LANE",
+          "MACRO",
+          "ROLE"
+        ]
+      }
+    ],
+    "finalCall": {
+      "primaryAction": "PREPARE_ROSHAN",
+      "primaryDomain": "OBJECTIVE",
+      "urgency": "MEDIUM",
+      "reasonCodes": [
+        ""
+      ],
+      "missingSignals": [
+        "laneState",
+        "teamReady",
+        "visibleEnemies"
+      ],
+      "dataQuality": "INFERRED",
+      "secondaryDomains": [
+        "LANE",
+        "MACRO",
+        "ROLE"
+      ]
+    }
+  },
+  "objectives-01-luna": {
+    "checkpoints": [
+      {
+        "primaryAction": "PREPARE_ROSHAN",
+        "primaryDomain": "OBJECTIVE",
+        "urgency": "MEDIUM",
+        "reasonCodes": [
+          ""
+        ],
+        "missingSignals": [
+          "combatStats",
+          "ownAbilities",
+          "ownEconomy",
+          "ownInventory",
+          "ownLevel",
+          "ownVitals",
+          "playerIdentity",
+          "playerRole",
+          "roster",
+          "teamReady",
+          "visibleEnemies",
+          "wardStock"
+        ],
+        "dataQuality": "INFERRED",
+        "secondaryDomains": [
+          "LANE",
+          "MACRO",
+          "ROLE"
+        ]
+      },
+      {
+        "primaryAction": "PREPARE_ROSHAN",
+        "primaryDomain": "OBJECTIVE",
+        "urgency": "MEDIUM",
+        "reasonCodes": [
+          ""
+        ],
+        "missingSignals": [
+          "combatStats",
+          "laneState",
+          "ownAbilities",
+          "ownEconomy",
+          "ownLevel",
+          "ownVitals",
+          "playerIdentity",
+          "playerRole",
+          "roster",
+          "teamReady",
+          "visibleEnemies",
+          "wardStock"
+        ],
+        "dataQuality": "INFERRED",
+        "secondaryDomains": [
+          "LANE",
+          "MACRO",
+          "ROLE"
+        ]
+      },
+      {
+        "primaryAction": "PREPARE_ROSHAN",
+        "primaryDomain": "OBJECTIVE",
+        "urgency": "MEDIUM",
+        "reasonCodes": [
+          ""
+        ],
+        "missingSignals": [
+          "combatStats",
+          "laneState",
+          "ownAbilities",
+          "ownEconomy",
+          "ownLevel",
+          "ownVitals",
+          "playerIdentity",
+          "playerRole",
+          "roster",
+          "teamReady",
+          "visibleEnemies",
+          "wardStock"
+        ],
+        "dataQuality": "INFERRED",
+        "secondaryDomains": [
+          "LANE",
+          "MACRO",
+          "ROLE"
+        ]
+      }
+    ],
+    "finalCall": {
+      "primaryAction": "PREPARE_ROSHAN",
+      "primaryDomain": "OBJECTIVE",
+      "urgency": "MEDIUM",
+      "reasonCodes": [
+        ""
+      ],
+      "missingSignals": [
+        "combatStats",
+        "laneState",
+        "ownAbilities",
+        "ownEconomy",
+        "ownLevel",
+        "ownVitals",
+        "playerIdentity",
+        "playerRole",
+        "roster",
+        "teamReady",
+        "visibleEnemies",
+        "wardStock"
+      ],
+      "dataQuality": "INFERRED",
+      "secondaryDomains": [
+        "LANE",
+        "MACRO",
+        "ROLE"
+      ]
+    }
+  },
+  "objectives-02-puck": {
+    "checkpoints": [
+      {
+        "primaryAction": "PREPARE_ROSHAN",
+        "primaryDomain": "OBJECTIVE",
+        "urgency": "MEDIUM",
+        "reasonCodes": [
+          ""
+        ],
+        "missingSignals": [
+          "combatStats",
+          "ownAbilities",
+          "ownEconomy",
+          "ownInventory",
+          "ownLevel",
+          "ownVitals",
+          "playerIdentity",
+          "playerRole",
+          "roster",
+          "teamReady",
+          "visibleEnemies",
+          "wardStock"
+        ],
+        "dataQuality": "INFERRED",
+        "secondaryDomains": [
+          "LANE",
+          "MACRO",
+          "ROLE"
+        ]
+      },
+      {
+        "primaryAction": "PREPARE_ROSHAN",
+        "primaryDomain": "OBJECTIVE",
+        "urgency": "MEDIUM",
+        "reasonCodes": [
+          ""
+        ],
+        "missingSignals": [
+          "combatStats",
+          "laneState",
+          "ownAbilities",
+          "ownEconomy",
+          "ownLevel",
+          "ownVitals",
+          "playerIdentity",
+          "playerRole",
+          "roster",
+          "teamReady",
+          "visibleEnemies",
+          "wardStock"
+        ],
+        "dataQuality": "INFERRED",
+        "secondaryDomains": [
+          "LANE",
+          "MACRO",
+          "ROLE"
+        ]
+      },
+      {
+        "primaryAction": "PREPARE_ROSHAN",
+        "primaryDomain": "OBJECTIVE",
+        "urgency": "MEDIUM",
+        "reasonCodes": [
+          ""
+        ],
+        "missingSignals": [
+          "combatStats",
+          "laneState",
+          "ownAbilities",
+          "ownEconomy",
+          "ownLevel",
+          "ownVitals",
+          "playerIdentity",
+          "playerRole",
+          "roster",
+          "teamReady",
+          "visibleEnemies",
+          "wardStock"
+        ],
+        "dataQuality": "INFERRED",
+        "secondaryDomains": [
+          "LANE",
+          "MACRO",
+          "ROLE"
+        ]
+      }
+    ],
+    "finalCall": {
+      "primaryAction": "PREPARE_ROSHAN",
+      "primaryDomain": "OBJECTIVE",
+      "urgency": "MEDIUM",
+      "reasonCodes": [
+        ""
+      ],
+      "missingSignals": [
+        "combatStats",
+        "laneState",
+        "ownAbilities",
+        "ownEconomy",
+        "ownLevel",
+        "ownVitals",
+        "playerIdentity",
+        "playerRole",
+        "roster",
+        "teamReady",
+        "visibleEnemies",
+        "wardStock"
+      ],
+      "dataQuality": "INFERRED",
+      "secondaryDomains": [
+        "LANE",
+        "MACRO",
+        "ROLE"
+      ]
+    }
+  },
+  "objectives-03-axe": {
+    "checkpoints": [
+      {
+        "primaryAction": "PREPARE_ROSHAN",
+        "primaryDomain": "OBJECTIVE",
+        "urgency": "MEDIUM",
+        "reasonCodes": [
+          ""
+        ],
+        "missingSignals": [
+          "combatStats",
+          "ownAbilities",
+          "ownEconomy",
+          "ownInventory",
+          "ownLevel",
+          "ownVitals",
+          "playerIdentity",
+          "playerRole",
+          "roster",
+          "teamReady",
+          "visibleEnemies",
+          "wardStock"
+        ],
+        "dataQuality": "INFERRED",
+        "secondaryDomains": [
+          "LANE",
+          "MACRO",
+          "ROLE"
+        ]
+      },
+      {
+        "primaryAction": "PREPARE_ROSHAN",
+        "primaryDomain": "OBJECTIVE",
+        "urgency": "MEDIUM",
+        "reasonCodes": [
+          ""
+        ],
+        "missingSignals": [
+          "combatStats",
+          "laneState",
+          "ownAbilities",
+          "ownEconomy",
+          "ownLevel",
+          "ownVitals",
+          "playerIdentity",
+          "playerRole",
+          "roster",
+          "teamReady",
+          "visibleEnemies",
+          "wardStock"
+        ],
+        "dataQuality": "INFERRED",
+        "secondaryDomains": [
+          "LANE",
+          "MACRO",
+          "ROLE"
+        ]
+      },
+      {
+        "primaryAction": "PREPARE_ROSHAN",
+        "primaryDomain": "OBJECTIVE",
+        "urgency": "MEDIUM",
+        "reasonCodes": [
+          ""
+        ],
+        "missingSignals": [
+          "combatStats",
+          "laneState",
+          "ownAbilities",
+          "ownEconomy",
+          "ownLevel",
+          "ownVitals",
+          "playerIdentity",
+          "playerRole",
+          "roster",
+          "teamReady",
+          "visibleEnemies",
+          "wardStock"
+        ],
+        "dataQuality": "INFERRED",
+        "secondaryDomains": [
+          "LANE",
+          "MACRO",
+          "ROLE"
+        ]
+      }
+    ],
+    "finalCall": {
+      "primaryAction": "PREPARE_ROSHAN",
+      "primaryDomain": "OBJECTIVE",
+      "urgency": "MEDIUM",
+      "reasonCodes": [
+        ""
+      ],
+      "missingSignals": [
+        "combatStats",
+        "laneState",
+        "ownAbilities",
+        "ownEconomy",
+        "ownLevel",
+        "ownVitals",
+        "playerIdentity",
+        "playerRole",
+        "roster",
+        "teamReady",
+        "visibleEnemies",
+        "wardStock"
+      ],
+      "dataQuality": "INFERRED",
+      "secondaryDomains": [
+        "LANE",
+        "MACRO",
+        "ROLE"
+      ]
+    }
+  },
+  "offlane-01-axe": {
+    "checkpoints": [
+      {
+        "primaryAction": "PREPARE_ROSHAN",
+        "primaryDomain": "OBJECTIVE",
+        "urgency": "MEDIUM",
+        "reasonCodes": [
+          ""
+        ],
+        "missingSignals": [
+          "combatStats",
+          "ownAbilities",
+          "ownEconomy",
+          "ownInventory",
+          "ownLevel",
+          "ownVitals",
+          "playerIdentity",
+          "playerRole",
+          "roster",
+          "teamReady",
+          "visibleEnemies",
+          "wardStock"
+        ],
+        "dataQuality": "INFERRED",
+        "secondaryDomains": [
+          "LANE",
+          "MACRO",
+          "ROLE"
+        ]
+      },
+      {
+        "primaryAction": "RESET",
+        "primaryDomain": "ROLE",
+        "urgency": "CRITICAL",
+        "reasonCodes": [
+          ""
+        ],
+        "missingSignals": [
+          "combatStats",
+          "enemyEconomy",
+          "laneState",
+          "laneTargets",
+          "ownAbilities",
+          "ownEconomy",
+          "ownLevel",
+          "ownVitals",
+          "playerIdentity",
+          "playerRole",
+          "roster",
+          "wardStock"
+        ],
+        "dataQuality": "LIMITED",
+        "secondaryDomains": [
+          "LANE",
+          "MACRO",
+          "OBJECTIVE"
+        ]
+      },
+      {
+        "primaryAction": "RESET",
+        "primaryDomain": "ROLE",
+        "urgency": "CRITICAL",
+        "reasonCodes": [
+          ""
+        ],
+        "missingSignals": [
+          "combatStats",
+          "enemyEconomy",
+          "laneState",
+          "laneTargets",
+          "ownAbilities",
+          "ownEconomy",
+          "ownLevel",
+          "ownVitals",
+          "playerIdentity",
+          "playerRole",
+          "roster",
+          "wardStock"
+        ],
+        "dataQuality": "LIMITED",
+        "secondaryDomains": [
+          "LANE",
+          "MACRO",
+          "OBJECTIVE"
+        ]
+      }
+    ],
+    "finalCall": {
+      "primaryAction": "RESET",
+      "primaryDomain": "ROLE",
+      "urgency": "CRITICAL",
+      "reasonCodes": [
+        ""
+      ],
+      "missingSignals": [
+        "combatStats",
+        "enemyEconomy",
+        "laneState",
+        "laneTargets",
+        "ownAbilities",
+        "ownEconomy",
+        "ownLevel",
+        "ownVitals",
+        "playerIdentity",
+        "playerRole",
+        "roster",
+        "wardStock"
+      ],
+      "dataQuality": "LIMITED",
+      "secondaryDomains": [
+        "LANE",
+        "MACRO",
+        "OBJECTIVE"
+      ]
+    }
+  },
+  "offlane-02-centaur": {
+    "checkpoints": [
+      {
+        "primaryAction": "PREPARE_ROSHAN",
+        "primaryDomain": "OBJECTIVE",
+        "urgency": "MEDIUM",
+        "reasonCodes": [
+          ""
+        ],
+        "missingSignals": [
+          "combatStats",
+          "ownAbilities",
+          "ownEconomy",
+          "ownInventory",
+          "ownLevel",
+          "ownVitals",
+          "playerIdentity",
+          "playerRole",
+          "roster",
+          "teamReady",
+          "visibleEnemies",
+          "wardStock"
+        ],
+        "dataQuality": "INFERRED",
+        "secondaryDomains": [
+          "LANE",
+          "MACRO",
+          "ROLE"
+        ]
+      },
+      {
+        "primaryAction": "RESET",
+        "primaryDomain": "ROLE",
+        "urgency": "CRITICAL",
+        "reasonCodes": [
+          ""
+        ],
+        "missingSignals": [
+          "combatStats",
+          "enemyEconomy",
+          "laneState",
+          "laneTargets",
+          "ownAbilities",
+          "ownEconomy",
+          "ownLevel",
+          "ownVitals",
+          "playerIdentity",
+          "playerRole",
+          "roster",
+          "wardStock"
+        ],
+        "dataQuality": "LIMITED",
+        "secondaryDomains": [
+          "LANE",
+          "MACRO",
+          "OBJECTIVE"
+        ]
+      },
+      {
+        "primaryAction": "RESET",
+        "primaryDomain": "ROLE",
+        "urgency": "CRITICAL",
+        "reasonCodes": [
+          ""
+        ],
+        "missingSignals": [
+          "combatStats",
+          "enemyEconomy",
+          "laneState",
+          "laneTargets",
+          "ownAbilities",
+          "ownEconomy",
+          "ownLevel",
+          "ownVitals",
+          "playerIdentity",
+          "playerRole",
+          "roster",
+          "wardStock"
+        ],
+        "dataQuality": "LIMITED",
+        "secondaryDomains": [
+          "LANE",
+          "MACRO",
+          "OBJECTIVE"
+        ]
+      }
+    ],
+    "finalCall": {
+      "primaryAction": "RESET",
+      "primaryDomain": "ROLE",
+      "urgency": "CRITICAL",
+      "reasonCodes": [
+        ""
+      ],
+      "missingSignals": [
+        "combatStats",
+        "enemyEconomy",
+        "laneState",
+        "laneTargets",
+        "ownAbilities",
+        "ownEconomy",
+        "ownLevel",
+        "ownVitals",
+        "playerIdentity",
+        "playerRole",
+        "roster",
+        "wardStock"
+      ],
+      "dataQuality": "LIMITED",
+      "secondaryDomains": [
+        "LANE",
+        "MACRO",
+        "OBJECTIVE"
+      ]
+    }
+  },
+  "offlane-03-mars": {
+    "checkpoints": [
+      {
+        "primaryAction": "PREPARE_ROSHAN",
+        "primaryDomain": "OBJECTIVE",
+        "urgency": "MEDIUM",
+        "reasonCodes": [
+          ""
+        ],
+        "missingSignals": [
+          "combatStats",
+          "ownAbilities",
+          "ownEconomy",
+          "ownInventory",
+          "ownLevel",
+          "ownVitals",
+          "playerIdentity",
+          "playerRole",
+          "roster",
+          "teamReady",
+          "visibleEnemies",
+          "wardStock"
+        ],
+        "dataQuality": "INFERRED",
+        "secondaryDomains": [
+          "LANE",
+          "MACRO",
+          "ROLE"
+        ]
+      },
+      {
+        "primaryAction": "RESET",
+        "primaryDomain": "ROLE",
+        "urgency": "CRITICAL",
+        "reasonCodes": [
+          ""
+        ],
+        "missingSignals": [
+          "combatStats",
+          "enemyEconomy",
+          "laneState",
+          "laneTargets",
+          "ownAbilities",
+          "ownEconomy",
+          "ownLevel",
+          "ownVitals",
+          "playerIdentity",
+          "playerRole",
+          "roster",
+          "wardStock"
+        ],
+        "dataQuality": "LIMITED",
+        "secondaryDomains": [
+          "LANE",
+          "MACRO",
+          "OBJECTIVE"
+        ]
+      },
+      {
+        "primaryAction": "RESET",
+        "primaryDomain": "ROLE",
+        "urgency": "CRITICAL",
+        "reasonCodes": [
+          ""
+        ],
+        "missingSignals": [
+          "combatStats",
+          "enemyEconomy",
+          "laneState",
+          "laneTargets",
+          "ownAbilities",
+          "ownEconomy",
+          "ownLevel",
+          "ownVitals",
+          "playerIdentity",
+          "playerRole",
+          "roster",
+          "wardStock"
+        ],
+        "dataQuality": "LIMITED",
+        "secondaryDomains": [
+          "LANE",
+          "MACRO",
+          "OBJECTIVE"
+        ]
+      }
+    ],
+    "finalCall": {
+      "primaryAction": "RESET",
+      "primaryDomain": "ROLE",
+      "urgency": "CRITICAL",
+      "reasonCodes": [
+        ""
+      ],
+      "missingSignals": [
+        "combatStats",
+        "enemyEconomy",
+        "laneState",
+        "laneTargets",
+        "ownAbilities",
+        "ownEconomy",
+        "ownLevel",
+        "ownVitals",
+        "playerIdentity",
+        "playerRole",
+        "roster",
+        "wardStock"
+      ],
+      "dataQuality": "LIMITED",
+      "secondaryDomains": [
+        "LANE",
+        "MACRO",
+        "OBJECTIVE"
+      ]
+    }
+  },
+  "offlane-04-tidehunter": {
+    "checkpoints": [
+      {
+        "primaryAction": "PREPARE_ROSHAN",
+        "primaryDomain": "OBJECTIVE",
+        "urgency": "MEDIUM",
+        "reasonCodes": [
+          ""
+        ],
+        "missingSignals": [
+          "combatStats",
+          "ownAbilities",
+          "ownEconomy",
+          "ownInventory",
+          "ownLevel",
+          "ownVitals",
+          "playerIdentity",
+          "playerRole",
+          "roster",
+          "teamReady",
+          "visibleEnemies",
+          "wardStock"
+        ],
+        "dataQuality": "INFERRED",
+        "secondaryDomains": [
+          "LANE",
+          "MACRO",
+          "ROLE"
+        ]
+      },
+      {
+        "primaryAction": "RESET",
+        "primaryDomain": "ROLE",
+        "urgency": "CRITICAL",
+        "reasonCodes": [
+          ""
+        ],
+        "missingSignals": [
+          "combatStats",
+          "enemyEconomy",
+          "laneState",
+          "laneTargets",
+          "ownAbilities",
+          "ownEconomy",
+          "ownLevel",
+          "ownVitals",
+          "playerIdentity",
+          "playerRole",
+          "roster",
+          "wardStock"
+        ],
+        "dataQuality": "LIMITED",
+        "secondaryDomains": [
+          "LANE",
+          "MACRO",
+          "OBJECTIVE"
+        ]
+      },
+      {
+        "primaryAction": "RESET",
+        "primaryDomain": "ROLE",
+        "urgency": "CRITICAL",
+        "reasonCodes": [
+          ""
+        ],
+        "missingSignals": [
+          "combatStats",
+          "enemyEconomy",
+          "laneState",
+          "laneTargets",
+          "ownAbilities",
+          "ownEconomy",
+          "ownLevel",
+          "ownVitals",
+          "playerIdentity",
+          "playerRole",
+          "roster",
+          "wardStock"
+        ],
+        "dataQuality": "LIMITED",
+        "secondaryDomains": [
+          "LANE",
+          "MACRO",
+          "OBJECTIVE"
+        ]
+      }
+    ],
+    "finalCall": {
+      "primaryAction": "RESET",
+      "primaryDomain": "ROLE",
+      "urgency": "CRITICAL",
+      "reasonCodes": [
+        ""
+      ],
+      "missingSignals": [
+        "combatStats",
+        "enemyEconomy",
+        "laneState",
+        "laneTargets",
+        "ownAbilities",
+        "ownEconomy",
+        "ownLevel",
+        "ownVitals",
+        "playerIdentity",
+        "playerRole",
+        "roster",
+        "wardStock"
+      ],
+      "dataQuality": "LIMITED",
+      "secondaryDomains": [
+        "LANE",
+        "MACRO",
+        "OBJECTIVE"
+      ]
+    }
+  },
+  "safety-01-juggernaut": {
+    "checkpoints": [
+      {
+        "primaryAction": "PREPARE_ROSHAN",
+        "primaryDomain": "OBJECTIVE",
+        "urgency": "MEDIUM",
+        "reasonCodes": [
+          ""
+        ],
+        "missingSignals": [
+          "combatStats",
+          "ownAbilities",
+          "ownEconomy",
+          "ownInventory",
+          "ownLevel",
+          "ownVitals",
+          "playerIdentity",
+          "playerRole",
+          "roster",
+          "teamReady",
+          "visibleEnemies",
+          "wardStock"
+        ],
+        "dataQuality": "INFERRED",
+        "secondaryDomains": [
+          "LANE",
+          "MACRO",
+          "ROLE"
+        ]
+      },
+      {
+        "primaryAction": "PREPARE_ROSHAN",
+        "primaryDomain": "OBJECTIVE",
+        "urgency": "MEDIUM",
+        "reasonCodes": [
+          ""
+        ],
+        "missingSignals": [
+          "combatStats",
+          "laneState",
+          "ownAbilities",
+          "ownEconomy",
+          "ownLevel",
+          "ownVitals",
+          "playerIdentity",
+          "playerRole",
+          "roster",
+          "teamReady",
+          "visibleEnemies",
+          "wardStock"
+        ],
+        "dataQuality": "INFERRED",
+        "secondaryDomains": [
+          "LANE",
+          "MACRO",
+          "ROLE"
+        ]
+      },
+      {
+        "primaryAction": "PREPARE_ROSHAN",
+        "primaryDomain": "OBJECTIVE",
+        "urgency": "MEDIUM",
+        "reasonCodes": [
+          ""
+        ],
+        "missingSignals": [
+          "combatStats",
+          "laneState",
+          "laneTargets",
+          "ownAbilities",
+          "ownEconomy",
+          "ownLevel",
+          "playerIdentity",
+          "playerRole",
+          "roster",
+          "teamReady",
+          "visibleEnemies",
+          "wardStock"
+        ],
+        "dataQuality": "INFERRED",
+        "secondaryDomains": [
+          "LANE",
+          "MACRO",
+          "ROLE"
+        ]
+      }
+    ],
+    "finalCall": {
+      "primaryAction": "PREPARE_ROSHAN",
+      "primaryDomain": "OBJECTIVE",
+      "urgency": "MEDIUM",
+      "reasonCodes": [
+        ""
+      ],
+      "missingSignals": [
+        "combatStats",
+        "laneState",
+        "laneTargets",
+        "ownAbilities",
+        "ownEconomy",
+        "ownLevel",
+        "playerIdentity",
+        "playerRole",
+        "roster",
+        "teamReady",
+        "visibleEnemies",
+        "wardStock"
+      ],
+      "dataQuality": "INFERRED",
+      "secondaryDomains": [
+        "LANE",
+        "MACRO",
+        "ROLE"
+      ]
+    }
+  },
+  "safety-02-invoker": {
+    "checkpoints": [
+      {
+        "primaryAction": "PREPARE_ROSHAN",
+        "primaryDomain": "OBJECTIVE",
+        "urgency": "MEDIUM",
+        "reasonCodes": [
+          ""
+        ],
+        "missingSignals": [
+          "combatStats",
+          "ownAbilities",
+          "ownEconomy",
+          "ownInventory",
+          "ownLevel",
+          "ownVitals",
+          "playerIdentity",
+          "playerRole",
+          "roster",
+          "teamReady",
+          "visibleEnemies",
+          "wardStock"
+        ],
+        "dataQuality": "INFERRED",
+        "secondaryDomains": [
+          "LANE",
+          "MACRO",
+          "ROLE"
+        ]
+      },
+      {
+        "primaryAction": "PREPARE_ROSHAN",
+        "primaryDomain": "OBJECTIVE",
+        "urgency": "MEDIUM",
+        "reasonCodes": [
+          ""
+        ],
+        "missingSignals": [
+          "combatStats",
+          "laneState",
+          "ownAbilities",
+          "ownEconomy",
+          "ownLevel",
+          "ownVitals",
+          "playerIdentity",
+          "playerRole",
+          "roster",
+          "teamReady",
+          "visibleEnemies",
+          "wardStock"
+        ],
+        "dataQuality": "INFERRED",
+        "secondaryDomains": [
+          "LANE",
+          "MACRO",
+          "ROLE"
+        ]
+      },
+      {
+        "primaryAction": "RESET",
+        "primaryDomain": "MACRO",
+        "urgency": "CRITICAL",
+        "reasonCodes": [
+          ""
+        ],
+        "missingSignals": [
+          "combatStats",
+          "laneState",
+          "laneTargets",
+          "ownAbilities",
+          "ownEconomy",
+          "ownLevel",
+          "playerIdentity",
+          "playerRole",
+          "roster",
+          "teamReady",
+          "visibleEnemies",
+          "wardStock"
+        ],
+        "dataQuality": "UNKNOWN",
+        "secondaryDomains": [
+          "LANE",
+          "OBJECTIVE",
+          "ROLE"
+        ]
+      }
+    ],
+    "finalCall": {
+      "primaryAction": "RESET",
+      "primaryDomain": "MACRO",
+      "urgency": "CRITICAL",
+      "reasonCodes": [
+        ""
+      ],
+      "missingSignals": [
+        "combatStats",
+        "laneState",
+        "laneTargets",
+        "ownAbilities",
+        "ownEconomy",
+        "ownLevel",
+        "playerIdentity",
+        "playerRole",
+        "roster",
+        "teamReady",
+        "visibleEnemies",
+        "wardStock"
+      ],
+      "dataQuality": "UNKNOWN",
+      "secondaryDomains": [
+        "LANE",
+        "OBJECTIVE",
+        "ROLE"
+      ]
+    }
+  },
+  "safety-03-crystal_maiden": {
+    "checkpoints": [
+      {
+        "primaryAction": "PREPARE_ROSHAN",
+        "primaryDomain": "OBJECTIVE",
+        "urgency": "MEDIUM",
+        "reasonCodes": [
+          ""
+        ],
+        "missingSignals": [
+          "combatStats",
+          "ownAbilities",
+          "ownEconomy",
+          "ownInventory",
+          "ownLevel",
+          "ownVitals",
+          "playerIdentity",
+          "playerRole",
+          "roster",
+          "teamReady",
+          "visibleEnemies",
+          "wardStock"
+        ],
+        "dataQuality": "INFERRED",
+        "secondaryDomains": [
+          "LANE",
+          "MACRO",
+          "ROLE"
+        ]
+      },
+      {
+        "primaryAction": "PREPARE_ROSHAN",
+        "primaryDomain": "OBJECTIVE",
+        "urgency": "MEDIUM",
+        "reasonCodes": [
+          ""
+        ],
+        "missingSignals": [
+          "combatStats",
+          "laneState",
+          "ownAbilities",
+          "ownEconomy",
+          "ownLevel",
+          "ownVitals",
+          "playerIdentity",
+          "playerRole",
+          "roster",
+          "teamReady",
+          "visibleEnemies",
+          "wardStock"
+        ],
+        "dataQuality": "INFERRED",
+        "secondaryDomains": [
+          "LANE",
+          "MACRO",
+          "ROLE"
+        ]
+      },
+      {
+        "primaryAction": "RESET",
+        "primaryDomain": "MACRO",
+        "urgency": "CRITICAL",
+        "reasonCodes": [
+          ""
+        ],
+        "missingSignals": [
+          "combatStats",
+          "laneState",
+          "laneTargets",
+          "ownAbilities",
+          "ownEconomy",
+          "ownLevel",
+          "playerIdentity",
+          "playerRole",
+          "roster",
+          "teamReady",
+          "visibleEnemies",
+          "wardStock"
+        ],
+        "dataQuality": "UNKNOWN",
+        "secondaryDomains": [
+          "LANE",
+          "OBJECTIVE",
+          "ROLE"
+        ]
+      }
+    ],
+    "finalCall": {
+      "primaryAction": "RESET",
+      "primaryDomain": "MACRO",
+      "urgency": "CRITICAL",
+      "reasonCodes": [
+        ""
+      ],
+      "missingSignals": [
+        "combatStats",
+        "laneState",
+        "laneTargets",
+        "ownAbilities",
+        "ownEconomy",
+        "ownLevel",
+        "playerIdentity",
+        "playerRole",
+        "roster",
+        "teamReady",
+        "visibleEnemies",
+        "wardStock"
+      ],
+      "dataQuality": "UNKNOWN",
+      "secondaryDomains": [
+        "LANE",
+        "OBJECTIVE",
+        "ROLE"
+      ]
+    }
+  },
+  "soft-support-01-rubick": {
+    "checkpoints": [
+      {
+        "primaryAction": "PROTECT_CORE",
+        "primaryDomain": "LANE",
+        "urgency": "CRITICAL",
+        "reasonCodes": [
+          "CORE"
+        ],
+        "missingSignals": [
+          "teamReadiness",
+          "teamReady",
+          "visibleEnemies"
+        ],
+        "dataQuality": "UNAVAILABLE",
+        "secondaryDomains": [
+          "MACRO",
+          "OBJECTIVE",
+          "ROLE"
+        ]
+      },
+      {
+        "primaryAction": "PROTECT_CORE",
+        "primaryDomain": "LANE",
+        "urgency": "CRITICAL",
+        "reasonCodes": [
+          ""
+        ],
+        "missingSignals": [
+          "teamReadiness",
+          "teamReady",
+          "visibleEnemies"
+        ],
+        "dataQuality": "UNAVAILABLE",
+        "secondaryDomains": [
+          "MACRO",
+          "OBJECTIVE",
+          "ROLE"
+        ]
+      },
+      {
+        "primaryAction": "PROTECT_CORE",
+        "primaryDomain": "LANE",
+        "urgency": "CRITICAL",
+        "reasonCodes": [
+          ""
+        ],
+        "missingSignals": [
+          "teamReadiness",
+          "teamReady",
+          "visibleEnemies"
+        ],
+        "dataQuality": "UNAVAILABLE",
+        "secondaryDomains": [
+          "MACRO",
+          "OBJECTIVE",
+          "ROLE"
+        ]
+      }
+    ],
+    "finalCall": {
+      "primaryAction": "PROTECT_CORE",
+      "primaryDomain": "LANE",
+      "urgency": "CRITICAL",
+      "reasonCodes": [
+        ""
+      ],
+      "missingSignals": [
+        "teamReadiness",
+        "teamReady",
+        "visibleEnemies"
+      ],
+      "dataQuality": "UNAVAILABLE",
+      "secondaryDomains": [
+        "MACRO",
+        "OBJECTIVE",
+        "ROLE"
+      ]
+    }
+  },
+  "soft-support-02-earth_spirit": {
+    "checkpoints": [
+      {
+        "primaryAction": "PROTECT_CORE",
+        "primaryDomain": "LANE",
+        "urgency": "CRITICAL",
+        "reasonCodes": [
+          "CORE"
+        ],
+        "missingSignals": [
+          "teamReadiness",
+          "teamReady",
+          "visibleEnemies"
+        ],
+        "dataQuality": "UNAVAILABLE",
+        "secondaryDomains": [
+          "MACRO",
+          "OBJECTIVE",
+          "ROLE"
+        ]
+      },
+      {
+        "primaryAction": "PROTECT_CORE",
+        "primaryDomain": "LANE",
+        "urgency": "CRITICAL",
+        "reasonCodes": [
+          ""
+        ],
+        "missingSignals": [
+          "teamReadiness",
+          "teamReady",
+          "visibleEnemies"
+        ],
+        "dataQuality": "UNAVAILABLE",
+        "secondaryDomains": [
+          "MACRO",
+          "OBJECTIVE",
+          "ROLE"
+        ]
+      },
+      {
+        "primaryAction": "PROTECT_CORE",
+        "primaryDomain": "LANE",
+        "urgency": "CRITICAL",
+        "reasonCodes": [
+          ""
+        ],
+        "missingSignals": [
+          "teamReadiness",
+          "teamReady",
+          "visibleEnemies"
+        ],
+        "dataQuality": "UNAVAILABLE",
+        "secondaryDomains": [
+          "MACRO",
+          "OBJECTIVE",
+          "ROLE"
+        ]
+      }
+    ],
+    "finalCall": {
+      "primaryAction": "PROTECT_CORE",
+      "primaryDomain": "LANE",
+      "urgency": "CRITICAL",
+      "reasonCodes": [
+        ""
+      ],
+      "missingSignals": [
+        "teamReadiness",
+        "teamReady",
+        "visibleEnemies"
+      ],
+      "dataQuality": "UNAVAILABLE",
+      "secondaryDomains": [
+        "MACRO",
+        "OBJECTIVE",
+        "ROLE"
+      ]
+    }
+  },
+  "soft-support-03-tusk": {
+    "checkpoints": [
+      {
+        "primaryAction": "PROTECT_CORE",
+        "primaryDomain": "LANE",
+        "urgency": "CRITICAL",
+        "reasonCodes": [
+          "CORE"
+        ],
+        "missingSignals": [
+          "teamReadiness",
+          "teamReady",
+          "visibleEnemies"
+        ],
+        "dataQuality": "UNAVAILABLE",
+        "secondaryDomains": [
+          "MACRO",
+          "OBJECTIVE",
+          "ROLE"
+        ]
+      },
+      {
+        "primaryAction": "PROTECT_CORE",
+        "primaryDomain": "LANE",
+        "urgency": "CRITICAL",
+        "reasonCodes": [
+          ""
+        ],
+        "missingSignals": [
+          "teamReadiness",
+          "teamReady",
+          "visibleEnemies"
+        ],
+        "dataQuality": "UNAVAILABLE",
+        "secondaryDomains": [
+          "MACRO",
+          "OBJECTIVE",
+          "ROLE"
+        ]
+      },
+      {
+        "primaryAction": "PROTECT_CORE",
+        "primaryDomain": "LANE",
+        "urgency": "CRITICAL",
+        "reasonCodes": [
+          ""
+        ],
+        "missingSignals": [
+          "teamReadiness",
+          "teamReady",
+          "visibleEnemies"
+        ],
+        "dataQuality": "UNAVAILABLE",
+        "secondaryDomains": [
+          "MACRO",
+          "OBJECTIVE",
+          "ROLE"
+        ]
+      }
+    ],
+    "finalCall": {
+      "primaryAction": "PROTECT_CORE",
+      "primaryDomain": "LANE",
+      "urgency": "CRITICAL",
+      "reasonCodes": [
+        ""
+      ],
+      "missingSignals": [
+        "teamReadiness",
+        "teamReady",
+        "visibleEnemies"
+      ],
+      "dataQuality": "UNAVAILABLE",
+      "secondaryDomains": [
+        "MACRO",
+        "OBJECTIVE",
+        "ROLE"
+      ]
+    }
+  },
+  "soft-support-04-hoodwink": {
+    "checkpoints": [
+      {
+        "primaryAction": "PROTECT_CORE",
+        "primaryDomain": "LANE",
+        "urgency": "CRITICAL",
+        "reasonCodes": [
+          "CORE"
+        ],
+        "missingSignals": [
+          "teamReadiness",
+          "teamReady",
+          "visibleEnemies"
+        ],
+        "dataQuality": "UNAVAILABLE",
+        "secondaryDomains": [
+          "MACRO",
+          "OBJECTIVE",
+          "ROLE"
+        ]
+      },
+      {
+        "primaryAction": "PROTECT_CORE",
+        "primaryDomain": "LANE",
+        "urgency": "CRITICAL",
+        "reasonCodes": [
+          ""
+        ],
+        "missingSignals": [
+          "teamReadiness",
+          "teamReady",
+          "visibleEnemies"
+        ],
+        "dataQuality": "UNAVAILABLE",
+        "secondaryDomains": [
+          "MACRO",
+          "OBJECTIVE",
+          "ROLE"
+        ]
+      },
+      {
+        "primaryAction": "PROTECT_CORE",
+        "primaryDomain": "LANE",
+        "urgency": "CRITICAL",
+        "reasonCodes": [
+          ""
+        ],
+        "missingSignals": [
+          "teamReadiness",
+          "teamReady",
+          "visibleEnemies"
+        ],
+        "dataQuality": "UNAVAILABLE",
+        "secondaryDomains": [
+          "MACRO",
+          "OBJECTIVE",
+          "ROLE"
+        ]
+      }
+    ],
+    "finalCall": {
+      "primaryAction": "PROTECT_CORE",
+      "primaryDomain": "LANE",
+      "urgency": "CRITICAL",
+      "reasonCodes": [
+        ""
+      ],
+      "missingSignals": [
+        "teamReadiness",
+        "teamReady",
+        "visibleEnemies"
+      ],
+      "dataQuality": "UNAVAILABLE",
+      "secondaryDomains": [
+        "MACRO",
+        "OBJECTIVE",
+        "ROLE"
+      ]
+    }
+  }
+}

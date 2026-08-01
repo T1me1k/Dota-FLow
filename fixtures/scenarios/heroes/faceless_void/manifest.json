@@ -1,0 +1,22 @@
+{
+  "heroId": "faceless_void",
+  "profileTier": "DETAILED",
+  "scenarios": [
+    "carry-02-faceless_void"
+  ],
+  "coveredPowerSpikes": [
+    "chronosphere",
+    "maelstrom"
+  ],
+  "coveredBuildPlans": [
+    "standard"
+  ],
+  "coveredPhases": [
+    "LANING",
+    "MID_GAME",
+    "LATE_GAME"
+  ],
+  "knownGaps": [
+    "Real Overwolf telemetry is not validated"
+  ]
+}

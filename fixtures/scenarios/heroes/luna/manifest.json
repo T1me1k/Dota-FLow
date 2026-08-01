@@ -1,0 +1,23 @@
+{
+  "heroId": "luna",
+  "profileTier": "DETAILED",
+  "scenarios": [
+    "carry-05-luna",
+    "objectives-01-luna"
+  ],
+  "coveredPowerSpikes": [
+    "manta",
+    "butterfly"
+  ],
+  "coveredBuildPlans": [
+    "standard"
+  ],
+  "coveredPhases": [
+    "LANING",
+    "MID_GAME",
+    "LATE_GAME"
+  ],
+  "knownGaps": [
+    "Real Overwolf telemetry is not validated"
+  ]
+}

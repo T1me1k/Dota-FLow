@@ -1,0 +1,2798 @@
+[
+  {
+    "id": "carry-01-anti_mage",
+    "title": "Carry calibration 1: anti_mage",
+    "mode": "REPLAY",
+    "category": "Carry",
+    "role": "carry",
+    "phase": "LANING",
+    "heroId": "anti_mage",
+    "recordingPath": "fixtures/scenarios/recordings/carry-01-anti_mage.jsonl",
+    "checkpoints": [
+      {
+        "gameTimeSec": 498,
+        "expectedPrimaryAction": "PREPARE_ROSHAN",
+        "allowedAlternativeActions": [],
+        "forbiddenActions": [],
+        "expectedUrgency": "MEDIUM",
+        "requiredReasonCodes": [
+          ""
+        ],
+        "expectedMissingSignals": [
+          "combatStats",
+          "ownAbilities",
+          "ownEconomy",
+          "ownInventory",
+          "ownLevel",
+          "ownVitals",
+          "playerIdentity",
+          "playerRole",
+          "roster",
+          "teamReady",
+          "visibleEnemies",
+          "wardStock"
+        ],
+        "expectedDataQuality": "INFERRED",
+        "expectedSecondaryDomains": [
+          "LANE",
+          "MACRO",
+          "ROLE"
+        ]
+      },
+      {
+        "gameTimeSec": 1329,
+        "expectedPrimaryAction": "PREPARE_ROSHAN",
+        "allowedAlternativeActions": [],
+        "forbiddenActions": [],
+        "expectedUrgency": "MEDIUM",
+        "requiredReasonCodes": [
+          ""
+        ],
+        "expectedMissingSignals": [
+          "combatStats",
+          "laneState",
+          "ownAbilities",
+          "ownEconomy",
+          "ownLevel",
+          "ownVitals",
+          "playerIdentity",
+          "playerRole",
+          "roster",
+          "teamReady",
+          "visibleEnemies",
+          "wardStock"
+        ],
+        "expectedDataQuality": "INFERRED",
+        "expectedSecondaryDomains": [
+          "LANE",
+          "MACRO",
+          "ROLE"
+        ]
+      },
+      {
+        "gameTimeSec": 2160,
+        "expectedPrimaryAction": "PREPARE_ROSHAN",
+        "allowedAlternativeActions": [],
+        "forbiddenActions": [],
+        "expectedUrgency": "MEDIUM",
+        "requiredReasonCodes": [
+          ""
+        ],
+        "expectedMissingSignals": [
+          "combatStats",
+          "laneState",
+          "ownAbilities",
+          "ownEconomy",
+          "ownLevel",
+          "ownVitals",
+          "playerIdentity",
+          "playerRole",
+          "roster",
+          "teamReady",
+          "visibleEnemies",
+          "wardStock"
+        ],
+        "expectedDataQuality": "INFERRED",
+        "expectedSecondaryDomains": [
+          "LANE",
+          "MACRO",
+          "ROLE"
+        ]
+      }
+    ],
+    "expectedFinalCall": "PREPARE_ROSHAN",
+    "forbiddenActions": [],
+    "notes": "Synthetic deterministic canonical recording; no user data."
+  },
+  {
+    "id": "carry-02-faceless_void",
+    "title": "Carry calibration 2: faceless_void",
+    "mode": "REPLAY",
+    "category": "Carry",
+    "role": "carry",
+    "phase": "LATE_GAME",
+    "heroId": "faceless_void",
+    "recordingPath": "fixtures/scenarios/recordings/carry-02-faceless_void.jsonl",
+    "checkpoints": [
+      {
+        "gameTimeSec": 306,
+        "expectedPrimaryAction": "PREPARE_ROSHAN",
+        "allowedAlternativeActions": [],
+        "forbiddenActions": [],
+        "expectedUrgency": "MEDIUM",
+        "requiredReasonCodes": [
+          ""
+        ],
+        "expectedMissingSignals": [
+          "combatStats",
+          "ownAbilities",
+          "ownEconomy",
+          "ownInventory",
+          "ownLevel",
+          "ownVitals",
+          "playerIdentity",
+          "playerRole",
+          "roster",
+          "teamReady",
+          "visibleEnemies",
+          "wardStock"
+        ],
+        "expectedDataQuality": "INFERRED",
+        "expectedSecondaryDomains": [
+          "LANE",
+          "MACRO",
+          "ROLE"
+        ]
+      },
+      {
+        "gameTimeSec": 817,
+        "expectedPrimaryAction": "RESET",
+        "allowedAlternativeActions": [],
+        "forbiddenActions": [],
+        "expectedUrgency": "CRITICAL",
+        "requiredReasonCodes": [
+          ""
+        ],
+        "expectedMissingSignals": [
+          "combatStats",
+          "laneState",
+          "ownAbilities",
+          "ownEconomy",
+          "ownLevel",
+          "ownVitals",
+          "playerIdentity",
+          "playerRole",
+          "roster",
+          "teamReady",
+          "visibleEnemies",
+          "wardStock"
+        ],
+        "expectedDataQuality": "UNKNOWN",
+        "expectedSecondaryDomains": [
+          "LANE",
+          "OBJECTIVE",
+          "ROLE"
+        ]
+      },
+      {
+        "gameTimeSec": 1327,
+        "expectedPrimaryAction": "PREPARE_ROSHAN",
+        "allowedAlternativeActions": [],
+        "forbiddenActions": [],
+        "expectedUrgency": "MEDIUM",
+        "requiredReasonCodes": [
+          ""
+        ],
+        "expectedMissingSignals": [
+          "combatStats",
+          "laneState",
+          "ownAbilities",
+          "ownEconomy",
+          "ownLevel",
+          "ownVitals",
+          "playerIdentity",
+          "playerRole",
+          "roster",
+          "teamReady",
+          "visibleEnemies",
+          "wardStock"
+        ],
+        "expectedDataQuality": "INFERRED",
+        "expectedSecondaryDomains": [
+          "LANE",
+          "MACRO",
+          "ROLE"
+        ]
+      }
+    ],
+    "expectedFinalCall": "PREPARE_ROSHAN",
+    "forbiddenActions": [],
+    "notes": "Synthetic deterministic canonical recording; no user data."
+  },
+  {
+    "id": "carry-03-medusa",
+    "title": "Carry calibration 3: medusa",
+    "mode": "REPLAY",
+    "category": "Carry",
+    "role": "carry",
+    "phase": "LATE_GAME",
+    "heroId": "medusa",
+    "recordingPath": "fixtures/scenarios/recordings/carry-03-medusa.jsonl",
+    "checkpoints": [
+      {
+        "gameTimeSec": 308,
+        "expectedPrimaryAction": "PREPARE_ROSHAN",
+        "allowedAlternativeActions": [],
+        "forbiddenActions": [],
+        "expectedUrgency": "MEDIUM",
+        "requiredReasonCodes": [
+          ""
+        ],
+        "expectedMissingSignals": [
+          "combatStats",
+          "ownAbilities",
+          "ownEconomy",
+          "ownInventory",
+          "ownLevel",
+          "ownVitals",
+          "playerIdentity",
+          "playerRole",
+          "roster",
+          "teamReady",
+          "visibleEnemies",
+          "wardStock"
+        ],
+        "expectedDataQuality": "INFERRED",
+        "expectedSecondaryDomains": [
+          "LANE",
+          "MACRO",
+          "ROLE"
+        ]
+      },
+      {
+        "gameTimeSec": 821,
+        "expectedPrimaryAction": "PREPARE_ROSHAN",
+        "allowedAlternativeActions": [],
+        "forbiddenActions": [],
+        "expectedUrgency": "MEDIUM",
+        "requiredReasonCodes": [
+          ""
+        ],
+        "expectedMissingSignals": [
+          "combatStats",
+          "laneState",
+          "ownAbilities",
+          "ownEconomy",
+          "ownLevel",
+          "ownVitals",
+          "playerIdentity",
+          "playerRole",
+          "roster",
+          "teamReady",
+          "visibleEnemies",
+          "wardStock"
+        ],
+        "expectedDataQuality": "INFERRED",
+        "expectedSecondaryDomains": [
+          "LANE",
+          "MACRO",
+          "ROLE"
+        ]
+      },
+      {
+        "gameTimeSec": 1334,
+        "expectedPrimaryAction": "PREPARE_ROSHAN",
+        "allowedAlternativeActions": [],
+        "forbiddenActions": [],
+        "expectedUrgency": "MEDIUM",
+        "requiredReasonCodes": [
+          ""
+        ],
+        "expectedMissingSignals": [
+          "combatStats",
+          "laneState",
+          "ownAbilities",
+          "ownEconomy",
+          "ownLevel",
+          "ownVitals",
+          "playerIdentity",
+          "playerRole",
+          "roster",
+          "teamReady",
+          "visibleEnemies",
+          "wardStock"
+        ],
+        "expectedDataQuality": "INFERRED",
+        "expectedSecondaryDomains": [
+          "LANE",
+          "MACRO",
+          "ROLE"
+        ]
+      }
+    ],
+    "expectedFinalCall": "PREPARE_ROSHAN",
+    "forbiddenActions": [],
+    "notes": "Synthetic deterministic canonical recording; no user data."
+  },
+  {
+    "id": "carry-04-phantom_assassin",
+    "title": "Carry calibration 4: phantom_assassin",
+    "mode": "REPLAY",
+    "category": "Carry",
+    "role": "carry",
+    "phase": "LATE_GAME",
+    "heroId": "phantom_assassin",
+    "recordingPath": "fixtures/scenarios/recordings/carry-04-phantom_assassin.jsonl",
+    "checkpoints": [
+      {
+        "gameTimeSec": 309,
+        "expectedPrimaryAction": "PREPARE_ROSHAN",
+        "allowedAlternativeActions": [],
+        "forbiddenActions": [],
+        "expectedUrgency": "MEDIUM",
+        "requiredReasonCodes": [
+          ""
+        ],
+        "expectedMissingSignals": [
+          "combatStats",
+          "ownAbilities",
+          "ownEconomy",
+          "ownInventory",
+          "ownLevel",
+          "ownVitals",
+          "playerIdentity",
+          "playerRole",
+          "roster",
+          "teamReady",
+          "visibleEnemies",
+          "wardStock"
+        ],
+        "expectedDataQuality": "INFERRED",
+        "expectedSecondaryDomains": [
+          "LANE",
+          "MACRO",
+          "ROLE"
+        ]
+      },
+      {
+        "gameTimeSec": 825,
+        "expectedPrimaryAction": "PREPARE_ROSHAN",
+        "allowedAlternativeActions": [],
+        "forbiddenActions": [],
+        "expectedUrgency": "MEDIUM",
+        "requiredReasonCodes": [
+          ""
+        ],
+        "expectedMissingSignals": [
+          "combatStats",
+          "laneState",
+          "ownAbilities",
+          "ownEconomy",
+          "ownLevel",
+          "ownVitals",
+          "playerIdentity",
+          "playerRole",
+          "roster",
+          "teamReady",
+          "visibleEnemies",
+          "wardStock"
+        ],
+        "expectedDataQuality": "INFERRED",
+        "expectedSecondaryDomains": [
+          "LANE",
+          "MACRO",
+          "ROLE"
+        ]
+      },
+      {
+        "gameTimeSec": 1341,
+        "expectedPrimaryAction": "PREPARE_ROSHAN",
+        "allowedAlternativeActions": [],
+        "forbiddenActions": [],
+        "expectedUrgency": "MEDIUM",
+        "requiredReasonCodes": [
+          ""
+        ],
+        "expectedMissingSignals": [
+          "combatStats",
+          "laneState",
+          "ownAbilities",
+          "ownEconomy",
+          "ownLevel",
+          "ownVitals",
+          "playerIdentity",
+          "playerRole",
+          "roster",
+          "teamReady",
+          "visibleEnemies",
+          "wardStock"
+        ],
+        "expectedDataQuality": "INFERRED",
+        "expectedSecondaryDomains": [
+          "LANE",
+          "MACRO",
+          "ROLE"
+        ]
+      }
+    ],
+    "expectedFinalCall": "PREPARE_ROSHAN",
+    "forbiddenActions": [],
+    "notes": "Synthetic deterministic canonical recording; no user data."
+  },
+  {
+    "id": "carry-05-luna",
+    "title": "Carry calibration 5: luna",
+    "mode": "REPLAY",
+    "category": "Carry",
+    "role": "carry",
+    "phase": "LATE_GAME",
+    "heroId": "luna",
+    "recordingPath": "fixtures/scenarios/recordings/carry-05-luna.jsonl",
+    "checkpoints": [
+      {
+        "gameTimeSec": 311,
+        "expectedPrimaryAction": "PREPARE_ROSHAN",
+        "allowedAlternativeActions": [],
+        "forbiddenActions": [],
+        "expectedUrgency": "MEDIUM",
+        "requiredReasonCodes": [
+          ""
+        ],
+        "expectedMissingSignals": [
+          "combatStats",
+          "ownAbilities",
+          "ownEconomy",
+          "ownInventory",
+          "ownLevel",
+          "ownVitals",
+          "playerIdentity",
+          "playerRole",
+          "roster",
+          "teamReady",
+          "visibleEnemies",
+          "wardStock"
+        ],
+        "expectedDataQuality": "INFERRED",
+        "expectedSecondaryDomains": [
+          "LANE",
+          "MACRO",
+          "ROLE"
+        ]
+      },
+      {
+        "gameTimeSec": 830,
+        "expectedPrimaryAction": "PREPARE_ROSHAN",
+        "allowedAlternativeActions": [],
+        "forbiddenActions": [],
+        "expectedUrgency": "MEDIUM",
+        "requiredReasonCodes": [
+          ""
+        ],
+        "expectedMissingSignals": [
+          "combatStats",
+          "laneState",
+          "ownAbilities",
+          "ownEconomy",
+          "ownLevel",
+          "ownVitals",
+          "playerIdentity",
+          "playerRole",
+          "roster",
+          "teamReady",
+          "visibleEnemies",
+          "wardStock"
+        ],
+        "expectedDataQuality": "INFERRED",
+        "expectedSecondaryDomains": [
+          "LANE",
+          "MACRO",
+          "ROLE"
+        ]
+      },
+      {
+        "gameTimeSec": 1348,
+        "expectedPrimaryAction": "PREPARE_ROSHAN",
+        "allowedAlternativeActions": [],
+        "forbiddenActions": [],
+        "expectedUrgency": "MEDIUM",
+        "requiredReasonCodes": [
+          ""
+        ],
+        "expectedMissingSignals": [
+          "combatStats",
+          "laneState",
+          "ownAbilities",
+          "ownEconomy",
+          "ownLevel",
+          "ownVitals",
+          "playerIdentity",
+          "playerRole",
+          "roster",
+          "teamReady",
+          "visibleEnemies",
+          "wardStock"
+        ],
+        "expectedDataQuality": "INFERRED",
+        "expectedSecondaryDomains": [
+          "LANE",
+          "MACRO",
+          "ROLE"
+        ]
+      }
+    ],
+    "expectedFinalCall": "PREPARE_ROSHAN",
+    "forbiddenActions": [],
+    "notes": "Synthetic deterministic canonical recording; no user data."
+  },
+  {
+    "id": "carry-06-juggernaut",
+    "title": "Carry calibration 6: juggernaut",
+    "mode": "REPLAY",
+    "category": "Carry",
+    "role": "carry",
+    "phase": "LATE_GAME",
+    "heroId": "juggernaut",
+    "recordingPath": "fixtures/scenarios/recordings/carry-06-juggernaut.jsonl",
+    "checkpoints": [
+      {
+        "gameTimeSec": 313,
+        "expectedPrimaryAction": "PREPARE_ROSHAN",
+        "allowedAlternativeActions": [],
+        "forbiddenActions": [],
+        "expectedUrgency": "MEDIUM",
+        "requiredReasonCodes": [
+          ""
+        ],
+        "expectedMissingSignals": [
+          "combatStats",
+          "ownAbilities",
+          "ownEconomy",
+          "ownInventory",
+          "ownLevel",
+          "ownVitals",
+          "playerIdentity",
+          "playerRole",
+          "roster",
+          "teamReady",
+          "visibleEnemies",
+          "wardStock"
+        ],
+        "expectedDataQuality": "INFERRED",
+        "expectedSecondaryDomains": [
+          "LANE",
+          "MACRO",
+          "ROLE"
+        ]
+      },
+      {
+        "gameTimeSec": 834,
+        "expectedPrimaryAction": "PREPARE_ROSHAN",
+        "allowedAlternativeActions": [],
+        "forbiddenActions": [],
+        "expectedUrgency": "MEDIUM",
+        "requiredReasonCodes": [
+          ""
+        ],
+        "expectedMissingSignals": [
+          "combatStats",
+          "laneState",
+          "ownAbilities",
+          "ownEconomy",
+          "ownLevel",
+          "ownVitals",
+          "playerIdentity",
+          "playerRole",
+          "roster",
+          "teamReady",
+          "visibleEnemies",
+          "wardStock"
+        ],
+        "expectedDataQuality": "INFERRED",
+        "expectedSecondaryDomains": [
+          "LANE",
+          "MACRO",
+          "ROLE"
+        ]
+      },
+      {
+        "gameTimeSec": 1355,
+        "expectedPrimaryAction": "PREPARE_ROSHAN",
+        "allowedAlternativeActions": [],
+        "forbiddenActions": [],
+        "expectedUrgency": "MEDIUM",
+        "requiredReasonCodes": [
+          ""
+        ],
+        "expectedMissingSignals": [
+          "combatStats",
+          "laneState",
+          "ownAbilities",
+          "ownEconomy",
+          "ownLevel",
+          "ownVitals",
+          "playerIdentity",
+          "playerRole",
+          "roster",
+          "teamReady",
+          "visibleEnemies",
+          "wardStock"
+        ],
+        "expectedDataQuality": "INFERRED",
+        "expectedSecondaryDomains": [
+          "LANE",
+          "MACRO",
+          "ROLE"
+        ]
+      }
+    ],
+    "expectedFinalCall": "PREPARE_ROSHAN",
+    "forbiddenActions": [],
+    "notes": "Synthetic deterministic canonical recording; no user data."
+  },
+  {
+    "id": "mid-01-puck",
+    "title": "Mid calibration 1: puck",
+    "mode": "REPLAY",
+    "category": "Mid",
+    "role": "mid",
+    "phase": "LANING",
+    "heroId": "puck",
+    "recordingPath": "fixtures/scenarios/recordings/mid-01-puck.jsonl",
+    "checkpoints": [
+      {
+        "gameTimeSec": 568,
+        "expectedPrimaryAction": "PREPARE_ROSHAN",
+        "allowedAlternativeActions": [],
+        "forbiddenActions": [],
+        "expectedUrgency": "MEDIUM",
+        "requiredReasonCodes": [
+          ""
+        ],
+        "expectedMissingSignals": [
+          "laneState",
+          "teamReady",
+          "visibleEnemies"
+        ],
+        "expectedDataQuality": "INFERRED",
+        "expectedSecondaryDomains": [
+          "LANE",
+          "MACRO",
+          "ROLE"
+        ]
+      },
+      {
+        "gameTimeSec": 1514,
+        "expectedPrimaryAction": "PREPARE_ROSHAN",
+        "allowedAlternativeActions": [],
+        "forbiddenActions": [],
+        "expectedUrgency": "MEDIUM",
+        "requiredReasonCodes": [
+          ""
+        ],
+        "expectedMissingSignals": [
+          "laneState",
+          "teamReady",
+          "visibleEnemies"
+        ],
+        "expectedDataQuality": "INFERRED",
+        "expectedSecondaryDomains": [
+          "LANE",
+          "MACRO",
+          "ROLE"
+        ]
+      },
+      {
+        "gameTimeSec": 2460,
+        "expectedPrimaryAction": "PREPARE_ROSHAN",
+        "allowedAlternativeActions": [],
+        "forbiddenActions": [],
+        "expectedUrgency": "MEDIUM",
+        "requiredReasonCodes": [
+          ""
+        ],
+        "expectedMissingSignals": [
+          "laneState",
+          "teamReady",
+          "visibleEnemies"
+        ],
+        "expectedDataQuality": "INFERRED",
+        "expectedSecondaryDomains": [
+          "LANE",
+          "MACRO",
+          "ROLE"
+        ]
+      }
+    ],
+    "expectedFinalCall": "PREPARE_ROSHAN",
+    "forbiddenActions": [],
+    "notes": "Synthetic deterministic canonical recording; no user data."
+  },
+  {
+    "id": "mid-02-storm_spirit",
+    "title": "Mid calibration 2: storm_spirit",
+    "mode": "REPLAY",
+    "category": "Mid",
+    "role": "mid",
+    "phase": "MID_GAME",
+    "heroId": "storm_spirit",
+    "recordingPath": "fixtures/scenarios/recordings/mid-02-storm_spirit.jsonl",
+    "checkpoints": [
+      {
+        "gameTimeSec": 316,
+        "expectedPrimaryAction": "PREPARE_ROSHAN",
+        "allowedAlternativeActions": [],
+        "forbiddenActions": [],
+        "expectedUrgency": "MEDIUM",
+        "requiredReasonCodes": [
+          ""
+        ],
+        "expectedMissingSignals": [
+          "laneState",
+          "teamReady",
+          "visibleEnemies"
+        ],
+        "expectedDataQuality": "INFERRED",
+        "expectedSecondaryDomains": [
+          "LANE",
+          "MACRO",
+          "ROLE"
+        ]
+      },
+      {
+        "gameTimeSec": 842,
+        "expectedPrimaryAction": "PREPARE_ROSHAN",
+        "allowedAlternativeActions": [],
+        "forbiddenActions": [],
+        "expectedUrgency": "MEDIUM",
+        "requiredReasonCodes": [
+          ""
+        ],
+        "expectedMissingSignals": [
+          "laneState",
+          "teamReady",
+          "visibleEnemies"
+        ],
+        "expectedDataQuality": "INFERRED",
+        "expectedSecondaryDomains": [
+          "LANE",
+          "MACRO",
+          "ROLE"
+        ]
+      },
+      {
+        "gameTimeSec": 1369,
+        "expectedPrimaryAction": "PREPARE_ROSHAN",
+        "allowedAlternativeActions": [],
+        "forbiddenActions": [],
+        "expectedUrgency": "MEDIUM",
+        "requiredReasonCodes": [
+          ""
+        ],
+        "expectedMissingSignals": [
+          "laneState",
+          "teamReady",
+          "visibleEnemies"
+        ],
+        "expectedDataQuality": "INFERRED",
+        "expectedSecondaryDomains": [
+          "LANE",
+          "MACRO",
+          "ROLE"
+        ]
+      }
+    ],
+    "expectedFinalCall": "PREPARE_ROSHAN",
+    "forbiddenActions": [],
+    "notes": "Synthetic deterministic canonical recording; no user data."
+  },
+  {
+    "id": "mid-03-queenofpain",
+    "title": "Mid calibration 3: queenofpain",
+    "mode": "REPLAY",
+    "category": "Mid",
+    "role": "mid",
+    "phase": "MID_GAME",
+    "heroId": "queenofpain",
+    "recordingPath": "fixtures/scenarios/recordings/mid-03-queenofpain.jsonl",
+    "checkpoints": [
+      {
+        "gameTimeSec": 318,
+        "expectedPrimaryAction": "PREPARE_ROSHAN",
+        "allowedAlternativeActions": [],
+        "forbiddenActions": [],
+        "expectedUrgency": "MEDIUM",
+        "requiredReasonCodes": [
+          ""
+        ],
+        "expectedMissingSignals": [
+          "laneState",
+          "teamReady",
+          "visibleEnemies"
+        ],
+        "expectedDataQuality": "INFERRED",
+        "expectedSecondaryDomains": [
+          "LANE",
+          "MACRO",
+          "ROLE"
+        ]
+      },
+      {
+        "gameTimeSec": 847,
+        "expectedPrimaryAction": "PREPARE_ROSHAN",
+        "allowedAlternativeActions": [],
+        "forbiddenActions": [],
+        "expectedUrgency": "MEDIUM",
+        "requiredReasonCodes": [
+          ""
+        ],
+        "expectedMissingSignals": [
+          "laneState",
+          "teamReady",
+          "visibleEnemies"
+        ],
+        "expectedDataQuality": "INFERRED",
+        "expectedSecondaryDomains": [
+          "LANE",
+          "MACRO",
+          "ROLE"
+        ]
+      },
+      {
+        "gameTimeSec": 1376,
+        "expectedPrimaryAction": "PREPARE_ROSHAN",
+        "allowedAlternativeActions": [],
+        "forbiddenActions": [],
+        "expectedUrgency": "MEDIUM",
+        "requiredReasonCodes": [
+          ""
+        ],
+        "expectedMissingSignals": [
+          "laneState",
+          "teamReady",
+          "visibleEnemies"
+        ],
+        "expectedDataQuality": "INFERRED",
+        "expectedSecondaryDomains": [
+          "LANE",
+          "MACRO",
+          "ROLE"
+        ]
+      }
+    ],
+    "expectedFinalCall": "PREPARE_ROSHAN",
+    "forbiddenActions": [],
+    "notes": "Synthetic deterministic canonical recording; no user data."
+  },
+  {
+    "id": "mid-04-ember_spirit",
+    "title": "Mid calibration 4: ember_spirit",
+    "mode": "REPLAY",
+    "category": "Mid",
+    "role": "mid",
+    "phase": "MID_GAME",
+    "heroId": "ember_spirit",
+    "recordingPath": "fixtures/scenarios/recordings/mid-04-ember_spirit.jsonl",
+    "checkpoints": [
+      {
+        "gameTimeSec": 319,
+        "expectedPrimaryAction": "PREPARE_ROSHAN",
+        "allowedAlternativeActions": [],
+        "forbiddenActions": [],
+        "expectedUrgency": "MEDIUM",
+        "requiredReasonCodes": [
+          ""
+        ],
+        "expectedMissingSignals": [
+          "laneState",
+          "teamReady",
+          "visibleEnemies"
+        ],
+        "expectedDataQuality": "INFERRED",
+        "expectedSecondaryDomains": [
+          "LANE",
+          "MACRO",
+          "ROLE"
+        ]
+      },
+      {
+        "gameTimeSec": 851,
+        "expectedPrimaryAction": "PREPARE_ROSHAN",
+        "allowedAlternativeActions": [],
+        "forbiddenActions": [],
+        "expectedUrgency": "MEDIUM",
+        "requiredReasonCodes": [
+          ""
+        ],
+        "expectedMissingSignals": [
+          "laneState",
+          "teamReady",
+          "visibleEnemies"
+        ],
+        "expectedDataQuality": "INFERRED",
+        "expectedSecondaryDomains": [
+          "LANE",
+          "MACRO",
+          "ROLE"
+        ]
+      },
+      {
+        "gameTimeSec": 1383,
+        "expectedPrimaryAction": "PREPARE_ROSHAN",
+        "allowedAlternativeActions": [],
+        "forbiddenActions": [],
+        "expectedUrgency": "MEDIUM",
+        "requiredReasonCodes": [
+          ""
+        ],
+        "expectedMissingSignals": [
+          "laneState",
+          "teamReady",
+          "visibleEnemies"
+        ],
+        "expectedDataQuality": "INFERRED",
+        "expectedSecondaryDomains": [
+          "LANE",
+          "MACRO",
+          "ROLE"
+        ]
+      }
+    ],
+    "expectedFinalCall": "PREPARE_ROSHAN",
+    "forbiddenActions": [],
+    "notes": "Synthetic deterministic canonical recording; no user data."
+  },
+  {
+    "id": "mid-05-void_spirit",
+    "title": "Mid calibration 5: void_spirit",
+    "mode": "REPLAY",
+    "category": "Mid",
+    "role": "mid",
+    "phase": "MID_GAME",
+    "heroId": "void_spirit",
+    "recordingPath": "fixtures/scenarios/recordings/mid-05-void_spirit.jsonl",
+    "checkpoints": [
+      {
+        "gameTimeSec": 321,
+        "expectedPrimaryAction": "PREPARE_ROSHAN",
+        "allowedAlternativeActions": [],
+        "forbiddenActions": [],
+        "expectedUrgency": "MEDIUM",
+        "requiredReasonCodes": [
+          ""
+        ],
+        "expectedMissingSignals": [
+          "laneState",
+          "teamReady",
+          "visibleEnemies"
+        ],
+        "expectedDataQuality": "INFERRED",
+        "expectedSecondaryDomains": [
+          "LANE",
+          "MACRO",
+          "ROLE"
+        ]
+      },
+      {
+        "gameTimeSec": 855,
+        "expectedPrimaryAction": "PREPARE_ROSHAN",
+        "allowedAlternativeActions": [],
+        "forbiddenActions": [],
+        "expectedUrgency": "MEDIUM",
+        "requiredReasonCodes": [
+          ""
+        ],
+        "expectedMissingSignals": [
+          "laneState",
+          "teamReady",
+          "visibleEnemies"
+        ],
+        "expectedDataQuality": "INFERRED",
+        "expectedSecondaryDomains": [
+          "LANE",
+          "MACRO",
+          "ROLE"
+        ]
+      },
+      {
+        "gameTimeSec": 1390,
+        "expectedPrimaryAction": "PREPARE_ROSHAN",
+        "allowedAlternativeActions": [],
+        "forbiddenActions": [],
+        "expectedUrgency": "MEDIUM",
+        "requiredReasonCodes": [
+          ""
+        ],
+        "expectedMissingSignals": [
+          "laneState",
+          "teamReady",
+          "visibleEnemies"
+        ],
+        "expectedDataQuality": "INFERRED",
+        "expectedSecondaryDomains": [
+          "LANE",
+          "MACRO",
+          "ROLE"
+        ]
+      }
+    ],
+    "expectedFinalCall": "PREPARE_ROSHAN",
+    "forbiddenActions": [],
+    "notes": "Synthetic deterministic canonical recording; no user data."
+  },
+  {
+    "id": "mid-06-invoker",
+    "title": "Mid calibration 6: invoker",
+    "mode": "REPLAY",
+    "category": "Mid",
+    "role": "mid",
+    "phase": "MID_GAME",
+    "heroId": "invoker",
+    "recordingPath": "fixtures/scenarios/recordings/mid-06-invoker.jsonl",
+    "checkpoints": [
+      {
+        "gameTimeSec": 322,
+        "expectedPrimaryAction": "PREPARE_ROSHAN",
+        "allowedAlternativeActions": [],
+        "forbiddenActions": [],
+        "expectedUrgency": "MEDIUM",
+        "requiredReasonCodes": [
+          ""
+        ],
+        "expectedMissingSignals": [
+          "laneState",
+          "teamReady",
+          "visibleEnemies"
+        ],
+        "expectedDataQuality": "INFERRED",
+        "expectedSecondaryDomains": [
+          "LANE",
+          "MACRO",
+          "ROLE"
+        ]
+      },
+      {
+        "gameTimeSec": 860,
+        "expectedPrimaryAction": "PREPARE_ROSHAN",
+        "allowedAlternativeActions": [],
+        "forbiddenActions": [],
+        "expectedUrgency": "MEDIUM",
+        "requiredReasonCodes": [
+          ""
+        ],
+        "expectedMissingSignals": [
+          "laneState",
+          "teamReady",
+          "visibleEnemies"
+        ],
+        "expectedDataQuality": "INFERRED",
+        "expectedSecondaryDomains": [
+          "LANE",
+          "MACRO",
+          "ROLE"
+        ]
+      },
+      {
+        "gameTimeSec": 1397,
+        "expectedPrimaryAction": "PREPARE_ROSHAN",
+        "allowedAlternativeActions": [],
+        "forbiddenActions": [],
+        "expectedUrgency": "MEDIUM",
+        "requiredReasonCodes": [
+          ""
+        ],
+        "expectedMissingSignals": [
+          "laneState",
+          "teamReady",
+          "visibleEnemies"
+        ],
+        "expectedDataQuality": "INFERRED",
+        "expectedSecondaryDomains": [
+          "LANE",
+          "MACRO",
+          "ROLE"
+        ]
+      }
+    ],
+    "expectedFinalCall": "PREPARE_ROSHAN",
+    "forbiddenActions": [],
+    "notes": "Synthetic deterministic canonical recording; no user data."
+  },
+  {
+    "id": "offlane-01-axe",
+    "title": "Offlane calibration 1: axe",
+    "mode": "REPLAY",
+    "category": "Offlane",
+    "role": "offlane",
+    "phase": "LANING",
+    "heroId": "axe",
+    "recordingPath": "fixtures/scenarios/recordings/offlane-01-axe.jsonl",
+    "checkpoints": [
+      {
+        "gameTimeSec": 324,
+        "expectedPrimaryAction": "PREPARE_ROSHAN",
+        "allowedAlternativeActions": [],
+        "forbiddenActions": [],
+        "expectedUrgency": "MEDIUM",
+        "requiredReasonCodes": [
+          ""
+        ],
+        "expectedMissingSignals": [
+          "combatStats",
+          "ownAbilities",
+          "ownEconomy",
+          "ownInventory",
+          "ownLevel",
+          "ownVitals",
+          "playerIdentity",
+          "playerRole",
+          "roster",
+          "teamReady",
+          "visibleEnemies",
+          "wardStock"
+        ],
+        "expectedDataQuality": "INFERRED",
+        "expectedSecondaryDomains": [
+          "LANE",
+          "MACRO",
+          "ROLE"
+        ]
+      },
+      {
+        "gameTimeSec": 864,
+        "expectedPrimaryAction": "RESET",
+        "allowedAlternativeActions": [],
+        "forbiddenActions": [],
+        "expectedUrgency": "CRITICAL",
+        "requiredReasonCodes": [
+          ""
+        ],
+        "expectedMissingSignals": [
+          "combatStats",
+          "enemyEconomy",
+          "laneState",
+          "laneTargets",
+          "ownAbilities",
+          "ownEconomy",
+          "ownLevel",
+          "ownVitals",
+          "playerIdentity",
+          "playerRole",
+          "roster",
+          "wardStock"
+        ],
+        "expectedDataQuality": "LIMITED",
+        "expectedSecondaryDomains": [
+          "LANE",
+          "MACRO",
+          "OBJECTIVE"
+        ]
+      },
+      {
+        "gameTimeSec": 1404,
+        "expectedPrimaryAction": "RESET",
+        "allowedAlternativeActions": [],
+        "forbiddenActions": [],
+        "expectedUrgency": "CRITICAL",
+        "requiredReasonCodes": [
+          ""
+        ],
+        "expectedMissingSignals": [
+          "combatStats",
+          "enemyEconomy",
+          "laneState",
+          "laneTargets",
+          "ownAbilities",
+          "ownEconomy",
+          "ownLevel",
+          "ownVitals",
+          "playerIdentity",
+          "playerRole",
+          "roster",
+          "wardStock"
+        ],
+        "expectedDataQuality": "LIMITED",
+        "expectedSecondaryDomains": [
+          "LANE",
+          "MACRO",
+          "OBJECTIVE"
+        ]
+      }
+    ],
+    "expectedFinalCall": "RESET",
+    "forbiddenActions": [],
+    "notes": "Synthetic deterministic canonical recording; no user data."
+  },
+  {
+    "id": "offlane-02-centaur",
+    "title": "Offlane calibration 2: centaur",
+    "mode": "REPLAY",
+    "category": "Offlane",
+    "role": "offlane",
+    "phase": "MID_GAME",
+    "heroId": "centaur",
+    "recordingPath": "fixtures/scenarios/recordings/offlane-02-centaur.jsonl",
+    "checkpoints": [
+      {
+        "gameTimeSec": 326,
+        "expectedPrimaryAction": "PREPARE_ROSHAN",
+        "allowedAlternativeActions": [],
+        "forbiddenActions": [],
+        "expectedUrgency": "MEDIUM",
+        "requiredReasonCodes": [
+          ""
+        ],
+        "expectedMissingSignals": [
+          "combatStats",
+          "ownAbilities",
+          "ownEconomy",
+          "ownInventory",
+          "ownLevel",
+          "ownVitals",
+          "playerIdentity",
+          "playerRole",
+          "roster",
+          "teamReady",
+          "visibleEnemies",
+          "wardStock"
+        ],
+        "expectedDataQuality": "INFERRED",
+        "expectedSecondaryDomains": [
+          "LANE",
+          "MACRO",
+          "ROLE"
+        ]
+      },
+      {
+        "gameTimeSec": 868,
+        "expectedPrimaryAction": "RESET",
+        "allowedAlternativeActions": [],
+        "forbiddenActions": [],
+        "expectedUrgency": "CRITICAL",
+        "requiredReasonCodes": [
+          ""
+        ],
+        "expectedMissingSignals": [
+          "combatStats",
+          "enemyEconomy",
+          "laneState",
+          "laneTargets",
+          "ownAbilities",
+          "ownEconomy",
+          "ownLevel",
+          "ownVitals",
+          "playerIdentity",
+          "playerRole",
+          "roster",
+          "wardStock"
+        ],
+        "expectedDataQuality": "LIMITED",
+        "expectedSecondaryDomains": [
+          "LANE",
+          "MACRO",
+          "OBJECTIVE"
+        ]
+      },
+      {
+        "gameTimeSec": 1411,
+        "expectedPrimaryAction": "RESET",
+        "allowedAlternativeActions": [],
+        "forbiddenActions": [],
+        "expectedUrgency": "CRITICAL",
+        "requiredReasonCodes": [
+          ""
+        ],
+        "expectedMissingSignals": [
+          "combatStats",
+          "enemyEconomy",
+          "laneState",
+          "laneTargets",
+          "ownAbilities",
+          "ownEconomy",
+          "ownLevel",
+          "ownVitals",
+          "playerIdentity",
+          "playerRole",
+          "roster",
+          "wardStock"
+        ],
+        "expectedDataQuality": "LIMITED",
+        "expectedSecondaryDomains": [
+          "LANE",
+          "MACRO",
+          "OBJECTIVE"
+        ]
+      }
+    ],
+    "expectedFinalCall": "RESET",
+    "forbiddenActions": [],
+    "notes": "Synthetic deterministic canonical recording; no user data."
+  },
+  {
+    "id": "offlane-03-mars",
+    "title": "Offlane calibration 3: mars",
+    "mode": "REPLAY",
+    "category": "Offlane",
+    "role": "offlane",
+    "phase": "MID_GAME",
+    "heroId": "mars",
+    "recordingPath": "fixtures/scenarios/recordings/offlane-03-mars.jsonl",
+    "checkpoints": [
+      {
+        "gameTimeSec": 327,
+        "expectedPrimaryAction": "PREPARE_ROSHAN",
+        "allowedAlternativeActions": [],
+        "forbiddenActions": [],
+        "expectedUrgency": "MEDIUM",
+        "requiredReasonCodes": [
+          ""
+        ],
+        "expectedMissingSignals": [
+          "combatStats",
+          "ownAbilities",
+          "ownEconomy",
+          "ownInventory",
+          "ownLevel",
+          "ownVitals",
+          "playerIdentity",
+          "playerRole",
+          "roster",
+          "teamReady",
+          "visibleEnemies",
+          "wardStock"
+        ],
+        "expectedDataQuality": "INFERRED",
+        "expectedSecondaryDomains": [
+          "LANE",
+          "MACRO",
+          "ROLE"
+        ]
+      },
+      {
+        "gameTimeSec": 873,
+        "expectedPrimaryAction": "RESET",
+        "allowedAlternativeActions": [],
+        "forbiddenActions": [],
+        "expectedUrgency": "CRITICAL",
+        "requiredReasonCodes": [
+          ""
+        ],
+        "expectedMissingSignals": [
+          "combatStats",
+          "enemyEconomy",
+          "laneState",
+          "laneTargets",
+          "ownAbilities",
+          "ownEconomy",
+          "ownLevel",
+          "ownVitals",
+          "playerIdentity",
+          "playerRole",
+          "roster",
+          "wardStock"
+        ],
+        "expectedDataQuality": "LIMITED",
+        "expectedSecondaryDomains": [
+          "LANE",
+          "MACRO",
+          "OBJECTIVE"
+        ]
+      },
+      {
+        "gameTimeSec": 1418,
+        "expectedPrimaryAction": "RESET",
+        "allowedAlternativeActions": [],
+        "forbiddenActions": [],
+        "expectedUrgency": "CRITICAL",
+        "requiredReasonCodes": [
+          ""
+        ],
+        "expectedMissingSignals": [
+          "combatStats",
+          "enemyEconomy",
+          "laneState",
+          "laneTargets",
+          "ownAbilities",
+          "ownEconomy",
+          "ownLevel",
+          "ownVitals",
+          "playerIdentity",
+          "playerRole",
+          "roster",
+          "wardStock"
+        ],
+        "expectedDataQuality": "LIMITED",
+        "expectedSecondaryDomains": [
+          "LANE",
+          "MACRO",
+          "OBJECTIVE"
+        ]
+      }
+    ],
+    "expectedFinalCall": "RESET",
+    "forbiddenActions": [],
+    "notes": "Synthetic deterministic canonical recording; no user data."
+  },
+  {
+    "id": "offlane-04-tidehunter",
+    "title": "Offlane calibration 4: tidehunter",
+    "mode": "REPLAY",
+    "category": "Offlane",
+    "role": "offlane",
+    "phase": "MID_GAME",
+    "heroId": "tidehunter",
+    "recordingPath": "fixtures/scenarios/recordings/offlane-04-tidehunter.jsonl",
+    "checkpoints": [
+      {
+        "gameTimeSec": 329,
+        "expectedPrimaryAction": "PREPARE_ROSHAN",
+        "allowedAlternativeActions": [],
+        "forbiddenActions": [],
+        "expectedUrgency": "MEDIUM",
+        "requiredReasonCodes": [
+          ""
+        ],
+        "expectedMissingSignals": [
+          "combatStats",
+          "ownAbilities",
+          "ownEconomy",
+          "ownInventory",
+          "ownLevel",
+          "ownVitals",
+          "playerIdentity",
+          "playerRole",
+          "roster",
+          "teamReady",
+          "visibleEnemies",
+          "wardStock"
+        ],
+        "expectedDataQuality": "INFERRED",
+        "expectedSecondaryDomains": [
+          "LANE",
+          "MACRO",
+          "ROLE"
+        ]
+      },
+      {
+        "gameTimeSec": 877,
+        "expectedPrimaryAction": "RESET",
+        "allowedAlternativeActions": [],
+        "forbiddenActions": [],
+        "expectedUrgency": "CRITICAL",
+        "requiredReasonCodes": [
+          ""
+        ],
+        "expectedMissingSignals": [
+          "combatStats",
+          "enemyEconomy",
+          "laneState",
+          "laneTargets",
+          "ownAbilities",
+          "ownEconomy",
+          "ownLevel",
+          "ownVitals",
+          "playerIdentity",
+          "playerRole",
+          "roster",
+          "wardStock"
+        ],
+        "expectedDataQuality": "LIMITED",
+        "expectedSecondaryDomains": [
+          "LANE",
+          "MACRO",
+          "OBJECTIVE"
+        ]
+      },
+      {
+        "gameTimeSec": 1425,
+        "expectedPrimaryAction": "RESET",
+        "allowedAlternativeActions": [],
+        "forbiddenActions": [],
+        "expectedUrgency": "CRITICAL",
+        "requiredReasonCodes": [
+          ""
+        ],
+        "expectedMissingSignals": [
+          "combatStats",
+          "enemyEconomy",
+          "laneState",
+          "laneTargets",
+          "ownAbilities",
+          "ownEconomy",
+          "ownLevel",
+          "ownVitals",
+          "playerIdentity",
+          "playerRole",
+          "roster",
+          "wardStock"
+        ],
+        "expectedDataQuality": "LIMITED",
+        "expectedSecondaryDomains": [
+          "LANE",
+          "MACRO",
+          "OBJECTIVE"
+        ]
+      }
+    ],
+    "expectedFinalCall": "RESET",
+    "forbiddenActions": [],
+    "notes": "Synthetic deterministic canonical recording; no user data."
+  },
+  {
+    "id": "soft-support-01-rubick",
+    "title": "Soft support calibration 1: rubick",
+    "mode": "REPLAY",
+    "category": "Soft support",
+    "role": "soft_support",
+    "phase": "LANING",
+    "heroId": "rubick",
+    "recordingPath": "fixtures/scenarios/recordings/soft-support-01-rubick.jsonl",
+    "checkpoints": [
+      {
+        "gameTimeSec": 330,
+        "expectedPrimaryAction": "PROTECT_CORE",
+        "allowedAlternativeActions": [],
+        "forbiddenActions": [],
+        "expectedUrgency": "CRITICAL",
+        "requiredReasonCodes": [
+          "CORE"
+        ],
+        "expectedMissingSignals": [
+          "teamReadiness",
+          "teamReady",
+          "visibleEnemies"
+        ],
+        "expectedDataQuality": "UNAVAILABLE",
+        "expectedSecondaryDomains": [
+          "MACRO",
+          "OBJECTIVE",
+          "ROLE"
+        ]
+      },
+      {
+        "gameTimeSec": 881,
+        "expectedPrimaryAction": "PROTECT_CORE",
+        "allowedAlternativeActions": [],
+        "forbiddenActions": [],
+        "expectedUrgency": "CRITICAL",
+        "requiredReasonCodes": [
+          ""
+        ],
+        "expectedMissingSignals": [
+          "teamReadiness",
+          "teamReady",
+          "visibleEnemies"
+        ],
+        "expectedDataQuality": "UNAVAILABLE",
+        "expectedSecondaryDomains": [
+          "MACRO",
+          "OBJECTIVE",
+          "ROLE"
+        ]
+      },
+      {
+        "gameTimeSec": 1432,
+        "expectedPrimaryAction": "PROTECT_CORE",
+        "allowedAlternativeActions": [],
+        "forbiddenActions": [],
+        "expectedUrgency": "CRITICAL",
+        "requiredReasonCodes": [
+          ""
+        ],
+        "expectedMissingSignals": [
+          "teamReadiness",
+          "teamReady",
+          "visibleEnemies"
+        ],
+        "expectedDataQuality": "UNAVAILABLE",
+        "expectedSecondaryDomains": [
+          "MACRO",
+          "OBJECTIVE",
+          "ROLE"
+        ]
+      }
+    ],
+    "expectedFinalCall": "PROTECT_CORE",
+    "forbiddenActions": [],
+    "notes": "Synthetic deterministic canonical recording; no user data."
+  },
+  {
+    "id": "soft-support-02-earth_spirit",
+    "title": "Soft support calibration 2: earth_spirit",
+    "mode": "REPLAY",
+    "category": "Soft support",
+    "role": "soft_support",
+    "phase": "MID_GAME",
+    "heroId": "earth_spirit",
+    "recordingPath": "fixtures/scenarios/recordings/soft-support-02-earth_spirit.jsonl",
+    "checkpoints": [
+      {
+        "gameTimeSec": 332,
+        "expectedPrimaryAction": "PROTECT_CORE",
+        "allowedAlternativeActions": [],
+        "forbiddenActions": [],
+        "expectedUrgency": "CRITICAL",
+        "requiredReasonCodes": [
+          "CORE"
+        ],
+        "expectedMissingSignals": [
+          "teamReadiness",
+          "teamReady",
+          "visibleEnemies"
+        ],
+        "expectedDataQuality": "UNAVAILABLE",
+        "expectedSecondaryDomains": [
+          "MACRO",
+          "OBJECTIVE",
+          "ROLE"
+        ]
+      },
+      {
+        "gameTimeSec": 886,
+        "expectedPrimaryAction": "PROTECT_CORE",
+        "allowedAlternativeActions": [],
+        "forbiddenActions": [],
+        "expectedUrgency": "CRITICAL",
+        "requiredReasonCodes": [
+          ""
+        ],
+        "expectedMissingSignals": [
+          "teamReadiness",
+          "teamReady",
+          "visibleEnemies"
+        ],
+        "expectedDataQuality": "UNAVAILABLE",
+        "expectedSecondaryDomains": [
+          "MACRO",
+          "OBJECTIVE",
+          "ROLE"
+        ]
+      },
+      {
+        "gameTimeSec": 1439,
+        "expectedPrimaryAction": "PROTECT_CORE",
+        "allowedAlternativeActions": [],
+        "forbiddenActions": [],
+        "expectedUrgency": "CRITICAL",
+        "requiredReasonCodes": [
+          ""
+        ],
+        "expectedMissingSignals": [
+          "teamReadiness",
+          "teamReady",
+          "visibleEnemies"
+        ],
+        "expectedDataQuality": "UNAVAILABLE",
+        "expectedSecondaryDomains": [
+          "MACRO",
+          "OBJECTIVE",
+          "ROLE"
+        ]
+      }
+    ],
+    "expectedFinalCall": "PROTECT_CORE",
+    "forbiddenActions": [],
+    "notes": "Synthetic deterministic canonical recording; no user data."
+  },
+  {
+    "id": "soft-support-03-tusk",
+    "title": "Soft support calibration 3: tusk",
+    "mode": "REPLAY",
+    "category": "Soft support",
+    "role": "soft_support",
+    "phase": "MID_GAME",
+    "heroId": "tusk",
+    "recordingPath": "fixtures/scenarios/recordings/soft-support-03-tusk.jsonl",
+    "checkpoints": [
+      {
+        "gameTimeSec": 334,
+        "expectedPrimaryAction": "PROTECT_CORE",
+        "allowedAlternativeActions": [],
+        "forbiddenActions": [],
+        "expectedUrgency": "CRITICAL",
+        "requiredReasonCodes": [
+          "CORE"
+        ],
+        "expectedMissingSignals": [
+          "teamReadiness",
+          "teamReady",
+          "visibleEnemies"
+        ],
+        "expectedDataQuality": "UNAVAILABLE",
+        "expectedSecondaryDomains": [
+          "MACRO",
+          "OBJECTIVE",
+          "ROLE"
+        ]
+      },
+      {
+        "gameTimeSec": 890,
+        "expectedPrimaryAction": "PROTECT_CORE",
+        "allowedAlternativeActions": [],
+        "forbiddenActions": [],
+        "expectedUrgency": "CRITICAL",
+        "requiredReasonCodes": [
+          ""
+        ],
+        "expectedMissingSignals": [
+          "teamReadiness",
+          "teamReady",
+          "visibleEnemies"
+        ],
+        "expectedDataQuality": "UNAVAILABLE",
+        "expectedSecondaryDomains": [
+          "MACRO",
+          "OBJECTIVE",
+          "ROLE"
+        ]
+      },
+      {
+        "gameTimeSec": 1446,
+        "expectedPrimaryAction": "PROTECT_CORE",
+        "allowedAlternativeActions": [],
+        "forbiddenActions": [],
+        "expectedUrgency": "CRITICAL",
+        "requiredReasonCodes": [
+          ""
+        ],
+        "expectedMissingSignals": [
+          "teamReadiness",
+          "teamReady",
+          "visibleEnemies"
+        ],
+        "expectedDataQuality": "UNAVAILABLE",
+        "expectedSecondaryDomains": [
+          "MACRO",
+          "OBJECTIVE",
+          "ROLE"
+        ]
+      }
+    ],
+    "expectedFinalCall": "PROTECT_CORE",
+    "forbiddenActions": [],
+    "notes": "Synthetic deterministic canonical recording; no user data."
+  },
+  {
+    "id": "soft-support-04-hoodwink",
+    "title": "Soft support calibration 4: hoodwink",
+    "mode": "REPLAY",
+    "category": "Soft support",
+    "role": "soft_support",
+    "phase": "MID_GAME",
+    "heroId": "hoodwink",
+    "recordingPath": "fixtures/scenarios/recordings/soft-support-04-hoodwink.jsonl",
+    "checkpoints": [
+      {
+        "gameTimeSec": 335,
+        "expectedPrimaryAction": "PROTECT_CORE",
+        "allowedAlternativeActions": [],
+        "forbiddenActions": [],
+        "expectedUrgency": "CRITICAL",
+        "requiredReasonCodes": [
+          "CORE"
+        ],
+        "expectedMissingSignals": [
+          "teamReadiness",
+          "teamReady",
+          "visibleEnemies"
+        ],
+        "expectedDataQuality": "UNAVAILABLE",
+        "expectedSecondaryDomains": [
+          "MACRO",
+          "OBJECTIVE",
+          "ROLE"
+        ]
+      },
+      {
+        "gameTimeSec": 894,
+        "expectedPrimaryAction": "PROTECT_CORE",
+        "allowedAlternativeActions": [],
+        "forbiddenActions": [],
+        "expectedUrgency": "CRITICAL",
+        "requiredReasonCodes": [
+          ""
+        ],
+        "expectedMissingSignals": [
+          "teamReadiness",
+          "teamReady",
+          "visibleEnemies"
+        ],
+        "expectedDataQuality": "UNAVAILABLE",
+        "expectedSecondaryDomains": [
+          "MACRO",
+          "OBJECTIVE",
+          "ROLE"
+        ]
+      },
+      {
+        "gameTimeSec": 1453,
+        "expectedPrimaryAction": "PROTECT_CORE",
+        "allowedAlternativeActions": [],
+        "forbiddenActions": [],
+        "expectedUrgency": "CRITICAL",
+        "requiredReasonCodes": [
+          ""
+        ],
+        "expectedMissingSignals": [
+          "teamReadiness",
+          "teamReady",
+          "visibleEnemies"
+        ],
+        "expectedDataQuality": "UNAVAILABLE",
+        "expectedSecondaryDomains": [
+          "MACRO",
+          "OBJECTIVE",
+          "ROLE"
+        ]
+      }
+    ],
+    "expectedFinalCall": "PROTECT_CORE",
+    "forbiddenActions": [],
+    "notes": "Synthetic deterministic canonical recording; no user data."
+  },
+  {
+    "id": "hard-support-01-crystal_maiden",
+    "title": "Hard support calibration 1: crystal_maiden",
+    "mode": "REPLAY",
+    "category": "Hard support",
+    "role": "hard_support",
+    "phase": "LANING",
+    "heroId": "crystal_maiden",
+    "recordingPath": "fixtures/scenarios/recordings/hard-support-01-crystal_maiden.jsonl",
+    "checkpoints": [
+      {
+        "gameTimeSec": 637,
+        "expectedPrimaryAction": "PROTECT_CORE",
+        "allowedAlternativeActions": [],
+        "forbiddenActions": [],
+        "expectedUrgency": "CRITICAL",
+        "requiredReasonCodes": [
+          "CORE"
+        ],
+        "expectedMissingSignals": [
+          "carryThreat",
+          "teamReady",
+          "visibleEnemies"
+        ],
+        "expectedDataQuality": "UNAVAILABLE",
+        "expectedSecondaryDomains": [
+          "MACRO",
+          "OBJECTIVE",
+          "ROLE"
+        ]
+      },
+      {
+        "gameTimeSec": 1698,
+        "expectedPrimaryAction": "PROTECT_CORE",
+        "allowedAlternativeActions": [],
+        "forbiddenActions": [],
+        "expectedUrgency": "CRITICAL",
+        "requiredReasonCodes": [
+          ""
+        ],
+        "expectedMissingSignals": [
+          "carryThreat",
+          "teamReady",
+          "visibleEnemies"
+        ],
+        "expectedDataQuality": "UNAVAILABLE",
+        "expectedSecondaryDomains": [
+          "MACRO",
+          "OBJECTIVE",
+          "ROLE"
+        ]
+      },
+      {
+        "gameTimeSec": 2760,
+        "expectedPrimaryAction": "PROTECT_CORE",
+        "allowedAlternativeActions": [],
+        "forbiddenActions": [],
+        "expectedUrgency": "CRITICAL",
+        "requiredReasonCodes": [
+          ""
+        ],
+        "expectedMissingSignals": [
+          "carryThreat",
+          "teamReady",
+          "visibleEnemies"
+        ],
+        "expectedDataQuality": "UNAVAILABLE",
+        "expectedSecondaryDomains": [
+          "MACRO",
+          "OBJECTIVE",
+          "ROLE"
+        ]
+      }
+    ],
+    "expectedFinalCall": "PROTECT_CORE",
+    "forbiddenActions": [],
+    "notes": "Synthetic deterministic canonical recording; no user data."
+  },
+  {
+    "id": "hard-support-02-lich",
+    "title": "Hard support calibration 2: lich",
+    "mode": "REPLAY",
+    "category": "Hard support",
+    "role": "hard_support",
+    "phase": "LATE_GAME",
+    "heroId": "lich",
+    "recordingPath": "fixtures/scenarios/recordings/hard-support-02-lich.jsonl",
+    "checkpoints": [
+      {
+        "gameTimeSec": 339,
+        "expectedPrimaryAction": "PROTECT_CORE",
+        "allowedAlternativeActions": [],
+        "forbiddenActions": [],
+        "expectedUrgency": "CRITICAL",
+        "requiredReasonCodes": [
+          "CORE"
+        ],
+        "expectedMissingSignals": [
+          "carryThreat",
+          "teamReady",
+          "visibleEnemies"
+        ],
+        "expectedDataQuality": "UNAVAILABLE",
+        "expectedSecondaryDomains": [
+          "MACRO",
+          "OBJECTIVE",
+          "ROLE"
+        ]
+      },
+      {
+        "gameTimeSec": 903,
+        "expectedPrimaryAction": "PROTECT_CORE",
+        "allowedAlternativeActions": [],
+        "forbiddenActions": [],
+        "expectedUrgency": "CRITICAL",
+        "requiredReasonCodes": [
+          ""
+        ],
+        "expectedMissingSignals": [
+          "carryThreat",
+          "teamReady",
+          "visibleEnemies"
+        ],
+        "expectedDataQuality": "UNAVAILABLE",
+        "expectedSecondaryDomains": [
+          "MACRO",
+          "OBJECTIVE",
+          "ROLE"
+        ]
+      },
+      {
+        "gameTimeSec": 1467,
+        "expectedPrimaryAction": "PROTECT_CORE",
+        "allowedAlternativeActions": [],
+        "forbiddenActions": [],
+        "expectedUrgency": "CRITICAL",
+        "requiredReasonCodes": [
+          ""
+        ],
+        "expectedMissingSignals": [
+          "carryThreat",
+          "teamReady",
+          "visibleEnemies"
+        ],
+        "expectedDataQuality": "UNAVAILABLE",
+        "expectedSecondaryDomains": [
+          "MACRO",
+          "OBJECTIVE",
+          "ROLE"
+        ]
+      }
+    ],
+    "expectedFinalCall": "PROTECT_CORE",
+    "forbiddenActions": [],
+    "notes": "Synthetic deterministic canonical recording; no user data."
+  },
+  {
+    "id": "hard-support-03-oracle",
+    "title": "Hard support calibration 3: oracle",
+    "mode": "REPLAY",
+    "category": "Hard support",
+    "role": "hard_support",
+    "phase": "LATE_GAME",
+    "heroId": "oracle",
+    "recordingPath": "fixtures/scenarios/recordings/hard-support-03-oracle.jsonl",
+    "checkpoints": [
+      {
+        "gameTimeSec": 340,
+        "expectedPrimaryAction": "PROTECT_CORE",
+        "allowedAlternativeActions": [],
+        "forbiddenActions": [],
+        "expectedUrgency": "CRITICAL",
+        "requiredReasonCodes": [
+          "CORE"
+        ],
+        "expectedMissingSignals": [
+          "carryThreat",
+          "teamReady",
+          "visibleEnemies"
+        ],
+        "expectedDataQuality": "UNAVAILABLE",
+        "expectedSecondaryDomains": [
+          "MACRO",
+          "OBJECTIVE",
+          "ROLE"
+        ]
+      },
+      {
+        "gameTimeSec": 907,
+        "expectedPrimaryAction": "PROTECT_CORE",
+        "allowedAlternativeActions": [],
+        "forbiddenActions": [],
+        "expectedUrgency": "CRITICAL",
+        "requiredReasonCodes": [
+          ""
+        ],
+        "expectedMissingSignals": [
+          "carryThreat",
+          "teamReady",
+          "visibleEnemies"
+        ],
+        "expectedDataQuality": "UNAVAILABLE",
+        "expectedSecondaryDomains": [
+          "MACRO",
+          "OBJECTIVE",
+          "ROLE"
+        ]
+      },
+      {
+        "gameTimeSec": 1474,
+        "expectedPrimaryAction": "PROTECT_CORE",
+        "allowedAlternativeActions": [],
+        "forbiddenActions": [],
+        "expectedUrgency": "CRITICAL",
+        "requiredReasonCodes": [
+          ""
+        ],
+        "expectedMissingSignals": [
+          "carryThreat",
+          "teamReady",
+          "visibleEnemies"
+        ],
+        "expectedDataQuality": "UNAVAILABLE",
+        "expectedSecondaryDomains": [
+          "MACRO",
+          "OBJECTIVE",
+          "ROLE"
+        ]
+      }
+    ],
+    "expectedFinalCall": "PROTECT_CORE",
+    "forbiddenActions": [],
+    "notes": "Synthetic deterministic canonical recording; no user data."
+  },
+  {
+    "id": "hard-support-04-warlock",
+    "title": "Hard support calibration 4: warlock",
+    "mode": "REPLAY",
+    "category": "Hard support",
+    "role": "hard_support",
+    "phase": "LATE_GAME",
+    "heroId": "warlock",
+    "recordingPath": "fixtures/scenarios/recordings/hard-support-04-warlock.jsonl",
+    "checkpoints": [
+      {
+        "gameTimeSec": 342,
+        "expectedPrimaryAction": "PROTECT_CORE",
+        "allowedAlternativeActions": [],
+        "forbiddenActions": [],
+        "expectedUrgency": "CRITICAL",
+        "requiredReasonCodes": [
+          "CORE"
+        ],
+        "expectedMissingSignals": [
+          "carryThreat",
+          "teamReady",
+          "visibleEnemies"
+        ],
+        "expectedDataQuality": "UNAVAILABLE",
+        "expectedSecondaryDomains": [
+          "MACRO",
+          "OBJECTIVE",
+          "ROLE"
+        ]
+      },
+      {
+        "gameTimeSec": 911,
+        "expectedPrimaryAction": "PROTECT_CORE",
+        "allowedAlternativeActions": [],
+        "forbiddenActions": [],
+        "expectedUrgency": "CRITICAL",
+        "requiredReasonCodes": [
+          ""
+        ],
+        "expectedMissingSignals": [
+          "carryThreat",
+          "teamReady",
+          "visibleEnemies"
+        ],
+        "expectedDataQuality": "UNAVAILABLE",
+        "expectedSecondaryDomains": [
+          "MACRO",
+          "OBJECTIVE",
+          "ROLE"
+        ]
+      },
+      {
+        "gameTimeSec": 1481,
+        "expectedPrimaryAction": "PROTECT_CORE",
+        "allowedAlternativeActions": [],
+        "forbiddenActions": [],
+        "expectedUrgency": "CRITICAL",
+        "requiredReasonCodes": [
+          ""
+        ],
+        "expectedMissingSignals": [
+          "carryThreat",
+          "teamReady",
+          "visibleEnemies"
+        ],
+        "expectedDataQuality": "UNAVAILABLE",
+        "expectedSecondaryDomains": [
+          "MACRO",
+          "OBJECTIVE",
+          "ROLE"
+        ]
+      }
+    ],
+    "expectedFinalCall": "PROTECT_CORE",
+    "forbiddenActions": [],
+    "notes": "Synthetic deterministic canonical recording; no user data."
+  },
+  {
+    "id": "objectives-01-luna",
+    "title": "Objectives calibration 1: luna",
+    "mode": "REPLAY",
+    "category": "Objectives",
+    "role": "cross_role",
+    "phase": "LATE_GAME",
+    "heroId": "luna",
+    "recordingPath": "fixtures/scenarios/recordings/objectives-01-luna.jsonl",
+    "checkpoints": [
+      {
+        "gameTimeSec": 343,
+        "expectedPrimaryAction": "PREPARE_ROSHAN",
+        "allowedAlternativeActions": [],
+        "forbiddenActions": [],
+        "expectedUrgency": "MEDIUM",
+        "requiredReasonCodes": [
+          ""
+        ],
+        "expectedMissingSignals": [
+          "combatStats",
+          "ownAbilities",
+          "ownEconomy",
+          "ownInventory",
+          "ownLevel",
+          "ownVitals",
+          "playerIdentity",
+          "playerRole",
+          "roster",
+          "teamReady",
+          "visibleEnemies",
+          "wardStock"
+        ],
+        "expectedDataQuality": "INFERRED",
+        "expectedSecondaryDomains": [
+          "LANE",
+          "MACRO",
+          "ROLE"
+        ]
+      },
+      {
+        "gameTimeSec": 916,
+        "expectedPrimaryAction": "PREPARE_ROSHAN",
+        "allowedAlternativeActions": [],
+        "forbiddenActions": [],
+        "expectedUrgency": "MEDIUM",
+        "requiredReasonCodes": [
+          ""
+        ],
+        "expectedMissingSignals": [
+          "combatStats",
+          "laneState",
+          "ownAbilities",
+          "ownEconomy",
+          "ownLevel",
+          "ownVitals",
+          "playerIdentity",
+          "playerRole",
+          "roster",
+          "teamReady",
+          "visibleEnemies",
+          "wardStock"
+        ],
+        "expectedDataQuality": "INFERRED",
+        "expectedSecondaryDomains": [
+          "LANE",
+          "MACRO",
+          "ROLE"
+        ]
+      },
+      {
+        "gameTimeSec": 1488,
+        "expectedPrimaryAction": "PREPARE_ROSHAN",
+        "allowedAlternativeActions": [],
+        "forbiddenActions": [],
+        "expectedUrgency": "MEDIUM",
+        "requiredReasonCodes": [
+          ""
+        ],
+        "expectedMissingSignals": [
+          "combatStats",
+          "laneState",
+          "ownAbilities",
+          "ownEconomy",
+          "ownLevel",
+          "ownVitals",
+          "playerIdentity",
+          "playerRole",
+          "roster",
+          "teamReady",
+          "visibleEnemies",
+          "wardStock"
+        ],
+        "expectedDataQuality": "INFERRED",
+        "expectedSecondaryDomains": [
+          "LANE",
+          "MACRO",
+          "ROLE"
+        ]
+      }
+    ],
+    "expectedFinalCall": "PREPARE_ROSHAN",
+    "forbiddenActions": [],
+    "notes": "Synthetic deterministic canonical recording; no user data."
+  },
+  {
+    "id": "objectives-02-puck",
+    "title": "Objectives calibration 2: puck",
+    "mode": "REPLAY",
+    "category": "Objectives",
+    "role": "cross_role",
+    "phase": "LATE_GAME",
+    "heroId": "puck",
+    "recordingPath": "fixtures/scenarios/recordings/objectives-02-puck.jsonl",
+    "checkpoints": [
+      {
+        "gameTimeSec": 345,
+        "expectedPrimaryAction": "PREPARE_ROSHAN",
+        "allowedAlternativeActions": [],
+        "forbiddenActions": [],
+        "expectedUrgency": "MEDIUM",
+        "requiredReasonCodes": [
+          ""
+        ],
+        "expectedMissingSignals": [
+          "combatStats",
+          "ownAbilities",
+          "ownEconomy",
+          "ownInventory",
+          "ownLevel",
+          "ownVitals",
+          "playerIdentity",
+          "playerRole",
+          "roster",
+          "teamReady",
+          "visibleEnemies",
+          "wardStock"
+        ],
+        "expectedDataQuality": "INFERRED",
+        "expectedSecondaryDomains": [
+          "LANE",
+          "MACRO",
+          "ROLE"
+        ]
+      },
+      {
+        "gameTimeSec": 920,
+        "expectedPrimaryAction": "PREPARE_ROSHAN",
+        "allowedAlternativeActions": [],
+        "forbiddenActions": [],
+        "expectedUrgency": "MEDIUM",
+        "requiredReasonCodes": [
+          ""
+        ],
+        "expectedMissingSignals": [
+          "combatStats",
+          "laneState",
+          "ownAbilities",
+          "ownEconomy",
+          "ownLevel",
+          "ownVitals",
+          "playerIdentity",
+          "playerRole",
+          "roster",
+          "teamReady",
+          "visibleEnemies",
+          "wardStock"
+        ],
+        "expectedDataQuality": "INFERRED",
+        "expectedSecondaryDomains": [
+          "LANE",
+          "MACRO",
+          "ROLE"
+        ]
+      },
+      {
+        "gameTimeSec": 1495,
+        "expectedPrimaryAction": "PREPARE_ROSHAN",
+        "allowedAlternativeActions": [],
+        "forbiddenActions": [],
+        "expectedUrgency": "MEDIUM",
+        "requiredReasonCodes": [
+          ""
+        ],
+        "expectedMissingSignals": [
+          "combatStats",
+          "laneState",
+          "ownAbilities",
+          "ownEconomy",
+          "ownLevel",
+          "ownVitals",
+          "playerIdentity",
+          "playerRole",
+          "roster",
+          "teamReady",
+          "visibleEnemies",
+          "wardStock"
+        ],
+        "expectedDataQuality": "INFERRED",
+        "expectedSecondaryDomains": [
+          "LANE",
+          "MACRO",
+          "ROLE"
+        ]
+      }
+    ],
+    "expectedFinalCall": "PREPARE_ROSHAN",
+    "forbiddenActions": [],
+    "notes": "Synthetic deterministic canonical recording; no user data."
+  },
+  {
+    "id": "objectives-03-axe",
+    "title": "Objectives calibration 3: axe",
+    "mode": "REPLAY",
+    "category": "Objectives",
+    "role": "cross_role",
+    "phase": "LATE_GAME",
+    "heroId": "axe",
+    "recordingPath": "fixtures/scenarios/recordings/objectives-03-axe.jsonl",
+    "checkpoints": [
+      {
+        "gameTimeSec": 347,
+        "expectedPrimaryAction": "PREPARE_ROSHAN",
+        "allowedAlternativeActions": [],
+        "forbiddenActions": [],
+        "expectedUrgency": "MEDIUM",
+        "requiredReasonCodes": [
+          ""
+        ],
+        "expectedMissingSignals": [
+          "combatStats",
+          "ownAbilities",
+          "ownEconomy",
+          "ownInventory",
+          "ownLevel",
+          "ownVitals",
+          "playerIdentity",
+          "playerRole",
+          "roster",
+          "teamReady",
+          "visibleEnemies",
+          "wardStock"
+        ],
+        "expectedDataQuality": "INFERRED",
+        "expectedSecondaryDomains": [
+          "LANE",
+          "MACRO",
+          "ROLE"
+        ]
+      },
+      {
+        "gameTimeSec": 924,
+        "expectedPrimaryAction": "PREPARE_ROSHAN",
+        "allowedAlternativeActions": [],
+        "forbiddenActions": [],
+        "expectedUrgency": "MEDIUM",
+        "requiredReasonCodes": [
+          ""
+        ],
+        "expectedMissingSignals": [
+          "combatStats",
+          "laneState",
+          "ownAbilities",
+          "ownEconomy",
+          "ownLevel",
+          "ownVitals",
+          "playerIdentity",
+          "playerRole",
+          "roster",
+          "teamReady",
+          "visibleEnemies",
+          "wardStock"
+        ],
+        "expectedDataQuality": "INFERRED",
+        "expectedSecondaryDomains": [
+          "LANE",
+          "MACRO",
+          "ROLE"
+        ]
+      },
+      {
+        "gameTimeSec": 1502,
+        "expectedPrimaryAction": "PREPARE_ROSHAN",
+        "allowedAlternativeActions": [],
+        "forbiddenActions": [],
+        "expectedUrgency": "MEDIUM",
+        "requiredReasonCodes": [
+          ""
+        ],
+        "expectedMissingSignals": [
+          "combatStats",
+          "laneState",
+          "ownAbilities",
+          "ownEconomy",
+          "ownLevel",
+          "ownVitals",
+          "playerIdentity",
+          "playerRole",
+          "roster",
+          "teamReady",
+          "visibleEnemies",
+          "wardStock"
+        ],
+        "expectedDataQuality": "INFERRED",
+        "expectedSecondaryDomains": [
+          "LANE",
+          "MACRO",
+          "ROLE"
+        ]
+      }
+    ],
+    "expectedFinalCall": "PREPARE_ROSHAN",
+    "forbiddenActions": [],
+    "notes": "Synthetic deterministic canonical recording; no user data."
+  },
+  {
+    "id": "safety-01-juggernaut",
+    "title": "Safety calibration 1: juggernaut",
+    "mode": "REPLAY",
+    "category": "Safety",
+    "role": "cross_role",
+    "phase": "LATE_GAME",
+    "heroId": "juggernaut",
+    "recordingPath": "fixtures/scenarios/recordings/safety-01-juggernaut.jsonl",
+    "checkpoints": [
+      {
+        "gameTimeSec": 348,
+        "expectedPrimaryAction": "PREPARE_ROSHAN",
+        "allowedAlternativeActions": [],
+        "forbiddenActions": [
+          "FIGHT"
+        ],
+        "expectedUrgency": "MEDIUM",
+        "requiredReasonCodes": [
+          ""
+        ],
+        "expectedMissingSignals": [
+          "combatStats",
+          "ownAbilities",
+          "ownEconomy",
+          "ownInventory",
+          "ownLevel",
+          "ownVitals",
+          "playerIdentity",
+          "playerRole",
+          "roster",
+          "teamReady",
+          "visibleEnemies",
+          "wardStock"
+        ],
+        "expectedDataQuality": "INFERRED",
+        "expectedSecondaryDomains": [
+          "LANE",
+          "MACRO",
+          "ROLE"
+        ]
+      },
+      {
+        "gameTimeSec": 929,
+        "expectedPrimaryAction": "PREPARE_ROSHAN",
+        "allowedAlternativeActions": [],
+        "forbiddenActions": [
+          "FIGHT"
+        ],
+        "expectedUrgency": "MEDIUM",
+        "requiredReasonCodes": [
+          ""
+        ],
+        "expectedMissingSignals": [
+          "combatStats",
+          "laneState",
+          "ownAbilities",
+          "ownEconomy",
+          "ownLevel",
+          "ownVitals",
+          "playerIdentity",
+          "playerRole",
+          "roster",
+          "teamReady",
+          "visibleEnemies",
+          "wardStock"
+        ],
+        "expectedDataQuality": "INFERRED",
+        "expectedSecondaryDomains": [
+          "LANE",
+          "MACRO",
+          "ROLE"
+        ]
+      },
+      {
+        "gameTimeSec": 1509,
+        "expectedPrimaryAction": "PREPARE_ROSHAN",
+        "allowedAlternativeActions": [],
+        "forbiddenActions": [
+          "FIGHT"
+        ],
+        "expectedUrgency": "MEDIUM",
+        "requiredReasonCodes": [
+          ""
+        ],
+        "expectedMissingSignals": [
+          "combatStats",
+          "laneState",
+          "laneTargets",
+          "ownAbilities",
+          "ownEconomy",
+          "ownLevel",
+          "playerIdentity",
+          "playerRole",
+          "roster",
+          "teamReady",
+          "visibleEnemies",
+          "wardStock"
+        ],
+        "expectedDataQuality": "INFERRED",
+        "expectedSecondaryDomains": [
+          "LANE",
+          "MACRO",
+          "ROLE"
+        ]
+      }
+    ],
+    "expectedFinalCall": "PREPARE_ROSHAN",
+    "forbiddenActions": [
+      "FIGHT"
+    ],
+    "notes": "Synthetic deterministic canonical recording; no user data."
+  },
+  {
+    "id": "safety-02-invoker",
+    "title": "Safety calibration 2: invoker",
+    "mode": "REPLAY",
+    "category": "Safety",
+    "role": "cross_role",
+    "phase": "LATE_GAME",
+    "heroId": "invoker",
+    "recordingPath": "fixtures/scenarios/recordings/safety-02-invoker.jsonl",
+    "checkpoints": [
+      {
+        "gameTimeSec": 350,
+        "expectedPrimaryAction": "PREPARE_ROSHAN",
+        "allowedAlternativeActions": [],
+        "forbiddenActions": [
+          "FIGHT"
+        ],
+        "expectedUrgency": "MEDIUM",
+        "requiredReasonCodes": [
+          ""
+        ],
+        "expectedMissingSignals": [
+          "combatStats",
+          "ownAbilities",
+          "ownEconomy",
+          "ownInventory",
+          "ownLevel",
+          "ownVitals",
+          "playerIdentity",
+          "playerRole",
+          "roster",
+          "teamReady",
+          "visibleEnemies",
+          "wardStock"
+        ],
+        "expectedDataQuality": "INFERRED",
+        "expectedSecondaryDomains": [
+          "LANE",
+          "MACRO",
+          "ROLE"
+        ]
+      },
+      {
+        "gameTimeSec": 933,
+        "expectedPrimaryAction": "PREPARE_ROSHAN",
+        "allowedAlternativeActions": [],
+        "forbiddenActions": [
+          "FIGHT"
+        ],
+        "expectedUrgency": "MEDIUM",
+        "requiredReasonCodes": [
+          ""
+        ],
+        "expectedMissingSignals": [
+          "combatStats",
+          "laneState",
+          "ownAbilities",
+          "ownEconomy",
+          "ownLevel",
+          "ownVitals",
+          "playerIdentity",
+          "playerRole",
+          "roster",
+          "teamReady",
+          "visibleEnemies",
+          "wardStock"
+        ],
+        "expectedDataQuality": "INFERRED",
+        "expectedSecondaryDomains": [
+          "LANE",
+          "MACRO",
+          "ROLE"
+        ]
+      },
+      {
+        "gameTimeSec": 1516,
+        "expectedPrimaryAction": "RESET",
+        "allowedAlternativeActions": [],
+        "forbiddenActions": [
+          "FIGHT"
+        ],
+        "expectedUrgency": "CRITICAL",
+        "requiredReasonCodes": [
+          ""
+        ],
+        "expectedMissingSignals": [
+          "combatStats",
+          "laneState",
+          "laneTargets",
+          "ownAbilities",
+          "ownEconomy",
+          "ownLevel",
+          "playerIdentity",
+          "playerRole",
+          "roster",
+          "teamReady",
+          "visibleEnemies",
+          "wardStock"
+        ],
+        "expectedDataQuality": "UNKNOWN",
+        "expectedSecondaryDomains": [
+          "LANE",
+          "OBJECTIVE",
+          "ROLE"
+        ]
+      }
+    ],
+    "expectedFinalCall": "RESET",
+    "forbiddenActions": [
+      "FIGHT"
+    ],
+    "notes": "Synthetic deterministic canonical recording; no user data."
+  },
+  {
+    "id": "safety-03-crystal_maiden",
+    "title": "Safety calibration 3: crystal_maiden",
+    "mode": "REPLAY",
+    "category": "Safety",
+    "role": "cross_role",
+    "phase": "LATE_GAME",
+    "heroId": "crystal_maiden",
+    "recordingPath": "fixtures/scenarios/recordings/safety-03-crystal_maiden.jsonl",
+    "checkpoints": [
+      {
+        "gameTimeSec": 351,
+        "expectedPrimaryAction": "PREPARE_ROSHAN",
+        "allowedAlternativeActions": [],
+        "forbiddenActions": [
+          "FIGHT"
+        ],
+        "expectedUrgency": "MEDIUM",
+        "requiredReasonCodes": [
+          ""
+        ],
+        "expectedMissingSignals": [
+          "combatStats",
+          "ownAbilities",
+          "ownEconomy",
+          "ownInventory",
+          "ownLevel",
+          "ownVitals",
+          "playerIdentity",
+          "playerRole",
+          "roster",
+          "teamReady",
+          "visibleEnemies",
+          "wardStock"
+        ],
+        "expectedDataQuality": "INFERRED",
+        "expectedSecondaryDomains": [
+          "LANE",
+          "MACRO",
+          "ROLE"
+        ]
+      },
+      {
+        "gameTimeSec": 937,
+        "expectedPrimaryAction": "PREPARE_ROSHAN",
+        "allowedAlternativeActions": [],
+        "forbiddenActions": [
+          "FIGHT"
+        ],
+        "expectedUrgency": "MEDIUM",
+        "requiredReasonCodes": [
+          ""
+        ],
+        "expectedMissingSignals": [
+          "combatStats",
+          "laneState",
+          "ownAbilities",
+          "ownEconomy",
+          "ownLevel",
+          "ownVitals",
+          "playerIdentity",
+          "playerRole",
+          "roster",
+          "teamReady",
+          "visibleEnemies",
+          "wardStock"
+        ],
+        "expectedDataQuality": "INFERRED",
+        "expectedSecondaryDomains": [
+          "LANE",
+          "MACRO",
+          "ROLE"
+        ]
+      },
+      {
+        "gameTimeSec": 1523,
+        "expectedPrimaryAction": "RESET",
+        "allowedAlternativeActions": [],
+        "forbiddenActions": [
+          "FIGHT"
+        ],
+        "expectedUrgency": "CRITICAL",
+        "requiredReasonCodes": [
+          ""
+        ],
+        "expectedMissingSignals": [
+          "combatStats",
+          "laneState",
+          "laneTargets",
+          "ownAbilities",
+          "ownEconomy",
+          "ownLevel",
+          "playerIdentity",
+          "playerRole",
+          "roster",
+          "teamReady",
+          "visibleEnemies",
+          "wardStock"
+        ],
+        "expectedDataQuality": "UNKNOWN",
+        "expectedSecondaryDomains": [
+          "LANE",
+          "OBJECTIVE",
+          "ROLE"
+        ]
+      }
+    ],
+    "expectedFinalCall": "RESET",
+    "forbiddenActions": [
+      "FIGHT"
+    ],
+    "notes": "Synthetic deterministic canonical recording; no user data."
+  }
+]

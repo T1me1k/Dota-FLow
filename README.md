@@ -53,3 +53,7 @@ Role Engines v2 are the primary pipeline route; the legacy coordinator is retain
 ## v0.21.0 — Decision Orchestrator
 
 Dota Flow now presents one conflict-free `coachCall`, backed by a compact trace, bounded history and 65-scenario calibration suite. See [orchestrator](docs/DECISION_ORCHESTRATOR_IMPLEMENTED.md), [contract](docs/COACH_CALL_CONTRACT.md), and [priority matrix](docs/V021_DECISION_PRIORITY_MATRIX.md). Run `npm run scenarios`; use `/scenarios` for the development workbench.
+
+## v0.22.0 replay calibration
+
+Dota Flow now includes 30 synthetic replay-backed canonical scenarios, 90 checkpoints, six hero packs, explicit structured golden baselines, bilingual advice presentation, and a provider-driven Scenario Workbench. See [Replay Calibration](docs/REPLAY_CALIBRATION_SYSTEM.md) and [v0.22 status](docs/V022_PRODUCT_UX_STATUS.md). This is simulator-first evidence, not Windows or real Overwolf validation.

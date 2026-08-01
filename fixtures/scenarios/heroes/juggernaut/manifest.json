@@ -1,0 +1,23 @@
+{
+  "heroId": "juggernaut",
+  "profileTier": "DETAILED",
+  "scenarios": [
+    "carry-06-juggernaut",
+    "safety-01-juggernaut"
+  ],
+  "coveredPowerSpikes": [
+    "battle_fury",
+    "manta"
+  ],
+  "coveredBuildPlans": [
+    "standard"
+  ],
+  "coveredPhases": [
+    "LANING",
+    "MID_GAME",
+    "LATE_GAME"
+  ],
+  "knownGaps": [
+    "Real Overwolf telemetry is not validated"
+  ]
+}

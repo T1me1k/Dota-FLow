@@ -1,6 +1,6 @@
 {
   "name": "dota-flow-event-probe",
-  "version": "0.21.0",
+  "version": "0.22.0",
   "private": true,
   "type": "module",
   "scripts": {
@@ -30,7 +30,11 @@
     "content:migrate": "node scripts/content-tool.mjs migrate",
     "desktop:validate": "node apps/desktop/validate.mjs",
     "desktop:build": "npm --prefix apps/desktop run build",
-    "desktop:dev": "npm --prefix apps/desktop run dev"
+    "desktop:dev": "npm --prefix apps/desktop run dev",
+    "scenarios:replay": "node scripts/scenarios-replay.mjs",
+    "scenarios:golden": "node scripts/scenarios-golden.mjs",
+    "scenarios:coverage": "node scripts/scenarios-coverage.mjs",
+    "advice:validate": "node scripts/advice-validate.mjs"
   },
   "engines": {
     "node": ">=20"
