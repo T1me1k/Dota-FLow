@@ -3,7 +3,7 @@ import React from 'react';
 const label=(value:unknown,fallback='Unavailable')=>String(value??fallback).replaceAll('_',' ');
 const percent=(value?:number)=>value==null?'—':`${Math.round(value*100)}%`;
 
-function Card({children,className=''}:{children:React.ReactNode;className?:string}){
+function Card({children,className=''}:{children:React.ReactNode;className?:string;key?:React.Key}){
   return <section className={`card ${className}`}>{children}</section>;
 }
 
