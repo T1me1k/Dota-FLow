@@ -1,0 +1,1 @@
+import test from'node:test';import assert from'node:assert/strict';import{readFile}from'node:fs/promises';test('navigation model',async()=>{const source=await readFile(new URL('../../../apps/desktop/src/main.tsx',import.meta.url),'utf8');assert.match(source,/PLAY/);assert.match(source,/IMPROVE/);assert.match(source,/TOOLS/);assert.match(source,/SYSTEM/)});
