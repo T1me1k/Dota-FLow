@@ -45,3 +45,7 @@ Run `npm run mock` for legacy browser tools. Run `npm run desktop:dev` after ins
 `LIVE` is reserved for permitted, observed GEP signals. Visible facts confirmed by the user remain `MANUAL`; conservative derivations remain `INFERRED`; expired values become `STALE`; absent capabilities are `UNAVAILABLE`. Lane movement and objectives degrade to safe preparation/hold calls without current evidence. Baseline and unknown heroes never receive a fabricated hero-specific item plan.
 
 Fixtures, CLI output and browser cards are simulations. Real Dota GEP, transparent overlay behavior, Windows performance, Overwolf approval/whitelisting, packaging, signing and installation have **not** been validated here and remain production work. Start with `START_HERE.md` and the implementation notes in `docs/`.
+
+## v0.20.1 Hardening & Integration
+
+Role Engines v2 are the primary pipeline route; the legacy coordinator is retained only as an explicitly named compatibility fallback. Runtime provider and desktop build boundaries are documented in [the integration audit](docs/V020_INTEGRATION_AUDIT.md) and [desktop status](docs/DESKTOP_BUILD_STATUS.md). Use `npm run desktop:validate` offline; `npm run desktop:build` is a real Vite build and needs installed frontend dependencies.

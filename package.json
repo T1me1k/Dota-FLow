@@ -1,6 +1,6 @@
 {
   "name": "dota-flow-event-probe",
-  "version": "0.20.0",
+  "version": "0.20.1",
   "private": true,
   "type": "module",
   "scripts": {
@@ -27,6 +27,7 @@
     "content:list": "node scripts/content-tool.mjs list",
     "content:coverage": "node scripts/content-tool.mjs coverage",
     "content:migrate": "node scripts/content-tool.mjs migrate",
+    "desktop:validate": "node apps/desktop/validate.mjs",
     "desktop:build": "npm --prefix apps/desktop run build",
     "desktop:dev": "npm --prefix apps/desktop run dev"
   },

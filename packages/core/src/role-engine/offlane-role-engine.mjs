@@ -1,2 +1,2 @@
-import {roleResult} from './shared-role-rules.mjs';
-export function evaluateOfflaneRole(state){const c=state.roleContext??{};if(c.towerPressureOpportunity>.65)return roleResult('CONVERT_TOWER',state,['Конвертируй давление на carry в башню']);if(state.gameTimeSec>900&&state.ultimateReady)return roleResult('FRONTLINE_FOR_TEAM',state,['Aura/инициация готовы: займи опасную территорию']);return roleResult('PRESSURE_ENEMY_CARRY',state,['Ограничивай безопасный farm enemy carry без лишнего риска']);}
+import {evaluateRoleDecision} from '../role-engine.mjs';
+export function evaluateOfflaneRole(state){return evaluateRoleDecision({...state,role:'offlane'});}

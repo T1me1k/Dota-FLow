@@ -1,2 +1,2 @@
-import {roleResult} from './shared-role-rules.mjs';
-export function evaluateMidRole(state){const c=state.roleContext??{};if(c.activeRune?.type)return roleResult('USE_POWER_RUNE_TEMPO',state,[`${c.activeRune.type} создаёт tempo-окно`]);if(c.bottledRune?.type==='DOUBLE_DAMAGE'&&c.wisdomFightExpected)return roleResult('HOLD_RUNE_FOR_OBJECTIVE',state,['Сохрани DD для Wisdom или объекта']);if(state.level>=6&&state.ultimateReady&&c.lanePushed&&c.sideLaneKillPotential>.6)return roleResult('ROTATE_AFTER_SHOVE',state,['Волна подготовлена; выбери подтверждённую боковую цель']);return roleResult('CONTROL_MID_TEMPO',state,['Подготовь волну, Bottle и следующую руну']);}
+import {evaluateRoleDecision} from '../role-engine.mjs';
+export function evaluateMidRole(state){return evaluateRoleDecision({...state,role:'mid'});}

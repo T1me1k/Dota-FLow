@@ -1,11 +1,11 @@
 {
   "name": "@dota-flow/desktop",
-  "version": "0.20.0",
+  "version": "0.20.1",
   "private": true,
   "type": "module",
   "scripts": {
     "dev": "vite --host 127.0.0.1",
-    "build": "node build.mjs"
+    "build": "vite build"
   },
   "dependencies": {
     "@vitejs/plugin-react": "latest",

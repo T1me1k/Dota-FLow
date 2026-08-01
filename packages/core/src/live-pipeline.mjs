@@ -8,6 +8,10 @@ import { buildCoachSuiteSnapshot } from './coach-suite.mjs';
 import { LaneMatchupEngine } from './lane-matchup-engine.mjs';
 import { ObjectiveEngine } from './objective-engine.mjs';
 import { AdaptiveBuildCoordinator } from './adaptive-build-advisor.mjs';
+import { evaluateRoleV2 } from './role-engine/index.mjs';
+
+const HISTORY_LIMIT = 200;
+function appendBounded(history, value) { history.push(value); if (history.length > HISTORY_LIMIT) history.splice(0, history.length - HISTORY_LIMIT); }
 
 function historyEntry(state, previousDecision, decision, event) {
   return {
@@ -40,12 +44,12 @@ export class GameEventPipeline {
     this.state = normalizeGameState(base, base, { eventType: 'PIPELINE_INITIALIZED' });
     this.coordinatorOptions = coordinatorOptions ?? {};
     this.coordinator = new StableDecisionCoordinator(this.coordinatorOptions);
-    this.roleCoordinator = new StableRoleDecisionCoordinator(this.coordinatorOptions?.role ?? {});
+    this.legacyRoleFallback = new StableRoleDecisionCoordinator(this.coordinatorOptions?.role ?? {});
     this.laneEngine = new LaneMatchupEngine();
     this.objectiveEngine = new ObjectiveEngine();
     this.buildCoordinator = new AdaptiveBuildCoordinator(this.coordinatorOptions?.build ?? {});
     this.decision = this.coordinator.update(this.state);
-    this.roleDecision = this.roleCoordinator.update(this.state);
+    this.roleDecision = evaluateRoleV2(this.state);
     this.laneDecision = this.laneEngine.evaluate(this.state);
     this.objectiveDecision = this.objectiveEngine.evaluate(this.state);
     this.adaptiveBuild = this.buildCoordinator.update(this.state);
@@ -62,7 +66,7 @@ export class GameEventPipeline {
     let previousRoleDecision = this.roleDecision;
     if (event?.type === GAME_EVENT_TYPES.MATCH_STARTED) {
       this.coordinator = new StableDecisionCoordinator(this.coordinatorOptions);
-      this.roleCoordinator = new StableRoleDecisionCoordinator(this.coordinatorOptions?.role ?? {});
+      this.legacyRoleFallback = new StableRoleDecisionCoordinator(this.coordinatorOptions?.role ?? {});
       this.buildCoordinator = new AdaptiveBuildCoordinator(this.coordinatorOptions?.build ?? {});
       this.decisionHistory = [];
       this.roleDecisionHistory = [];
@@ -75,7 +79,7 @@ export class GameEventPipeline {
 
     this.state = applyGameEvent(this.state, event);
     this.decision = this.coordinator.update(this.state);
-    this.roleDecision = this.roleCoordinator.update(this.state);
+    this.roleDecision = evaluateRoleV2(this.state);
     const previousLane=this.laneDecision; const previousObjective=this.objectiveDecision;
     this.laneDecision = this.laneEngine.evaluate(this.state);
     this.objectiveDecision = this.objectiveEngine.evaluate(this.state);
@@ -83,13 +87,13 @@ export class GameEventPipeline {
     this.eventCount += 1;
 
     if (this.decision.action !== previousDecision?.action) {
-      this.decisionHistory.push(historyEntry(this.state, previousDecision, this.decision, event));
+      appendBounded(this.decisionHistory, historyEntry(this.state, previousDecision, this.decision, event));
     }
     if (this.roleDecision.action !== previousRoleDecision?.action || this.roleDecision.role !== previousRoleDecision?.role) {
-      this.roleDecisionHistory.push(roleHistoryEntry(this.state, previousRoleDecision, this.roleDecision, event));
+      appendBounded(this.roleDecisionHistory, roleHistoryEntry(this.state, previousRoleDecision, this.roleDecision, event));
     }
-    if(this.laneDecision.action!==previousLane?.action)this.laneDecisionHistory.push(historyEntry(this.state,previousLane,this.laneDecision,event));
-    if(this.objectiveDecision.action!==previousObjective?.action)this.objectiveDecisionHistory.push(historyEntry(this.state,previousObjective,this.objectiveDecision,event));
+    if(this.laneDecision.action!==previousLane?.action)appendBounded(this.laneDecisionHistory,historyEntry(this.state,previousLane,this.laneDecision,event));
+    if(this.objectiveDecision.action!==previousObjective?.action)appendBounded(this.objectiveDecisionHistory,historyEntry(this.state,previousObjective,this.objectiveDecision,event));
 
     this.coach = buildCoachSuiteSnapshot(this.snapshotBase());
     return this.snapshot();
