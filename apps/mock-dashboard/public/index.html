@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dota Flow — Power Spike Engine</title>
+  <link rel="stylesheet" href="/apps/mock-dashboard/public/styles.css" />
+</head>
+<body>
+  <main class="shell">
+    <header class="topbar">
+      <div>
+        <div class="eyebrow">DOTA FLOW · EVENT PROBE 0.10</div>
+        <h1>Power Spike Engine</h1>
+      </div>
+      <div class="status-cluster">
+        <span id="sourceBadge" class="badge">MOCK SOURCE</span>
+        <span id="phaseBadge" class="badge badge-muted">IDLE</span>
+      </div>
+    </header>
+
+    <section class="layout">
+      <aside class="panel controls-panel">
+        <h2>Симулятор матча</h2>
+        <label>Герой
+          <select id="heroSelect"></select>
+        </label>
+        <label>Роль
+          <select id="roleSelect">
+            <option value="carry">Carry / позиция 1</option>
+            <option value="mid">Mid / позиция 2</option>
+            <option value="offlane">Offlane / позиция 3</option>
+            <option value="soft_support">Soft Support / позиция 4</option>
+            <option value="hard_support">Hard Support / позиция 5</option>
+          </select>
+        </label>
+        <label>План сборки
+          <select id="buildSelect"></select>
+        </label>
+        <label>Текущая цель
+          <select id="itemSelect"></select>
+        </label>
+        <label>Драфт-сценарий
+          <select id="draftPresetSelect">
+            <option value="neutral">Нейтральный</option>
+            <option value="enemy_control">Много контроля у врага</option>
+            <option value="enemy_squishy">Хрупкие цели у врага</option>
+            <option value="ally_initiation">Сильная инициация союзников</option>
+          </select>
+        </label>
+
+        <div class="button-grid">
+          <button id="startButton" class="primary">Старт матча</button>
+          <button id="pauseButton">Пауза</button>
+          <button id="resetButton">Сброс</button>
+          <button id="spikeButton">Купить цель</button>
+          <button id="levelSpikeButton">Следующий level spike</button>
+          <button id="dangerButton">Низкие HP</button>
+          <button id="opportunityButton">Core врага мёртв</button>
+          <button id="fadeButton">Состарить окно</button>
+        </div>
+
+        <div class="speed-row">
+          <span>Скорость</span>
+          <input id="speedInput" type="range" min="1" max="30" value="10" />
+          <strong id="speedValue">×10</strong>
+        </div>
+
+        <p class="hint">Цифры профилей — seed-данные для архитектуры. Их потом калибруем по актуальному патчу и реальным матчам.</p>
+      </aside>
+
+      <section class="center-stack">
+        <article id="decisionCard" class="decision-card neutral">
+          <div class="decision-kicker">ТЕКУЩИЙ MACRO CALL</div>
+          <div id="decisionAction" class="decision-action">ОЖИДАНИЕ</div>
+          <p id="decisionMessage" class="decision-message">Запустите симуляцию матча.</p>
+          <div id="decisionReasons" class="reasons"></div>
+          <div class="confidence-row">
+            <span>Уверенность</span>
+            <div class="confidence-track"><div id="confidenceBar" class="confidence-fill"></div></div>
+            <strong id="confidenceText">0%</strong>
+          </div>
+        </article>
+
+        <article class="panel">
+          <div class="eyebrow">ROLE TASK</div>
+          <h2 id="roleAction">WAIT</h2>
+          <p id="roleMessage">Role Engine ожидает начало матча.</p>
+          <small id="roleConfidence">100% confidence</small>
+        </article>
+
+        <article class="panel power-panel">
+          <div class="power-head">
+            <div>
+              <div class="eyebrow">POWER STATE</div>
+              <h2 id="powerStatus">NONE</h2>
+            </div>
+            <div class="power-primary">
+              <span>Главное окно</span>
+              <strong id="primarySpikeValue">—</strong>
+              <small id="timingValue">—</small>
+            </div>
+            <div class="power-primary">
+              <span>Следующее окно</span>
+              <strong id="nextSpikeValue">—</strong>
+              <small id="nextSpikeDetail">—</small>
+            </div>
+          </div>
+          <div id="powerDimensions" class="power-dimensions"></div>
+          <div id="powerBlockers" class="blockers"></div>
+        </article>
+
+        <article class="panel metrics-panel">
+          <div class="metric"><span>Время</span><strong id="timeValue">-1:30</strong></div>
+          <div class="metric"><span>Герой</span><strong id="heroValue">Luna</strong></div>
+          <div class="metric"><span>Роль</span><strong id="roleValue">carry</strong></div>
+          <div class="metric"><span>Уровень</span><strong id="levelValue">1</strong></div>
+          <div class="metric"><span>Золото</span><strong id="goldValue">600</strong></div>
+          <div class="metric"><span>GPM</span><strong id="gpmValue">0</strong></div>
+          <div class="metric"><span>Ожидаемый GPM</span><strong id="benchmarkValue">360</strong></div>
+          <div class="metric"><span>HP</span><strong id="hpValue">100%</strong></div>
+          <div class="metric"><span>Mana</span><strong id="manaValue">100%</strong></div>
+          <div class="metric"><span>Ultimate</span><strong id="ultValue">Нет</strong></div>
+          <div class="metric"><span>До предмета</span><strong id="itemRemainingValue">—</strong></div>
+        </article>
+      </section>
+
+      <aside class="panel score-panel">
+        <h2>Decision scores</h2>
+        <div id="scoreList" class="score-list"></div>
+        <h2 class="log-title">Активные тайминги</h2>
+        <div id="activeSpikeList" class="spike-list"></div>
+        <h2 class="log-title">Event stream</h2>
+        <div id="eventLog" class="event-log"></div>
+      </aside>
+    </section>
+
+    <section class="overlay-preview-wrap">
+      <div>
+        <div class="eyebrow">OVERLAY PREVIEW</div>
+        <p>Компактный игровой слой; полный Power State остаётся в dashboard.</p>
+      </div>
+      <div id="overlayPreview" class="overlay-preview neutral">
+        <span id="overlayAction">WAIT</span>
+        <strong id="overlayDetail">Ожидание матча</strong>
+        <small id="overlaySubdetail">Power Spike Engine offline</small>
+      </div>
+    </section>
+  </main>
+  <script type="module" src="/apps/mock-dashboard/src/app.mjs"></script>
+</body>
+</html>

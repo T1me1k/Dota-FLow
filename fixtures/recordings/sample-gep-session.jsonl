@@ -1,0 +1,8 @@
+{"type":"status","gameId":7314,"payload":{"mode":"overwolf","features":["game_state_changed","clock_time_changed","gold","gpm","hero_leveled_up","hero_health_mana_info","match_info","roster","me","game"]},"receivedAt":1000}
+{"type":"info-update","gameId":7314,"payload":{"feature":"me","info":{"me":{"team":"radiant","hero":"luna"}}},"receivedAt":1100}
+{"type":"info-update","gameId":7314,"payload":{"feature":"match_info","info":{"match_info":{"pseudo_match_id":"sample-match-7314"}}},"receivedAt":1150}
+{"type":"info-update","gameId":7314,"payload":{"feature":"game","info":{"game":{"game_state":"DOTA_GAMERULES_STATE_GAME_IN_PROGRESS","clock_time":0}}},"receivedAt":1200}
+{"type":"game-event","gameId":7314,"payload":{"events":[{"name":"clock_time_changed","data":{"clock_time":600}},{"name":"gold","data":"{\"gold\":1450,\"gold_reliable\":250,\"gold_unreliable\":1200}"},{"name":"mystery_feature","data":{"value":42}}]},"receivedAt":1400}
+{"type":"game-event","gameId":7314,"payload":{"events":[{"name":"gpm","data":{"gpm":510,"game_time":600}},{"name":"hero_leveled_up","data":{"hero_level":10,"game_time":600}},{"name":"hero_health_mana_info","data":{"health":1200,"max_health":1500,"mana":620,"max_mana":800,"game_time":600}}]},"receivedAt":1550}
+{"type":"game-event","gameId":7314,"payload":{"name":"hero_item_changed","data":{"item_id":"item_mask_of_madness","display_name":"Mask of Madness","cost":1900,"game_time":720}},"receivedAt":8000}
+{"type":"status","gameId":7314,"payload":{"warning":"Initial GEP getInfo recovered after retry"},"receivedAt":8100}

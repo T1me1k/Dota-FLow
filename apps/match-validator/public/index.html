@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dota Flow — Real Match Validator</title>
+  <link rel="stylesheet" href="/apps/match-validator/public/styles.css" />
+</head>
+<body>
+  <main class="shell">
+    <header class="topbar">
+      <div>
+        <div class="eyebrow">DOTA FLOW · REAL MATCH VALIDATION 0.7</div>
+        <h1>Recording Validation Gate</h1>
+        <p>Проверка обязательных live-сигналов, raw payload-контрактов и данных для калибровки.</p>
+      </div>
+      <nav><a href="/live">Live</a><a href="/diagnostics">Diagnostics</a><a href="/">Dashboard</a></nav>
+    </header>
+
+    <section class="toolbar panel">
+      <label class="file-button">Открыть capture JSONL<input id="fileInput" type="file" accept=".jsonl,.json,text/plain" /></label>
+      <button id="sampleButton">Загрузить validation sample</button>
+      <button id="exportButton" disabled>Экспортировать validation-report.json</button>
+      <span id="fileName">Файл не загружен</span>
+    </section>
+
+    <section class="gate panel">
+      <div><div class="eyebrow">RELEASE GATE</div><strong id="gateStatus" class="gate-status waiting">WAITING</strong></div>
+      <div id="gateMessage">Загрузите recording полного матча.</div>
+    </section>
+
+    <section id="summaryGrid" class="summary-grid"></section>
+
+    <section class="split">
+      <article class="panel">
+        <div class="section-head"><div><div class="eyebrow">SIGNALS</div><h2>Обязательное покрытие</h2></div></div>
+        <div class="table-wrap"><table><thead><tr><th>Status</th><th>Signal</th><th>Requirement</th><th>Evidence</th></tr></thead><tbody id="signalRows"></tbody></table></div>
+      </article>
+      <article class="panel">
+        <div class="section-head"><div><div class="eyebrow">BLOCKERS</div><h2>Что мешает реальному тесту</h2></div></div>
+        <div id="blockerList" class="issue-list"></div>
+      </article>
+    </section>
+
+    <section class="panel contracts-panel">
+      <div class="section-head"><div><div class="eyebrow">PAYLOAD CONTRACTS</div><h2>Фактические формы GEP payload</h2></div></div>
+      <div class="table-wrap large"><table><thead><tr><th>Feature</th><th>Count</th><th>Envelope</th><th>Raw kinds</th><th>Parsed kinds</th><th>Keys</th><th>Avg interval</th></tr></thead><tbody id="contractRows"></tbody></table></div>
+    </section>
+
+    <section class="panel final-state">
+      <div><div class="eyebrow">CALIBRATION</div><h2>Матчевые точки</h2><p>Предметы, уровни, решения и confidence для последующей настройки движка.</p></div>
+      <pre id="calibrationResult">Нет данных</pre>
+    </section>
+  </main>
+  <script type="module" src="/apps/match-validator/src/app.mjs"></script>
+</body>
+</html>

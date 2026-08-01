@@ -1,0 +1,115 @@
+{
+  "name": "Luna standard Manta timing",
+  "initialState": {
+    "hero": "luna",
+    "buildPlanId": "manta_bkb"
+  },
+  "events": [
+    {
+      "type": "MATCH_STARTED",
+      "gameTimeSec": 0,
+      "payload": {
+        "hero": "luna",
+        "buildPlanId": "manta_bkb",
+        "draft": {
+          "radiant": ["luna", "axe", "puck", "tusk", "treant"],
+          "dire": ["juggernaut", "underlord", "windranger", "crystal_maiden", "zeus"]
+        },
+        "source": "replay"
+      }
+    },
+    {
+      "type": "GAME_SNAPSHOT",
+      "gameTimeSec": 480,
+      "payload": {
+        "level": 7,
+        "gold": 850,
+        "unreliableGold": 650,
+        "gpm": 405,
+        "xpm": 430,
+        "health": 1040,
+        "maxHealth": 1192,
+        "mana": 500,
+        "maxMana": 601,
+        "ultimateReady": true,
+        "progression": { "levelReachedAt": { "6": 430, "7": 475 } }
+      }
+    },
+    {
+      "type": "ITEM_ADDED",
+      "gameTimeSec": 600,
+      "payload": {
+        "itemId": "item_mask_of_madness",
+        "name": "Mask of Madness",
+        "cost": 1900,
+        "goldAfter": 180,
+        "unreliableGoldAfter": 0
+      }
+    },
+    {
+      "type": "GAME_SNAPSHOT",
+      "gameTimeSec": 960,
+      "payload": {
+        "level": 12,
+        "gold": 900,
+        "unreliableGold": 700,
+        "gpm": 555,
+        "xpm": 590,
+        "health": 1450,
+        "maxHealth": 1572,
+        "mana": 690,
+        "maxMana": 771,
+        "ultimateReady": true
+      }
+    },
+    {
+      "type": "ITEM_ADDED",
+      "gameTimeSec": 1020,
+      "payload": {
+        "itemId": "item_manta",
+        "name": "Manta Style",
+        "cost": 4650,
+        "goldAfter": 120,
+        "unreliableGoldAfter": 0
+      }
+    },
+    {
+      "type": "CONTEXT_UPDATED",
+      "gameTimeSec": 1080,
+      "payload": {
+        "enemyCoreDead": true,
+        "alliesReady": 4,
+        "safeRouteAvailable": true,
+        "roshanAvailable": true
+      }
+    },
+    {
+      "type": "GAME_SNAPSHOT",
+      "gameTimeSec": 1260,
+      "payload": {
+        "health": 280,
+        "maxHealth": 1800,
+        "mana": 100,
+        "maxMana": 850,
+        "gold": 2400,
+        "unreliableGold": 1950,
+        "context": { "safeRouteAvailable": false, "enemyCoreDead": false }
+      }
+    },
+    {
+      "type": "HERO_DIED",
+      "gameTimeSec": 1270,
+      "payload": { "deaths": 1 }
+    },
+    {
+      "type": "HERO_RESPAWNED",
+      "gameTimeSec": 1325,
+      "payload": {}
+    },
+    {
+      "type": "MATCH_ENDED",
+      "gameTimeSec": 2700,
+      "payload": {}
+    }
+  ]
+}

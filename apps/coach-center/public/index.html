@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Dota Flow Coach Center</title>
+  <link rel="stylesheet" href="/apps/coach-center/public/styles.css" />
+</head>
+<body>
+  <main class="shell">
+    <header class="topbar">
+      <div><div class="eyebrow">DOTA FLOW v0.12</div><h1>Coach Center</h1><p>Предматчевый план, live-таймеры, counter-items, голосовые подсказки и послематчевый прогресс.</p></div>
+      <nav><a href="/">Dashboard</a><a href="/live">Live</a><a href="/diagnostics">Diagnostics</a><a href="/validation">Validation</a></nav>
+    </header>
+
+    <section class="toolbar panel">
+      <button id="pregameButton">Pre-game</button>
+      <button id="liveButton">Live 06:50</button>
+      <button id="postButton">Post-game</button>
+      <label><input id="voiceToggle" type="checkbox" /> Voice Coach</label>
+      <span id="phaseLabel">PRE-GAME</span>
+    </section>
+
+    <section class="hero panel">
+      <div><span class="eyebrow">CURRENT PLAN</span><h2 id="heroTitle">Anti-Mage · Carry</h2><p id="primaryTip"></p></div>
+      <div id="macroBox" class="macro">PREGAME</div>
+    </section>
+
+    <section class="grid two">
+      <article class="panel"><div class="eyebrow">DRAFT BRIEFING</div><h2>Угрозы и сильные стороны</h2><div id="draftBriefing" class="list"></div></article>
+      <article class="panel"><div class="eyebrow">COUNTER ITEMS</div><h2>Адаптация сборки</h2><div id="counterItems" class="list"></div></article>
+    </section>
+
+    <section class="grid two">
+      <article class="panel"><div class="eyebrow">EVENT TIMERS</div><h2>Ближайшие окна</h2><div id="timerList" class="list"></div><div class="timer-actions"><button id="roshanButton">Roshan killed</button><button id="aegisButton">Aegis picked</button><button id="clearTimersButton">Clear timers</button></div></article>
+      <article class="panel"><div class="eyebrow">VOICE COACH</div><h2>Следующая подсказка</h2><div id="voiceCue" class="voice-card">Голос отключён</div><p class="muted">Подсказки дедуплицируются и не читаются чаще безопасного cooldown.</p></article>
+    </section>
+
+    <section id="performancePanel" class="panel hidden">
+      <div class="eyebrow">FLOW PERFORMANCE INDEX</div>
+      <div class="performance-head"><div><strong id="performanceScore">0</strong><span id="performanceGrade">—</span></div><p id="performanceConfidence"></p><p id="progressSummary" class="muted"></p></div>
+      <div id="performanceDimensions" class="dimensions"></div>
+      <h2>Что улучшить</h2><div id="performanceTips" class="list"></div>
+    </section>
+
+    <section class="panel"><div class="eyebrow">SCOUTING PROVIDER</div><h2>Публичная статистика игрока</h2><div class="scouting-controls"><input id="steamIdInput" inputmode="numeric" placeholder="SteamID64" /><button id="scoutButton">Load OpenDota</button></div><p id="scoutingStatus" class="muted"></p></section>
+  </main>
+  <script type="module" src="/apps/coach-center/src/app.mjs"></script>
+</body>
+</html>

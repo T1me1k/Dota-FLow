@@ -1,0 +1,12 @@
+{"type":"status","gameId":7314,"payload":{"mode":"overwolf","connection":"connected","features":["game_state_changed","clock_time_changed","gold","gpm","match_info","me","game"]},"receivedAt":1000,"sourceSequence":1}
+{"type":"info-update","gameId":7314,"payload":{"feature":"match_info","info":{"match_info":{"pseudo_match_id":"live-match-a"}}},"receivedAt":1100,"sourceSequence":2}
+{"type":"info-update","gameId":7314,"payload":{"feature":"me","info":{"me":{"team":"radiant","hero":"luna"}}},"receivedAt":1200,"sourceSequence":3}
+{"type":"info-update","gameId":7314,"payload":{"feature":"game","info":{"game":{"game_state":"DOTA_GAMERULES_STATE_GAME_IN_PROGRESS","clock_time":0}}},"receivedAt":1300,"sourceSequence":4}
+{"type":"game-event","gameId":7314,"payload":{"name":"gold","data":{"gold":1500,"game_time":300}},"receivedAt":1400,"sourceSequence":5}
+{"type":"game-event","gameId":7314,"payload":{"name":"gold","data":{"gold":1500,"game_time":300}},"receivedAt":1450,"sourceSequence":5}
+{"type":"status","gameId":7314,"payload":{"connection":"reconnecting","warning":"GEP connection interrupted"},"receivedAt":2000,"sourceSequence":6}
+{"type":"game-event","gameId":7314,"payload":{"events":[{"name":"clock_time_changed","data":{"clock_time":600}},{"name":"gpm","data":{"gpm":510,"game_time":600}}]},"receivedAt":2500,"sourceSequence":7}
+{"type":"info-update","gameId":7314,"payload":{"feature":"match_info","info":{"match_info":{"pseudo_match_id":"live-match-b"}}},"receivedAt":10000,"sourceSequence":8}
+{"type":"info-update","gameId":7314,"payload":{"feature":"me","info":{"me":{"team":"radiant","hero":"phantom_assassin"}}},"receivedAt":10100,"sourceSequence":9}
+{"type":"info-update","gameId":7314,"payload":{"feature":"game","info":{"game":{"game_state":"DOTA_GAMERULES_STATE_GAME_IN_PROGRESS","clock_time":0}}},"receivedAt":10200,"sourceSequence":10}
+{"type":"game-event","gameId":7314,"payload":{"events":[{"name":"clock_time_changed","data":{"clock_time":420}},{"name":"gold","data":{"gold":2200,"game_time":420}},{"name":"gpm","data":{"gpm":545,"game_time":420}}]},"receivedAt":10300,"sourceSequence":11}

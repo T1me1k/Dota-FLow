@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dota Flow — Decision Overlay</title>
+  <link rel="stylesheet" href="/apps/decision-overlay/public/styles.css" />
+</head>
+<body>
+  <main id="overlay" class="overlay is-hidden" aria-live="polite">
+    <section class="decision-card" id="decisionCard">
+      <div class="edge"></div>
+      <header class="card-header">
+        <div class="brand-row">
+          <span class="brand-mark">DF</span>
+          <span class="brand-name">DOTA FLOW</span>
+          <span id="connectionBadge" class="connection-badge">LIVE</span>
+        </div>
+        <div id="clock" class="clock">00:00</div>
+      </header>
+
+      <div id="decisionContent" class="decision-content">
+        <div class="action-row">
+          <div>
+            <div id="actionKicker" class="action-kicker">MACRO CALL</div>
+            <h1 id="actionLabel">ФАРМ</h1>
+          </div>
+          <div class="confidence-block">
+            <strong id="confidence">0%</strong>
+            <span>confidence</span>
+          </div>
+        </div>
+        <p id="instruction" class="instruction"></p>
+        <p id="reason" class="reason"></p>
+        <footer class="context-row">
+          <span id="heroLabel">LUNA</span>
+          <span id="powerLabel">POWER: NONE</span>
+          <span id="targetLabel">TARGET: —</span>
+        </footer>
+      </div>
+
+      <div id="statusContent" class="status-content" hidden>
+        <div class="status-icon">!</div>
+        <div>
+          <h1 id="statusLabel">ДАННЫЕ УСТАРЕЛИ</h1>
+          <p id="statusMessage">Live-события временно не поступают.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+  <script type="module" src="/apps/decision-overlay/src/app.mjs"></script>
+</body>
+</html>

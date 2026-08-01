@@ -1,0 +1,31 @@
+{"type":"status","gameId":7314,"payload":{"mode":"overwolf","connection":"connected","features":["gep_internal","game_state","game_state_changed","match_state_changed","clock_time_changed","match_ended","kill","assist","death","xpm","gpm","gold","hero_leveled_up","hero_buyback_info_changed","hero_health_mana_info","hero_ability_used","hero_ability_cooldown_changed","hero_item_cooldown_changed","hero_item_changed","hero_item_used","match_info","roster","me","game"],"supportedFeatures":["gep_internal","game_state","game_state_changed","match_state_changed","clock_time_changed","match_ended","kill","assist","death","xpm","gpm","gold","hero_leveled_up","hero_buyback_info_changed","hero_health_mana_info","hero_ability_used","hero_ability_cooldown_changed","hero_item_cooldown_changed","hero_item_changed","hero_item_used","match_info","roster","me","game"]},"receivedAt":1000,"sourceSequence":1}
+{"type":"game-event","gameId":7314,"payload":{"events":[{"name":"new_game","data":""}]},"receivedAt":1100,"sourceSequence":2}
+{"type":"game-event","gameId":7314,"payload":{"events":[{"name":"game_state_changed","data":"{\"game_state\": \"playing\", \"match_state\": \"DOTA_GAMERULES_STATE_HERO_SELECTION\", \"match_id\": \"real-match-a\", \"player_team\": \"radiant\"}"}]},"receivedAt":1200,"sourceSequence":3}
+{"type":"info-update","gameId":7314,"payload":{"feature":"me","category":"me","key":"hero","value":"luna"},"receivedAt":1300,"sourceSequence":4}
+{"type":"info-update","gameId":7314,"payload":{"feature":"me","category":"me","key":"team","value":"radiant"},"receivedAt":1350,"sourceSequence":5}
+{"type":"info-update","gameId":7314,"payload":{"feature":"match_info","category":"match_info","key":"pseudo_match_id","value":"real-match-a"},"receivedAt":1400,"sourceSequence":6}
+{"type":"info-update","gameId":7314,"payload":{"feature":"game","category":"game","key":"match_state","value":"DOTA_GAMERULES_STATE_STRATEGY_TIME"},"receivedAt":1500,"sourceSequence":7}
+{"type":"game-event","gameId":7314,"payload":{"events":[{"name":"match_state_changed","data":"{\"match_state\": \"DOTA_GAMERULES_STATE_PRE_GAME\"}"}]},"receivedAt":1600,"sourceSequence":8}
+{"type":"game-event","gameId":7314,"payload":{"events":[{"name":"clock_time_changed","data":"{\"clock_time\": -60, \"daytime\": true}"}]},"receivedAt":1700,"sourceSequence":9}
+{"type":"game-event","gameId":7314,"payload":{"events":[{"name":"match_state_changed","data":"{\"match_state\": \"DOTA_GAMERULES_STATE_GAME_IN_PROGRESS\"}"}]},"receivedAt":1800,"sourceSequence":10}
+{"type":"game-event","gameId":7314,"payload":{"events":[{"name":"clock_time_changed","data":"{\"clock_time\": 0, \"daytime\": true}"}]},"receivedAt":1900,"sourceSequence":11}
+{"type":"game-event","gameId":7314,"payload":{"events":[{"name":"gold","data":"{\"gold\": 600, \"gold_reliable\": 0, \"gold_unreliable\": 600}"}]},"receivedAt":2000,"sourceSequence":12}
+{"type":"game-event","gameId":7314,"payload":{"events":[{"name":"gpm","data":"{\"gpm\": 0}"}]},"receivedAt":2050,"sourceSequence":13}
+{"type":"game-event","gameId":7314,"payload":{"events":[{"name":"xpm","data":"{\"xpm\": 0}"}]},"receivedAt":2100,"sourceSequence":14}
+{"type":"game-event","gameId":7314,"payload":{"events":[{"name":"hero_leveled_up","data":"{\"hero_level\": 1}"}]},"receivedAt":2150,"sourceSequence":15}
+{"type":"game-event","gameId":7314,"payload":{"events":[{"name":"hero_health_mana_info","data":"{\"health\": 660, \"max_health\": 660, \"mana\": 363, \"max_mana\": 363}"}]},"receivedAt":2200,"sourceSequence":16}
+{"type":"game-event","gameId":7314,"payload":{"events":[{"name":"hero_item_changed","data":"{\"slot\": 0, \"location\": \"hero\", \"name\": \"item_tango\", \"charges\": 3}"}]},"receivedAt":2250,"sourceSequence":17}
+{"type":"game-event","gameId":7314,"payload":{"events":[{"name":"clock_time_changed","data":"{\"clock_time\": 60, \"daytime\": true}"}]},"receivedAt":3000,"sourceSequence":18}
+{"type":"game-event","gameId":7314,"payload":{"events":[{"name":"gold","data":"{\"gold\": 920, \"gold_reliable\": 120, \"gold_unreliable\": 800}"}]},"receivedAt":3050,"sourceSequence":19}
+{"type":"game-event","gameId":7314,"payload":{"events":[{"name":"gpm","data":"{\"gpm\": 320}"}]},"receivedAt":3100,"sourceSequence":20}
+{"type":"game-event","gameId":7314,"payload":{"events":[{"name":"hero_leveled_up","data":"{\"hero_level\": 2}"}]},"receivedAt":3150,"sourceSequence":21}
+{"type":"game-event","gameId":7314,"payload":{"events":[{"name":"hero_health_mana_info","data":"{\"health\": 700, \"max_health\": 700, \"mana\": 390, \"max_mana\": 390}"}]},"receivedAt":3200,"sourceSequence":22}
+{"type":"game-event","gameId":7314,"payload":{"events":[{"name":"hero_item_changed","data":"{\"slot\": 1, \"location\": \"hero\", \"name\": \"item_power_treads\", \"passive\": true}"}]},"receivedAt":3250,"sourceSequence":23}
+{"type":"game-event","gameId":7314,"payload":{"events":[{"name":"death","data":"{\"deaths\": 1}"}]},"receivedAt":4000,"sourceSequence":24}
+{"type":"game-event","gameId":7314,"payload":{"events":[{"name":"hero_respawned","data":"{}"}]},"receivedAt":4200,"sourceSequence":25}
+{"type":"game-event","gameId":7314,"payload":{"events":[{"name":"clock_time_changed","data":"{\"clock_time\": 1800, \"daytime\": false}"}]},"receivedAt":5000,"sourceSequence":26}
+{"type":"game-event","gameId":7314,"payload":{"events":[{"name":"hero_item_changed","data":"{\"slot\": 2, \"location\": \"hero\", \"name\": \"item_manta\", \"passive\": false}"}]},"receivedAt":5100,"sourceSequence":27}
+{"type":"game-event","gameId":7314,"payload":{"events":[{"name":"match_ended","data":"{\"winner\": \"radiant\"}"}]},"receivedAt":6000,"sourceSequence":28}
+{"type":"info-update","gameId":7314,"payload":{"feature":"match_info","category":"match_info","key":"pseudo_match_id","value":"real-match-b"},"receivedAt":6500,"sourceSequence":29}
+{"type":"info-update","gameId":7314,"payload":{"feature":"me","category":"me","key":"hero","value":"phantom_assassin"},"receivedAt":6550,"sourceSequence":30}
+{"type":"info-update","gameId":7314,"payload":{"feature":"game","category":"game","key":"match_state","value":"DOTA_GAMERULES_STATE_HERO_SELECTION"},"receivedAt":6600,"sourceSequence":31}

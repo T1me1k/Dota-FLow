@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dota Flow — GEP Diagnostics</title>
+  <link rel="stylesheet" href="/apps/diagnostics-viewer/public/styles.css" />
+</head>
+<body>
+  <main class="shell">
+    <header class="topbar">
+      <div>
+        <div class="eyebrow">DOTA FLOW · DIAGNOSTICS 0.6</div>
+        <h1>GEP Recording Inspector</h1>
+        <p>Импорт JSONL, raw → canonical mapping, feature health и проблемы доставки событий.</p>
+      </div>
+      <nav><a href="/">Mock Dashboard</a></nav>
+    </header>
+
+    <section class="toolbar panel">
+      <label class="file-button">Открыть JSONL<input id="fileInput" type="file" accept=".jsonl,.json,text/plain" /></label>
+      <button id="sampleButton">Загрузить sample recording</button>
+      <button id="exportButton" disabled>Экспортировать report.json</button>
+      <span id="fileName">Файл не загружен</span>
+    </section>
+
+    <section id="summaryGrid" class="summary-grid"></section>
+
+    <section class="split">
+      <article class="panel">
+        <div class="section-head">
+          <div><div class="eyebrow">FEATURE HEALTH</div><h2>Доступность GEP-features</h2></div>
+          <div id="featureLegend" class="legend"></div>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Status</th><th>Feature</th><th>Count</th><th>Last seen</th><th>Expected</th></tr></thead>
+            <tbody id="featureRows"><tr><td colspan="5" class="empty">Загрузите recording.</td></tr></tbody>
+          </table>
+        </div>
+      </article>
+
+      <article class="panel">
+        <div class="section-head">
+          <div><div class="eyebrow">ISSUES</div><h2>Потери и несопоставленные данные</h2></div>
+          <select id="issueFilter">
+            <option value="all">Все</option>
+            <option value="UNMAPPED_PAYLOAD">Unmapped</option>
+            <option value="ENVELOPE_GAP">Gaps</option>
+            <option value="PIPELINE_WARNING">Pipeline</option>
+            <option value="JSONL_PARSE_ERROR">JSONL</option>
+          </select>
+        </div>
+        <div id="issueList" class="issue-list"><div class="empty">Проблем пока нет.</div></div>
+      </article>
+    </section>
+
+    <section class="panel mappings-panel">
+      <div class="section-head">
+        <div><div class="eyebrow">RAW → CANONICAL</div><h2>Журнал преобразования</h2></div>
+        <div class="filters">
+          <input id="searchInput" type="search" placeholder="Поиск event/feature/type" />
+          <select id="mappingFilter">
+            <option value="all">Все mappings</option>
+            <option value="mapped">Mapped</option>
+            <option value="ignored">Ignored</option>
+            <option value="status">Status</option>
+            <option value="warning">Warning</option>
+            <option value="invalid">Invalid</option>
+          </select>
+        </div>
+      </div>
+      <div class="table-wrap large">
+        <table>
+          <thead><tr><th>#</th><th>Received</th><th>Envelope</th><th>Raw feature/event</th><th>Result</th><th>Canonical</th><th>Details</th></tr></thead>
+          <tbody id="mappingRows"><tr><td colspan="7" class="empty">Загрузите recording.</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="panel final-state">
+      <div><div class="eyebrow">PIPELINE RESULT</div><h2>Итог после replay recording</h2></div>
+      <pre id="pipelineResult">Нет данных.</pre>
+    </section>
+  </main>
+  <script type="module" src="/apps/diagnostics-viewer/src/app.mjs"></script>
+</body>
+</html>

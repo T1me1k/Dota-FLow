@@ -1,0 +1,85 @@
+{
+  "name": "Phantom Assassin slow Battle Fury",
+  "initialState": {
+    "hero": "phantom_assassin",
+    "buildPlanId": "bf_desolator_bkb"
+  },
+  "events": [
+    {
+      "type": "MATCH_STARTED",
+      "gameTimeSec": 0,
+      "payload": {
+        "hero": "phantom_assassin",
+        "buildPlanId": "bf_desolator_bkb",
+        "source": "replay"
+      }
+    },
+    {
+      "type": "GAME_SNAPSHOT",
+      "gameTimeSec": 900,
+      "payload": {
+        "level": 11,
+        "gold": 1400,
+        "unreliableGold": 900,
+        "gpm": 390,
+        "xpm": 500,
+        "health": 1200,
+        "maxHealth": 1450,
+        "mana": 520,
+        "maxMana": 650,
+        "ultimateReady": true
+      }
+    },
+    {
+      "type": "GAME_SNAPSHOT",
+      "gameTimeSec": 1080,
+      "payload": {
+        "level": 13,
+        "gold": 3600,
+        "unreliableGold": 2300,
+        "gpm": 420,
+        "xpm": 535
+      }
+    },
+    {
+      "type": "ITEM_ADDED",
+      "gameTimeSec": 1140,
+      "payload": {
+        "itemId": "item_bfury",
+        "name": "Battle Fury",
+        "cost": 4100,
+        "goldAfter": 100,
+        "unreliableGoldAfter": 0
+      }
+    },
+    {
+      "type": "GAME_SNAPSHOT",
+      "gameTimeSec": 1320,
+      "payload": {
+        "level": 16,
+        "gold": 650,
+        "unreliableGold": 500,
+        "gpm": 505,
+        "xpm": 610,
+        "health": 1550,
+        "maxHealth": 1700,
+        "mana": 650,
+        "maxMana": 760
+      }
+    },
+    {
+      "type": "CONTEXT_UPDATED",
+      "gameTimeSec": 1380,
+      "payload": {
+        "safeRouteAvailable": false,
+        "alliesReady": 1,
+        "enemiesVisible": 0
+      }
+    },
+    {
+      "type": "MATCH_ENDED",
+      "gameTimeSec": 2700,
+      "payload": {}
+    }
+  ]
+}
