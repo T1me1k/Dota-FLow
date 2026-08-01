@@ -11,3 +11,7 @@ Pure selectors expose `loading`, `empty`, `unavailable`, `stale`, `error`, and `
 ## v0.21 additions
 
 Every live snapshot may expose `coachCall` and `coachCallHistory`. Providers must preserve confidence 0–1, urgency, cancellation/TTL fields, compact trace and quality. Mock and replay providers must not synthesize unavailable LIVE evidence.
+
+## Scenario capabilities (v0.22)
+
+Providers may expose `listScenarios`, `runScenario`, `runScenarioCategory`, `loadReplayScenario`, and `getScenarioGoldenDiff`. Mock and Replay providers implement them; Electron IPC throws a clear fail-closed error until connected.

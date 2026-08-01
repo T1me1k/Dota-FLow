@@ -30,3 +30,7 @@ Manual/inferred limits remain: lane position, route safety, vision, cooldowns, e
 ## Superseded integration layer in v0.21
 
 The v0.20 engines remain evidence producers. `decision-orchestrator.mjs` is now the only player-facing arbitration boundary; engine cards are diagnostic projections.
+
+## v0.22 architecture addendum
+
+Replay calibration reuses recording parsing, canonical reduction, `GameEventPipeline`, existing engines, Decision Orchestrator, bounded histories, and completion-time Match Review. Advice rendering and Scenario Workbench view models are downstream presentation layers, not decision engines.

@@ -1,0 +1,22 @@
+{
+  "heroId": "anti_mage",
+  "profileTier": "DETAILED",
+  "scenarios": [
+    "carry-01-anti_mage"
+  ],
+  "coveredPowerSpikes": [
+    "battle_fury",
+    "manta"
+  ],
+  "coveredBuildPlans": [
+    "standard"
+  ],
+  "coveredPhases": [
+    "LANING",
+    "MID_GAME",
+    "LATE_GAME"
+  ],
+  "knownGaps": [
+    "Real Overwolf telemetry is not validated"
+  ]
+}

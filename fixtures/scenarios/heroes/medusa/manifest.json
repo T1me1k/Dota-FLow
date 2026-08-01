@@ -1,0 +1,22 @@
+{
+  "heroId": "medusa",
+  "profileTier": "DETAILED",
+  "scenarios": [
+    "carry-03-medusa"
+  ],
+  "coveredPowerSpikes": [
+    "manta",
+    "skadi"
+  ],
+  "coveredBuildPlans": [
+    "standard"
+  ],
+  "coveredPhases": [
+    "LANING",
+    "MID_GAME",
+    "LATE_GAME"
+  ],
+  "knownGaps": [
+    "Real Overwolf telemetry is not validated"
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "heroId": "phantom_assassin",
+  "profileTier": "DETAILED",
+  "scenarios": [
+    "carry-04-phantom_assassin"
+  ],
+  "coveredPowerSpikes": [
+    "battle_fury",
+    "desolator"
+  ],
+  "coveredBuildPlans": [
+    "standard"
+  ],
+  "coveredPhases": [
+    "LANING",
+    "MID_GAME",
+    "LATE_GAME"
+  ],
+  "knownGaps": [
+    "Real Overwolf telemetry is not validated"
+  ]
+}

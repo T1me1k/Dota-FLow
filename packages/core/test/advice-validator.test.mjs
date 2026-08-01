@@ -1,0 +1,1 @@
+import test from'node:test';import assert from'node:assert/strict';import{validateAdvice}from'../src/advice-presentation.mjs';test('advice validator rejects empty, internal and long expert output',()=>{assert.equal(validateAdvice('').valid,false);assert.equal(validateAdvice('undefined').valid,false);assert.equal(validateAdvice('x'.repeat(81),{mode:'EXPERT'}).valid,false)});

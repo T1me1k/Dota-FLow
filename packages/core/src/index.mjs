@@ -37,3 +37,6 @@ export * from './content-system.mjs';
 
 export * from './decision-orchestrator.mjs';
 export * from './scenario-calibration.mjs';
+
+export * from './replay-calibration.mjs';
+export * from './advice-presentation.mjs';

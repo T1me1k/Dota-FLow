@@ -21,3 +21,7 @@ No Windows or real Overwolf runtime validation was performed in this environment
 ## Coach-call evidence (v0.21)
 
 The review timeline records call changes and quality. Metrics now include Coach Call Stability, Critical Call Survival Rate, Safe Fallback Rate, Objective Call Conversion, Call Resolution Rate and Contradictory Call Rate. Outcome attribution remains insufficient when subsequent evidence is unavailable.
+
+## Replay calibration
+
+Every bundled replay produces one post-stream review with coach timeline, stability, safe fallback, resolution, conversion, contradiction, and data-quality metrics. Scenario Workbench can display these metrics. Bundled contradictory-call rate is asserted as zero.
