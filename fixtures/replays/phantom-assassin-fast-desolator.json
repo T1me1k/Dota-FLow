@@ -1,0 +1,85 @@
+{
+  "name": "Phantom Assassin fast Desolator conversion",
+  "initialState": {
+    "hero": "phantom_assassin",
+    "buildPlanId": "bf_desolator_bkb"
+  },
+  "events": [
+    {
+      "type": "MATCH_STARTED",
+      "gameTimeSec": 0,
+      "payload": {
+        "hero": "phantom_assassin",
+        "buildPlanId": "bf_desolator_bkb",
+        "draft": {
+          "radiant": ["phantom_assassin", "puck", "tusk", "treant", "beastmaster"],
+          "dire": ["sniper", "drow_ranger", "crystal_maiden", "pugna", "natures_prophet"]
+        },
+        "source": "replay"
+      }
+    },
+    {
+      "type": "ITEM_ADDED",
+      "gameTimeSec": 780,
+      "payload": {
+        "itemId": "item_bfury",
+        "name": "Battle Fury",
+        "cost": 4100,
+        "goldAfter": 100,
+        "unreliableGoldAfter": 0
+      }
+    },
+    {
+      "type": "GAME_SNAPSHOT",
+      "gameTimeSec": 1080,
+      "payload": {
+        "level": 14,
+        "gold": 2100,
+        "unreliableGold": 1600,
+        "gpm": 625,
+        "xpm": 650,
+        "health": 1500,
+        "maxHealth": 1650,
+        "mana": 650,
+        "maxMana": 720,
+        "ultimateReady": true
+      }
+    },
+    {
+      "type": "ITEM_ADDED",
+      "gameTimeSec": 1140,
+      "payload": {
+        "itemId": "item_desolator",
+        "name": "Desolator",
+        "cost": 3500,
+        "goldAfter": 100,
+        "unreliableGoldAfter": 0
+      }
+    },
+    {
+      "type": "CONTEXT_UPDATED",
+      "gameTimeSec": 1170,
+      "payload": {
+        "enemyCoreDead": true,
+        "alliesReady": 4,
+        "safeRouteAvailable": true,
+        "roshanAvailable": true
+      }
+    },
+    {
+      "type": "HERO_VITALS_CHANGED",
+      "gameTimeSec": 1210,
+      "payload": {
+        "health": 1600,
+        "maxHealth": 1650,
+        "mana": 680,
+        "maxMana": 720
+      }
+    },
+    {
+      "type": "MATCH_ENDED",
+      "gameTimeSec": 2500,
+      "payload": {}
+    }
+  ]
+}

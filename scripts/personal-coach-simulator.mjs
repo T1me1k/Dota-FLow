@@ -1,0 +1,1 @@
+import {personalizeCoach,deriveLearningProfile} from '../packages/core/src/index.mjs';for(const coachingMode of ['BEGINNER','STANDARD','EXPERT'])console.log(coachingMode,personalizeCoach({action:'RESET',confidence:.88,reasons:['Низкое здоровье','Нет маны','Враги не видны']},{coachingMode}).reasons);console.log(deriveLearningProfile([]));

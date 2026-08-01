@@ -1,0 +1,3 @@
+import {evaluateCarryRole} from './carry-role-engine.mjs';import {evaluateMidRole} from './mid-role-engine.mjs';import {evaluateOfflaneRole} from './offlane-role-engine.mjs';import {evaluateSoftSupportRole} from './soft-support-role-engine.mjs';import {evaluateHardSupportRole} from './hard-support-role-engine.mjs';
+const strategies={carry:evaluateCarryRole,mid:evaluateMidRole,offlane:evaluateOfflaneRole,soft_support:evaluateSoftSupportRole,hard_support:evaluateHardSupportRole};
+export function evaluateRoleV2(state){return (strategies[state.role]??evaluateCarryRole)(state);}export {strategies as ROLE_V2_STRATEGIES};

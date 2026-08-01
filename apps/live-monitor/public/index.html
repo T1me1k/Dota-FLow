@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dota Flow — Live Bridge</title>
+  <link rel="stylesheet" href="/apps/live-monitor/public/styles.css" />
+</head>
+<body>
+  <main class="shell">
+    <header class="topbar">
+      <div>
+        <div class="eyebrow">DOTA FLOW · COACH SUITE 0.12</div>
+        <h1>Live GEP Monitor</h1>
+        <p>Один поток Overwolf envelopes → persistent diagnostics → canonical pipeline → macro decision.</p>
+      </div>
+      <nav><a href="/">Dashboard</a><a href="/coach">Coach</a><a href="/diagnostics">Diagnostics</a><a href="/validation">Validation</a><a href="/overlay">Overlay</a></nav>
+    </header>
+
+    <section class="toolbar panel">
+      <button id="startButton">Запустить sample stream</button>
+      <button id="stepButton">Следующий envelope</button>
+      <button id="pauseButton">Пауза</button>
+      <button id="resetButton">Новая live session</button>
+      <label class="overlay-setting">Overlay
+        <select id="overlayMode">
+          <option value="COMPACT">Compact</option>
+          <option value="EXPANDED">Expanded</option>
+        </select>
+      </label>
+      <label class="overlay-check"><input id="hideLowConfidence" type="checkbox" /> Скрывать low-confidence</label>
+      <label class="overlay-check"><input id="voiceCoachToggle" type="checkbox" /> Voice Coach</label>
+      <button id="showOverlayButton">Показать overlay</button>
+      <button id="hideOverlayButton">Скрыть overlay</button>
+      <button id="startCaptureButton">Новая capture</button>
+      <button id="stopCaptureButton">Завершить capture</button>
+      <button id="openCapturesButton">Папка recordings</button>
+      <span id="captureLabel">Capture: browser preview</span>
+      <span id="sourceLabel">Источник: browser simulator</span>
+    </section>
+
+    <section class="status-row panel">
+      <div>
+        <span id="connectionState" class="state waiting">WAITING</span>
+        <strong id="connectionMessage">Ожидание первого envelope</strong>
+      </div>
+      <div id="sessionLabel">live:1</div>
+    </section>
+
+    <section id="summaryGrid" class="summary-grid"></section>
+
+    <section class="split">
+      <article class="panel decision-panel">
+        <div class="eyebrow">CURRENT MACRO</div>
+        <div id="decisionAction" class="decision">NEUTRAL</div>
+        <div id="decisionConfidence" class="confidence">0%</div>
+        <ul id="decisionReasons" class="reasons"></ul>
+        <div class="eyebrow">ROLE TASK</div>
+        <div id="roleAction" class="confidence">WAIT</div>
+        <div id="roleMessage" class="confidence">Role Engine waiting</div>
+        <div id="roleContextBadge" class="context-badge limited">CONTEXT LIMITED</div>
+        <div id="roleLimitations" class="context-note"></div>
+      </article>
+
+      <article class="panel">
+        <div class="eyebrow">NORMALIZED STATE</div>
+        <h2>Текущее состояние игрока</h2>
+        <dl id="stateGrid" class="state-grid"></dl>
+      </article>
+    </section>
+
+    <section class="panel">
+      <div class="section-head"><div><div class="eyebrow">ROLE CONTEXT</div><h2>Доступность данных для ролевого решения</h2></div><div id="roleContextSummary"></div></div>
+      <div id="roleSignalList" class="signal-grid"></div>
+    </section>
+    <section class="panel manual-context-panel">
+      <div class="section-head"><div><div class="eyebrow">MANUAL CONTEXT</div><h2>Быстрые подтверждения недоступных GEP-сигналов</h2></div><div id="manualContextStatus" class="context-note">Нет ручных отметок</div></div>
+      <div class="manual-groups">
+        <div class="manual-group"><strong>Линия</strong><button data-manual-command="LANE_PUSHED">Wave pushed</button><button data-manual-command="LANE_NOT_PUSHED">Wave not pushed</button><button data-manual-command="LANE_PRIORITY_WON">Priority won</button><button data-manual-command="LANE_PRIORITY_LOST">Priority lost</button></div>
+        <div class="manual-group"><strong>Маршрут</strong><button data-manual-command="ROUTE_SAFE">Route safe</button><button data-manual-command="ROUTE_UNSAFE">Route unsafe</button><button data-manual-command="WISDOM_FIGHT_EXPECTED">Wisdom fight</button><button data-manual-command="WISDOM_QUIET">Wisdom quiet</button></div>
+        <div class="manual-group"><strong>Bottle</strong><select id="bottleRuneSelect"><option value="">Не менять</option><option value="BOTTLE_DOUBLE_DAMAGE">Double Damage</option><option value="BOTTLE_HASTE">Haste</option><option value="BOTTLE_INVISIBILITY">Invisibility</option><option value="BOTTLE_REGENERATION">Regeneration</option><option value="BOTTLE_ARCANE">Arcane</option><option value="BOTTLE_ILLUSION">Illusion</option><option value="BOTTLE_SHIELD">Shield</option><option value="BOTTLE_EMPTY">Bottle empty</option></select></div>
+        <div class="manual-group"><strong>Цель</strong><select id="laneTargetSelect"><option value="">Не менять</option><option value="TARGET_TOP">Top target</option><option value="TARGET_BOTTOM">Bottom target</option><option value="TARGET_NONE">No target</option></select><button data-manual-command="CARRY_THREAT_HIGH">Carry threatened</button><button data-manual-command="CARRY_THREAT_LOW">Carry safe</button></div>
+        <div class="manual-group"><strong>Саппорт</strong><button data-manual-command="PULL_AVAILABLE">Pull available</button><button data-manual-command="STACK_AVAILABLE">Stack available</button><button data-manual-command="CLEAR">Clear manual context</button></div>
+      </div>
+      <div id="manualShortcutHelp" class="shortcut-help">Electron shortcuts: Ctrl+Shift+1/2 lane · Ctrl+Shift+3/4 route · Ctrl+Shift+D DD · Ctrl+Shift+W Wisdom · Ctrl+Shift+0 clear</div>
+    </section>
+
+
+
+    <section class="split coach-split">
+      <article class="panel">
+        <div class="section-head"><div><div class="eyebrow">COACH TIMERS</div><h2>Руны и активные таймеры</h2></div><div id="voiceCueLabel" class="context-note">Voice idle</div></div>
+        <div id="coachTimerList" class="compact-list"></div>
+        <div class="coach-actions"><button id="startRoshanTimer">Roshan killed</button><button id="startAegisTimer">Aegis picked</button><button id="clearCoachTimers">Clear timers</button></div>
+      </article>
+      <article class="panel">
+        <div class="section-head"><div><div class="eyebrow">COUNTER ITEMS</div><h2>Адаптация против draft</h2></div><a href="/coach">Открыть Coach Center</a></div>
+        <div id="counterItemList" class="compact-list"></div>
+      </article>
+    </section>
+
+    <section class="split">
+      <article class="panel">
+        <div class="section-head"><div><div class="eyebrow">FEATURE HEALTH</div><h2>GEP availability</h2></div><div id="featureSummary"></div></div>
+        <div id="featureList" class="compact-list"></div>
+      </article>
+      <article class="panel">
+        <div class="section-head"><div><div class="eyebrow">LIVE ISSUES</div><h2>Последние проблемы</h2></div></div>
+        <div id="issueList" class="compact-list"></div>
+      </article>
+    </section>
+
+    <section class="panel">
+      <div class="section-head"><div><div class="eyebrow">BRIDGE EVENTS</div><h2>Transport и session lifecycle</h2></div></div>
+      <div id="bridgeEventList" class="event-list"></div>
+    </section>
+
+    <section class="panel">
+      <div class="section-head"><div><div class="eyebrow">SESSION ARCHIVE</div><h2>Завершённые live-сессии</h2></div></div>
+      <div id="archiveList" class="compact-list"></div>
+    </section>
+  </main>
+  <script type="module" src="/apps/live-monitor/src/app.mjs"></script>
+</body>
+</html>

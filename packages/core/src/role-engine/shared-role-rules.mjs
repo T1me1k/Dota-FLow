@@ -1,0 +1,2 @@
+export function roleResult(action,state,reasons,{warnings=[],blockers=[],missingSignals=[]}={}){return {action,role:state.role,confidence:missingSignals.length?.52:.76,reasons,warnings,blockers,missingSignals,dataQuality:missingSignals.length?'LIMITED':'INFERRED',generatedAtSec:state.gameTimeSec};}
+export function unsafeWithout(state,...signals){return signals.filter(key=>state.roleContext?.[key]==null);}

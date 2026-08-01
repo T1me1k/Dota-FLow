@@ -1,0 +1,36 @@
+{
+  "name": "dota-flow-event-probe",
+  "version": "0.20.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test packages/core/test/*.test.mjs",
+    "mock": "node apps/mock-dashboard/server.mjs",
+    "demo": "node apps/mock-dashboard/server.mjs --open",
+    "check": "node scripts/check-project.mjs",
+    "replay": "node scripts/replay.mjs",
+    "diagnose": "node scripts/diagnose-recording.mjs",
+    "live": "node scripts/live-bridge-simulator.mjs",
+    "overlay": "node scripts/overlay-simulator.mjs",
+    "roles": "node scripts/role-simulator.mjs",
+    "role-context": "node scripts/role-context-simulator.mjs",
+    "validate:match": "node scripts/validate-match.mjs",
+    "validate:suite": "node scripts/validate-suite.mjs",
+    "preflight": "node scripts/preflight.mjs",
+    "manual-context": "node scripts/manual-context-simulator.mjs",
+    "coach": "node scripts/coach-suite-simulator.mjs",
+    "review": "node scripts/review-simulator.mjs",
+    "lanes": "node scripts/lane-simulator.mjs",
+    "objectives": "node scripts/objective-simulator.mjs",
+    "personal-coach": "node scripts/personal-coach-simulator.mjs",
+    "content:validate": "node scripts/content-tool.mjs validate",
+    "content:list": "node scripts/content-tool.mjs list",
+    "content:coverage": "node scripts/content-tool.mjs coverage",
+    "content:migrate": "node scripts/content-tool.mjs migrate",
+    "desktop:build": "npm --prefix apps/desktop run build",
+    "desktop:dev": "npm --prefix apps/desktop run dev"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
