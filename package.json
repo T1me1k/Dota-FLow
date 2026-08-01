@@ -5,8 +5,11 @@
   "type": "module",
   "scripts": {
     "test": "node --test packages/core/test/*.test.mjs",
-    "mock": "node apps/mock-dashboard/server.mjs",
-    "demo": "node apps/mock-dashboard/server.mjs --open",
+    "dev": "npm --prefix apps/desktop install && npm --prefix apps/desktop run dev",
+    "build": "npm --prefix apps/desktop install && npm --prefix apps/desktop run build",
+    "typecheck": "npm --prefix apps/desktop install && npm --prefix apps/desktop run typecheck",
+    "mock": "npm run build && node apps/mock-dashboard/server.mjs",
+    "demo": "npm run build && node apps/mock-dashboard/server.mjs --open",
     "check": "node scripts/check-project.mjs",
     "replay": "node scripts/replay.mjs",
     "diagnose": "node scripts/diagnose-recording.mjs",
@@ -47,7 +50,5 @@
     "capture:first-match": "node scripts/capture-tool.mjs validate",
     "scenarios:session": "node scripts/session-coach-scenarios.mjs"
   },
-  "engines": {
-    "node": ">=20"
-  }
+  "engines": { "node": ">=20" }
 }

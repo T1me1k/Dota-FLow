@@ -1,0 +1,2 @@
+export interface MockMatchOptions {hero:string;role:string;draft:{radiant:string[];dire:string[]};team?:'radiant'|'dire';buildPlanId?:string}
+export class MockMatchRuntime {snapshot():Record<string,any>;startMatch(options:MockMatchOptions):Record<string,any>;endMatch():Record<string,any>;advance(seconds?:number):Record<string,any>;sendManualContext(command:string):Record<string,any>;startCoachTimer(command:{kind?:string;durationSec:number;label?:string}):Record<string,any>}
