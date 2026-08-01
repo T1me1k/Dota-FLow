@@ -62,6 +62,6 @@ Dota Flow now includes 30 synthetic replay-backed canonical scenarios, 90 checkp
 
 Use explicit `DOTA_FLOW_RUNTIME_MODE=mock|replay|live`; live is fail-closed. Start with [Windows setup](docs/WINDOWS_DEVELOPMENT_SETUP.md), [runtime integration](docs/OVERWOLF_RUNTIME_INTEGRATION.md), and [first capture protocol](docs/FIRST_CAPTURE_PROTOCOL.md). Capture tooling: `capture:inspect`, `capture:validate`, `capture:replay`, and `capture:redact`. Real Windows/Overwolf/Dota/GEP validation is pending and is tracked in [the validation matrix](docs/V023_WINDOWS_VALIDATION_STATUS.md).
 
-## Session Coach — Development Preview (v0.23.3)
+## Session Coach — Development Preview (v0.23.4)
 
 Session Coach adds optional local-only post-match check-ins, explainable session readiness, daily reflection, and carefully sample-gated personal patterns. Recommendations never restrict play, subjective state is always user-entered, and the feature is not a medical assessment. See [the product specification](docs/product/session-coach-spec.md) and [data/privacy notes](docs/privacy/session-coach-data.md).
