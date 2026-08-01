@@ -1,6 +1,20 @@
-# Dota Flow — Product Foundation 0.20
+# TRUST — Dota 2 Coaching Assistant
 
-Dota Flow is an explainable, local-first live coaching assistant for Dota 2. A canonical event pipeline normalizes permitted telemetry and keeps macro, role, lane, objective, power-spike, adaptive-build, personal-coach and post-match review decisions replayable. It never controls the hero or invents hidden game state.
+TRUST is an explainable, local-first live coaching assistant for Dota 2. A canonical event pipeline normalizes permitted telemetry and keeps macro, role, lane, objective, power-spike, adaptive-build, personal-coach and post-match review decisions replayable. It never controls the hero or invents hidden game state.
+
+## Desktop web interface
+
+The premium desktop workspace uses React, TypeScript, Vite and Tailwind CSS. It keeps the existing runtime provider contract for mock, replay and Electron IPC modes. Supported product routes are `/`, `/about`, `/coach`, `/live`, `/overlay`, `/diagnostics`, `/validation`, `/privacy`, and `/terms`; the overlay is an intentionally separate compact surface.
+
+```bash
+npm install --prefix apps/desktop
+npm run desktop:dev       # Vite development server
+npm run desktop:typecheck # strict TypeScript check
+npm run desktop:build     # production bundle
+npm test                  # core engine and pipeline suite
+```
+
+Mock mode is the default. To select a runtime explicitly, set `VITE_DOTA_FLOW_RUNTIME_MODE=mock|replay|live`; live mode requires the existing Electron preload bridge and fails closed when it is unavailable.
 
 ## 0.20 coverage
 
