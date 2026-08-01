@@ -1,0 +1,1 @@
+import test from'node:test';import assert from'node:assert/strict';import{inspectCapture}from'../src/runtime-v023.mjs';test('inspector reports capabilities and transitions',async()=>{const x=await inspectCapture('fixtures/captures/synthetic-v023');assert.ok(x.supportedFeatures.includes('roster'));assert.deepEqual(x.matchTransitions,['MATCH_STARTED','MATCH_ENDED','MATCH_RESET'])})

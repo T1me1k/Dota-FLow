@@ -27,3 +27,6 @@ Start with `docs/DECISION_ORCHESTRATOR_IMPLEMENTED.md`, then run `npm test` and 
 ## v0.22 calibration commands
 
 Run `npm run scenarios:replay`, `npm run scenarios:golden`, `npm run scenarios:coverage`, and `npm run advice:validate`. Golden updates require `npm run scenarios:golden -- --update`. The recordings are synthetic canonical fixtures; MANUAL/INFERRED limitations remain documented in `docs/V022_PRODUCT_UX_STATUS.md`.
+
+## v0.23.0
+See `docs/V023_WINDOWS_VALIDATION_STATUS.md` and `docs/WINDOWS_DEVELOPMENT_SETUP.md`. Runtime modes are explicit; LIVE_GEP fails closed. Real Windows/Overwolf/Dota/GEP validation remains pending.

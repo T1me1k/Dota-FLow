@@ -1,0 +1,1 @@
+import test from'node:test';import assert from'node:assert/strict';import{inspectCapture}from'../src/runtime-v023.mjs';test('two-match reset is observable without restarting capture',async()=>{const x=await inspectCapture('fixtures/captures/synthetic-v023');assert.equal(x.matchTransitions.at(-1),'MATCH_RESET')})

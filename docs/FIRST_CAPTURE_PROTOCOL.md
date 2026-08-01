@@ -1,0 +1,3 @@
+# First capture protocol
+
+Open `/capture`; complete its 13 checks. Manually confirm `-gamestateintegration`, Overwolf approval and Dota launch. In a bot lobby choose a DETAILED hero; buy starting items, gain levels, learn abilities, make last hits/denies, die/respawn, buy a core item, send Manual Context, start a Coach Timer, wait for Power Rune and Wisdom timings, end the match, and start a second lobby without restarting Dota Flow. Confirm game start/clock/hero/role/roster/economy/level/CS/abilities/death/respawn/items when supported/match end/reset plus manual context, timer and capture continuity. Stop/export and run inspect, validate and replay. Optional unavailable GEP signals are warnings, not automatic failure.

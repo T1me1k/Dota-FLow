@@ -15,3 +15,7 @@ Every live snapshot may expose `coachCall` and `coachCallHistory`. Providers mus
 ## Scenario capabilities (v0.22)
 
 Providers may expose `listScenarios`, `runScenario`, `runScenarioCategory`, `loadReplayScenario`, and `getScenarioGoldenDiff`. Mock and Replay providers implement them; Electron IPC throws a clear fail-closed error until connected.
+
+## v0.23 service and IPC
+
+The framework-independent service owns start/stop/status/snapshot/subscription, manual context, coach timer, capture, and bounded diagnostics. Electron preload exposes only allowlisted runtime/capture/manual/timer/diagnostic operations; subscriptions return an unsubscribe callback. LIVE_GEP renderer uses `ElectronIpcRuntimeProvider`; mock and replay remain independent.
