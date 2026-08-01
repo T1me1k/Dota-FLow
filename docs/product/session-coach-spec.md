@@ -1,4 +1,4 @@
-# Session Coach MVP (v0.23.3)
+# Session Coach MVP (v0.23.4)
 
 Session Coach is a local-first development preview that helps players connect self-reported post-match state with session duration, match context, hero/role history, time of day, and Match Review quality. It offers recommendations, never restrictions, and is not a medical or psychological assessment.
 
