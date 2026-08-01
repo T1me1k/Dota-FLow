@@ -1,0 +1,2 @@
+import test from 'node:test';import assert from 'node:assert/strict';import {GameEventPipeline} from '../src/live-pipeline.mjs';
+test('pipeline exposes bounded orchestrated call and resets it per match',()=>{const p=new GameEventPipeline();const a=p.snapshot();assert.ok(a.coachCall);assert.ok(Array.isArray(a.coachCallHistory));assert.doesNotThrow(()=>JSON.stringify(a));assert.ok(a.coachCallHistory.length<=120);});

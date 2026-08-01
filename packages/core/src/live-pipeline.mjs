@@ -9,6 +9,7 @@ import { LaneMatchupEngine } from './lane-matchup-engine.mjs';
 import { ObjectiveEngine } from './objective-engine.mjs';
 import { AdaptiveBuildCoordinator } from './adaptive-build-advisor.mjs';
 import { evaluateRoleV2 } from './role-engine/index.mjs';
+import { DecisionOrchestratorCoordinator } from './decision-orchestrator.mjs';
 
 const HISTORY_LIMIT = 200;
 function appendBounded(history, value) { history.push(value); if (history.length > HISTORY_LIMIT) history.splice(0, history.length - HISTORY_LIMIT); }
@@ -48,6 +49,7 @@ export class GameEventPipeline {
     this.laneEngine = new LaneMatchupEngine();
     this.objectiveEngine = new ObjectiveEngine();
     this.buildCoordinator = new AdaptiveBuildCoordinator(this.coordinatorOptions?.build ?? {});
+    this.orchestrator = new DecisionOrchestratorCoordinator(this.coordinatorOptions?.orchestrator ?? {});
     this.decision = this.coordinator.update(this.state);
     this.roleDecision = evaluateRoleV2(this.state);
     this.laneDecision = this.laneEngine.evaluate(this.state);
@@ -58,6 +60,7 @@ export class GameEventPipeline {
     this.laneDecisionHistory = [];
     this.objectiveDecisionHistory = [];
     this.eventCount = 0;
+    this.coachCall = this.updateCoachCall('PIPELINE_INITIALIZED');
     this.coach = buildCoachSuiteSnapshot(this.snapshotBase());
   }
 
@@ -68,6 +71,7 @@ export class GameEventPipeline {
       this.coordinator = new StableDecisionCoordinator(this.coordinatorOptions);
       this.legacyRoleFallback = new StableRoleDecisionCoordinator(this.coordinatorOptions?.role ?? {});
       this.buildCoordinator = new AdaptiveBuildCoordinator(this.coordinatorOptions?.build ?? {});
+      this.orchestrator.reset();
       this.decisionHistory = [];
       this.roleDecisionHistory = [];
       this.laneDecisionHistory = [];
@@ -84,6 +88,7 @@ export class GameEventPipeline {
     this.laneDecision = this.laneEngine.evaluate(this.state);
     this.objectiveDecision = this.objectiveEngine.evaluate(this.state);
     this.adaptiveBuild = this.buildCoordinator.update(this.state);
+    this.coachCall = this.updateCoachCall(event.type);
     this.eventCount += 1;
 
     if (this.decision.action !== previousDecision?.action) {
@@ -120,8 +125,14 @@ export class GameEventPipeline {
       laneDecisionHistory:[...this.laneDecisionHistory],
       objectiveDecisionHistory:[...this.objectiveDecisionHistory],
       buildPlanHistory:[...(this.buildCoordinator?.history??[])],
+      coachCall:this.coachCall,
+      coachCallHistory:[...this.orchestrator.history],
       eventCount: this.eventCount
     };
+  }
+
+  updateCoachCall(reason) {
+    return this.orchestrator.update({ state:this.state, powerSpike:this.decision?.powerState??null, macroDecision:this.decision, roleDecision:this.roleDecision, laneDecision:this.laneDecision, objectiveDecision:this.objectiveDecision, adaptiveBuild:this.adaptiveBuild, coachProfile:this.state.coachProfile, dataQuality:{ lane:this.laneDecision?.dataQuality, objective:this.objectiveDecision?.dataQuality, role:this.state.roleContext?.meta?.quality??'UNKNOWN' } }, reason);
   }
 
   snapshot() {

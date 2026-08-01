@@ -17,3 +17,7 @@ Every recommendation includes confidence, reasons, warnings, blockers, missing s
 - Fixtures and browser demonstrations are simulated, not evidence of production telemetry.
 
 No Windows or real Overwolf runtime validation was performed in this environment. The adapter remains a thin transport; production whitelisting, payload validation, performance testing, packaging, signing, and installer work are deferred.
+
+## Coach-call evidence (v0.21)
+
+The review timeline records call changes and quality. Metrics now include Coach Call Stability, Critical Call Survival Rate, Safe Fallback Rate, Objective Call Conversion, Call Resolution Rate and Contradictory Call Rate. Outcome attribution remains insufficient when subsequent evidence is unavailable.

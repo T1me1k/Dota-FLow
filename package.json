@@ -1,6 +1,6 @@
 {
   "name": "dota-flow-event-probe",
-  "version": "0.20.1",
+  "version": "0.21.0",
   "private": true,
   "type": "module",
   "scripts": {
@@ -23,6 +23,7 @@
     "lanes": "node scripts/lane-simulator.mjs",
     "objectives": "node scripts/objective-simulator.mjs",
     "personal-coach": "node scripts/personal-coach-simulator.mjs",
+    "scenarios": "node scripts/scenarios.mjs",
     "content:validate": "node scripts/content-tool.mjs validate",
     "content:list": "node scripts/content-tool.mjs list",
     "content:coverage": "node scripts/content-tool.mjs coverage",
