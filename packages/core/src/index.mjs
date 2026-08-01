@@ -40,3 +40,4 @@ export * from './scenario-calibration.mjs';
 
 export * from './replay-calibration.mjs';
 export * from './advice-presentation.mjs';
+export * from './session-coach.mjs';

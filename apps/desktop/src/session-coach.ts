@@ -1,0 +1,20 @@
+export const sessionCoachSchemaVersion = 1 as const;
+export type PrimaryState='CALM'|'IN_FLOW'|'PROUD'|'HARD_CARRIED'|'BARELY_WON'|'DISAPPOINTED'|'THREW_GAME'|'REVENGE_QUEUE'|'TEAM_FRUSTRATION'|'TILTED'|'TIRED'|'UNFOCUSED'|'UNCERTAIN';
+export type QueueMotivation='ENJOYMENT'|'IMPROVEMENT'|'PLAY_WITH_FRIENDS'|'CLIMB_RANK'|'REVENGE_LOSS'|'PROVE_MYSELF'|'END_ON_WIN'|'BOREDOM'|'HABIT'|'UNSURE';
+export interface MatchContext { heroId?:string|null;heroName?:string|null;role?:string|null;mode?:string|null;startedAt?:string|null;endedAt?:string|null;durationSec?:number|null;won?:boolean|null;resultKnown?:boolean;kills?:number|null;deaths?:number|null;assists?:number|null;gameQuality?:number|null;FPI?:number|null;decisionSuccess?:number|null;callStability?:number|null;powerSpikeConversion?:number|null;objectiveConversion?:number|null;dataQuality?:string|null;runtimeMode?:string|null }
+export interface PostMatchCheckIn {schemaVersion:1;id:string;matchId:string;sessionId:string;createdAt:string;completedAt:string|null;skipped:boolean;primaryState:PrimaryState|null;additionalStates:PrimaryState[];energy:1|2|3|4|5|null;focus:1|2|3|4|5|null;desireToPlay:1|2|3|4|5|null;queueMotivation:QueueMotivation|null;freeformNote:string|null;matchContext:MatchContext|null;source:'USER'|'MOCK'|'REPLAY'|'DEMO';consentVersion:number}
+export interface DailyReflection {id:string;localDate:string;createdAt:string;sessionIds:string[];overallFeeling:number|null;sessionSatisfaction:number|null;wasContinuingWorthIt:boolean|null;shouldHaveStoppedAfterMatch:number|null;mainFactors:string[];comparedWithSessionStart:'BETTER'|'SAME'|'WORSE'|'UNSURE';note:string|null;skipped:boolean}
+
+const DB='dota-flow-session-coach-v1',STORE='records';
+/** IndexedDB is the production browser adapter. It never performs a network request. */
+export class IndexedDbSessionCoachRepository {
+  private db():Promise<IDBDatabase>{return new Promise((resolve,reject)=>{const request=indexedDB.open(DB,1);request.onupgradeneeded=()=>{const db=request.result;if(!db.objectStoreNames.contains(STORE))db.createObjectStore(STORE,{keyPath:'key'})};request.onsuccess=()=>resolve(request.result);request.onerror=()=>reject(new Error('SESSION_COACH_STORAGE_UNAVAILABLE'))})}
+  private async put(key:string,value:unknown){const db=await this.db();return new Promise<void>((resolve,reject)=>{const tx=db.transaction(STORE,'readwrite');tx.objectStore(STORE).put({key,value});tx.oncomplete=()=>resolve();tx.onerror=()=>reject(new Error('SESSION_COACH_STORAGE_WRITE_FAILED'))})}
+  private async get<T>(key:string,fallback:T):Promise<T>{const db=await this.db();return new Promise((resolve)=>{const req=db.transaction(STORE).objectStore(STORE).get(key);req.onsuccess=()=>resolve((req.result?.value??fallback) as T);req.onerror=()=>resolve(fallback)})}
+  async saveCheckIn(record:PostMatchCheckIn){const all=await this.listCheckIns();await this.put('checkIns',[...all.filter(x=>x.id!==record.id),record]);return record}
+  async listCheckIns(){const raw=await this.get<unknown[]>('checkIns',[]);return raw.filter((x):x is PostMatchCheckIn=>Boolean(x&&typeof x==='object'&&(x as PostMatchCheckIn).schemaVersion===1&&(x as PostMatchCheckIn).id))}
+  async deleteCheckIn(id:string){await this.put('checkIns',(await this.listCheckIns()).filter(x=>x.id!==id))}
+  async exportAll(){return{schemaVersion:1,exportedAt:new Date().toISOString(),storageMode:'LOCAL_INDEXED_DB',checkIns:await this.listCheckIns(),reflections:await this.get('reflections',[]),sessions:await this.get('sessions',[])}}
+  async deleteAll(){await this.put('checkIns',[]);await this.put('reflections',[]);await this.put('sessions',[])}
+}
+export const STATE_GROUPS=[{title:'Positive',states:[['IN_FLOW','In flow'],['PROUD','Proud of my play'],['CALM','Calm']]},{title:'Heavy or neutral',states:[['BARELY_WON','Barely pulled through'],['DISAPPOINTED','Disappointed'],['TIRED','Tired'],['UNFOCUSED','Low focus']]},{title:'Impulsive',states:[['REVENGE_QUEUE','Want to win it back'],['THREW_GAME','I threw the game'],['TEAM_FRUSTRATION','Team frustration'],['TILTED','Tilted']]}] as const;

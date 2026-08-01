@@ -1,6 +1,6 @@
 {
   "name": "dota-flow-event-probe",
-  "version": "0.23.2",
+  "version": "0.23.3",
   "private": true,
   "type": "module",
   "scripts": {
@@ -44,7 +44,8 @@
     "capture:validate": "node scripts/capture-tool.mjs validate",
     "capture:replay": "node scripts/capture-tool.mjs replay",
     "capture:redact": "node scripts/capture-tool.mjs redact",
-    "capture:first-match": "node scripts/capture-tool.mjs validate"
+    "capture:first-match": "node scripts/capture-tool.mjs validate",
+    "scenarios:session": "node scripts/session-coach-scenarios.mjs"
   },
   "engines": {
     "node": ">=20"
