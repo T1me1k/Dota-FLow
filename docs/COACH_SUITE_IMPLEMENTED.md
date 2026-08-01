@@ -77,3 +77,7 @@ npm run mock
 - Roshan/Aegis and other non-GEP timers are user-triggered until a reliable live signal is validated;
 - Flow Performance Index is an explainable heuristic, not an official matchmaking rating;
 - player scouting is public-data-only and must respect provider limits and user privacy.
+
+## Voice arbitration (v0.21)
+
+Voice Coach consumes `coachCall` as its sole live arbitration result. One primary message is emitted, repeated actions are deduplicated, cooldown applies, and CRITICAL safety may interrupt a lower-priority cue. Timers cannot independently interrupt HIGH/CRITICAL calls.

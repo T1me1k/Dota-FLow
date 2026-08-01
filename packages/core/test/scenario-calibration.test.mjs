@@ -1,0 +1,2 @@
+import test from 'node:test';import assert from 'node:assert/strict';import {SCENARIOS,runScenarios,summarizeScenarios} from '../src/scenario-calibration.mjs';
+test('at least sixty diverse bundled scenarios pass without contradictions',()=>{assert.ok(SCENARIOS.length>=60);assert.ok(new Set(SCENARIOS.map(x=>x.category)).size>=18);const s=summarizeScenarios(runScenarios());assert.equal(s.failed,0);assert.equal(s.forbiddenActionViolations,0);});

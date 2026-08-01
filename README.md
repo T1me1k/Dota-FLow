@@ -49,3 +49,7 @@ Fixtures, CLI output and browser cards are simulations. Real Dota GEP, transpare
 ## v0.20.1 Hardening & Integration
 
 Role Engines v2 are the primary pipeline route; the legacy coordinator is retained only as an explicitly named compatibility fallback. Runtime provider and desktop build boundaries are documented in [the integration audit](docs/V020_INTEGRATION_AUDIT.md) and [desktop status](docs/DESKTOP_BUILD_STATUS.md). Use `npm run desktop:validate` offline; `npm run desktop:build` is a real Vite build and needs installed frontend dependencies.
+
+## v0.21.0 — Decision Orchestrator
+
+Dota Flow now presents one conflict-free `coachCall`, backed by a compact trace, bounded history and 65-scenario calibration suite. See [orchestrator](docs/DECISION_ORCHESTRATOR_IMPLEMENTED.md), [contract](docs/COACH_CALL_CONTRACT.md), and [priority matrix](docs/V021_DECISION_PRIORITY_MATRIX.md). Run `npm run scenarios`; use `/scenarios` for the development workbench.

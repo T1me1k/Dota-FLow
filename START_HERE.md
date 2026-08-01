@@ -19,3 +19,7 @@ The Linux checks do not validate actual GEP or overlay behavior. Before release,
 ## v0.20.1 integration entry points
 
 Read `docs/V020_INTEGRATION_AUDIT.md`, `docs/V020_TEST_COVERAGE.md`, and `docs/RUNTIME_PROVIDER_CONTRACT.md` before changing the pipeline. Role v2 is primary. Mock/replay providers are supported; Electron IPC and Windows/Overwolf remain prepared but unconnected.
+
+## v0.21 entry point
+
+Start with `docs/DECISION_ORCHESTRATOR_IMPLEMENTED.md`, then run `npm test` and `npm run scenarios`. Live Match consumes a single coach call; raw engine outputs are diagnostics only.

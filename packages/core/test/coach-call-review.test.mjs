@@ -1,0 +1,2 @@
+import test from 'node:test';import assert from 'node:assert/strict';import {createMatchReview} from '../src/match-review.mjs';
+test('review includes coach calls and v021 metrics',()=>{const r=createMatchReview({state:{matchId:'x'},coachCallHistory:[{gameTimeSec:1,action:'RESET',confidence:.9,dataQuality:'LIVE'}]});assert.ok(r.timeline.some(x=>x.category==='COACH_CALL'));for(const k of ['coachCallStability','safeFallbackRate','callResolutionRate','contradictoryCallRate'])assert.ok(k in r.metrics);assert.equal(r.metrics.contradictoryCallRate,0);});

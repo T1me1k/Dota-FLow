@@ -1,0 +1,3 @@
+import test from 'node:test';import assert from 'node:assert/strict';import {actionsConflict,DECISION_CONFLICT_MATRIX,orchestrateDecision} from '../src/decision-orchestrator.mjs';
+test('required conflict matrix is explicit and symmetric',()=>{assert.ok(DECISION_CONFLICT_MATRIX.length>=10);for(const [a,b] of DECISION_CONFLICT_MATRIX){assert.equal(actionsConflict(a,b),true);assert.equal(actionsConflict(b,a),true);}});
+test('conflicting farm is suppressed by confirmed Roshan',()=>{const c=orchestrateDecision({state:{gameTimeSec:1,health:100,maxHealth:100},macroDecision:{action:'FARM',confidence:.9},objectiveDecision:{action:'TAKE_ROSHAN',confidence:.9,windowSec:30}});assert.equal(c.primaryAction,'TAKE_ROSHAN');assert.ok(c.suppressedActions.some(x=>x.action==='FARM'));});

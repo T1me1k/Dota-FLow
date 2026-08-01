@@ -34,3 +34,6 @@ export * from './objective-engine.mjs';
 export * from './match-review.mjs';
 export * from './personal-coach.mjs';
 export * from './content-system.mjs';
+
+export * from './decision-orchestrator.mjs';
+export * from './scenario-calibration.mjs';

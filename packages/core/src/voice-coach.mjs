@@ -24,6 +24,18 @@ export function selectVoiceCoachCue({ state, decision, roleDecision, timers }) {
   return candidates.sort((a, b) => b.priority - a.priority)[0] ?? null;
 }
 
+export function formatCoachCallVoiceMessage(coachCall) {
+  if (!coachCall) return null;
+  const action = coachCall.primaryAction.replaceAll('_', ' ').toLowerCase();
+  const reason = coachCall.reasons?.[0];
+  return `${action}. ${reason ?? coachCall.instruction ?? ''}`.trim();
+}
+
+export function selectOrchestratedVoiceCue({ state, coachCall }) {
+  if (!coachCall || state?.phase !== 'playing') return null;
+  return cue(`coach:${coachCall.primaryAction}`, ({ CRITICAL:100, HIGH:85, MEDIUM:65, LOW:40, INFORMATIONAL:20 })[coachCall.urgency] ?? 50, formatCoachCallVoiceMessage(coachCall), coachCall.reasons?.[0] ?? null, 'COACH_CALL');
+}
+
 export class VoiceCoachCoordinator {
   constructor({ cooldownSec = 12 } = {}) {
     this.cooldownSec = cooldownSec;
@@ -32,12 +44,14 @@ export class VoiceCoachCoordinator {
   }
 
   update(input) {
-    const candidate = selectVoiceCoachCue(input);
+    const candidate = input.coachCall ? selectOrchestratedVoiceCue(input) : selectVoiceCoachCue(input);
     if (!candidate) return null;
     const now = Number(input.state?.gameTimeSec ?? 0);
-    if (candidate.key === this.lastKey || now - this.lastAtSec < this.cooldownSec) return null;
+    const criticalOverride = candidate.priority >= 100 && this.lastPriority < 100;
+    if (candidate.key === this.lastKey || (!criticalOverride && now - this.lastAtSec < this.cooldownSec)) return null;
     this.lastKey = candidate.key;
     this.lastAtSec = now;
+    this.lastPriority = candidate.priority;
     return candidate;
   }
 }

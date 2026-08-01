@@ -26,3 +26,7 @@
 * `desktop:build` generated a placeholder after source validation. It now invokes real `vite build`; offline structural validation is separately named `desktop:validate`.
 
 Manual/inferred limits remain: lane position, route safety, vision, cooldowns, enemy buyback and objective readiness may be MANUAL/INFERRED when GEP does not expose proof. Unsafe calls remain blocked on stale/unavailable evidence.
+
+## Superseded integration layer in v0.21
+
+The v0.20 engines remain evidence producers. `decision-orchestrator.mjs` is now the only player-facing arbitration boundary; engine cards are diagnostic projections.
