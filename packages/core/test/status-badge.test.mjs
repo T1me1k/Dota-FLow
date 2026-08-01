@@ -1,0 +1,1 @@
+import test from'node:test';import assert from'node:assert/strict';import{readFile}from'node:fs/promises';test('status badge',async()=>{const source=await readFile(new URL('../../../apps/desktop/src/ui.tsx',import.meta.url),'utf8');assert.match(source,/DataQualityBadge/);assert.match(source,/UrgencyBadge/);assert.match(source,/RuntimeModeBadge/)});

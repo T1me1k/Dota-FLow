@@ -1,0 +1,1 @@
+import test from'node:test';import assert from'node:assert/strict';import{readFile}from'node:fs/promises';test('design token contract',async()=>{const source=await readFile(new URL('../../../apps/desktop/src/index.css',import.meta.url),'utf8');assert.match(source,/--canvas/);assert.match(source,/--critical/);assert.match(source,/prefers-reduced-motion/)});
