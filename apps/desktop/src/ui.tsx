@@ -1,5 +1,6 @@
 import React from'react';
-export const Surface=({children,className='',critical=false}:{children:React.ReactNode;className?:string;critical?:boolean;key?:React.Key})=><section className={`surface ${critical?'surface-critical':''} ${className}`}>{children}</section>;
+export type SurfaceVariant='base'|'raised'|'interactive'|'command'|'danger'|'success'|'inset';
+export const Surface=({children,className='',critical=false,variant='base'}:{children:React.ReactNode;className?:string;critical?:boolean;variant?:SurfaceVariant;key?:React.Key})=><section className={`surface surface-${critical?'danger':variant} ${critical?'surface-critical':''} ${className}`}>{children}</section>;
 export const Badge=({children,tone='neutral'}:{children:React.ReactNode;tone?:string})=><span className={`badge badge-${tone}`}>{children}</span>;
 export function RuntimeModeBadge({mode='OFFLINE'}:{mode?:string}){const label=mode==='MOCK'?'MOCK DATA':mode==='REPLAY'?'REPLAY DATA':mode==='LIVE_GEP'?'LIVE RUNTIME':'OFFLINE';return <Badge tone={mode==='LIVE_GEP'?'live':mode==='OFFLINE'?'muted':'violet'}>{label}</Badge>}
 export const DataQualityBadge=({quality='UNAVAILABLE'}:{quality?:string})=><Badge tone={quality.toLowerCase()}>{quality.replaceAll('_',' ')}</Badge>;
