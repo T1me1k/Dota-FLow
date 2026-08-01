@@ -1,0 +1,3 @@
+import test from'node:test';import assert from'node:assert/strict';import{createInitialGameState,GameEventPipeline}from'../src/index.mjs';
+for(const role of ['carry','mid','offlane','soft_support','hard_support'])test(`pipeline selects role v2 strategy for ${role}`,()=>{const p=new GameEventPipeline({initialState:createInitialGameState({role})});assert.equal(p.snapshot().roleDecision.strategyId,`role-v2:${role}`);assert.equal(p.snapshot().roleDecision.engineVersion,'2.0')});
+test('unknown role uses generic safe strategy rather than carry',()=>{const p=new GameEventPipeline({initialState:createInitialGameState({role:'unknown'})});assert.equal(p.snapshot().roleDecision.strategyId,'role-v2:generic-safe');assert.equal(p.snapshot().roleDecision.action,'HOLD_POSITION')});

@@ -1,2 +1,2 @@
-import {roleResult} from './shared-role-rules.mjs';
-export function evaluateHardSupportRole(state){const c=state.roleContext??{};if(c.carryThreat>.55)return roleResult('PROTECT_CARRY',state,['Защита carry важнее жадного маршрута']);if(c.pullAvailable&&c.lanePushed)return roleResult('BALANCE_WITH_PULL',state,['Pull восстановит линию без долгого ухода']);if(c.visionNeed>.5)return roleResult('DEFENSIVE_VISION',state,['Поставь безопасный обзор и сохрани TP']);return roleResult('POSITION_FOR_SAVE',state,['Не показывайся первым; держи save/control']);}
+import {evaluateRoleDecision} from '../role-engine.mjs';
+export function evaluateHardSupportRole(state){return evaluateRoleDecision({...state,role:'hard_support'});}

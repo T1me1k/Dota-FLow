@@ -1,2 +1,2 @@
-import {roleResult} from './shared-role-rules.mjs';
-export function evaluateSoftSupportRole(state){const c=state.roleContext??{};if(c.midNeedsRuneHelp)return roleResult('ASSIST_MID_RUNE',state,['Спланируй короткий маршрут к rune']);if(state.gameTimeSec%60>=50&&c.stackCampAvailable)return roleResult('STACK_CAMP',state,['Используй stack window и вернись к активному core']);if(c.visionNeed>.6)return roleResult('PLACE_DEEP_VISION',state,['Обзор нужен до smoke/инициации']);return roleResult('PLAY_WITH_INITIATOR',state,['Держись рядом с активным инициатором']);}
+import {evaluateRoleDecision} from '../role-engine.mjs';
+export function evaluateSoftSupportRole(state){return evaluateRoleDecision({...state,role:'soft_support'});}

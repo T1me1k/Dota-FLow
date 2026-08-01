@@ -93,7 +93,7 @@ export function normalizeGameState(previous, candidate, { eventType = 'UNKNOWN_E
   if (!VALID_TEAMS.has(next.team)) next.team = prior.team;
   if (!VALID_ROLES.has(next.role)) {
     if (next.role !== undefined) warnings.push(`Invalid player role ignored: ${String(next.role)}`);
-    next.role = VALID_ROLES.has(prior.role) ? prior.role : 'carry';
+    next.role = VALID_ROLES.has(prior.role) ? prior.role : 'unknown';
   }
 
   const requestedHero = String(next.hero ?? '');
