@@ -3,6 +3,7 @@ import { GAME_EVENT_TYPES } from './game-events.mjs';
 import { createInitialGameState } from './game-state.mjs';
 import { getHeroProfile } from './hero-profiles.mjs';
 import { createManualContextEnvelope } from './manual-context.mjs';
+import { createMatchReview } from './match-review.mjs';
 
 const DEFAULT_DRAFT = Object.freeze({
   radiant: ['luna', 'axe', 'puck', 'tusk', 'treant_protector'],
@@ -18,6 +19,8 @@ export class MockMatchRuntime {
   #pipeline;
   #sequence = 0;
   #sessionId = null;
+  #stateSamples = [];
+  #lastReview = null;
 
   constructor() {
     this.#pipeline = new GameEventPipeline({ initialState: createInitialGameState() });
@@ -42,49 +45,99 @@ export class MockMatchRuntime {
     this.#sequence += 1;
     const matchId = `mock-match-${Date.now()}-${this.#sequence}`;
     this.#sessionId = `mock-session-${Date.now()}-${this.#sequence}`;
-    this.#pipeline.dispatch({
+    this.#stateSamples = [];
+    this.#lastReview = null;
+    const snapshot = this.#pipeline.dispatch({
       type: GAME_EVENT_TYPES.MATCH_STARTED,
       gameTimeSec: 0,
       source: 'mock-command',
       payload: { matchId, gameTimeSec: 0, hero, role, team: options.team || 'radiant', draft, source: 'mock', ...(options.buildPlanId ? { buildPlanId: options.buildPlanId } : {}) }
     });
-    return this.snapshot();
+    this.#captureState(snapshot.state);
+    return this.#decorate(snapshot);
   }
 
   endMatch() {
     if (this.#pipeline.state.phase !== 'playing') return this.snapshot();
-    this.#pipeline.dispatch({ type: GAME_EVENT_TYPES.MATCH_ENDED, gameTimeSec: this.#pipeline.state.gameTimeSec, payload: { matchId: this.#pipeline.state.matchId } });
-    return this.snapshot();
+    const snapshot = this.#pipeline.dispatch({
+      type: GAME_EVENT_TYPES.MATCH_ENDED,
+      gameTimeSec: this.#pipeline.state.gameTimeSec,
+      payload: { matchId: this.#pipeline.state.matchId }
+    });
+    this.#captureState(snapshot.state);
+    const review = createMatchReview(snapshot, { states: this.#stateSamples });
+    this.#lastReview = {
+      ...review,
+      metrics: { ...review.metrics, FPI: review.flowPerformanceIndex }
+    };
+    return this.#decorate(snapshot);
   }
 
   advance(seconds = 10) {
     if (this.#pipeline.state.phase !== 'playing') throw new Error('MATCH_NOT_ACTIVE');
     const gameTimeSec = this.#pipeline.state.gameTimeSec + Math.max(1, Number(seconds) || 1);
-    this.#pipeline.dispatch({ type: GAME_EVENT_TYPES.CLOCK_UPDATED, gameTimeSec, payload: { gameTimeSec } });
-    return this.snapshot();
+    const snapshot = this.#pipeline.dispatch({ type: GAME_EVENT_TYPES.CLOCK_UPDATED, gameTimeSec, payload: { gameTimeSec } });
+    this.#captureState(snapshot.state);
+    return this.#decorate(snapshot);
   }
 
   sendManualContext(command) {
     const envelope = createManualContextEnvelope(command, { gameTimeSec: this.#pipeline.state.gameTimeSec });
-    this.#pipeline.dispatch({ type: GAME_EVENT_TYPES.ROLE_CONTEXT_UPDATED, source: 'manual', gameTimeSec: this.#pipeline.state.gameTimeSec, payload: envelope.payload.patch });
-    return this.snapshot();
+    const snapshot = this.#pipeline.dispatch({ type: GAME_EVENT_TYPES.ROLE_CONTEXT_UPDATED, source: 'manual', gameTimeSec: this.#pipeline.state.gameTimeSec, payload: envelope.payload.patch });
+    this.#captureState(snapshot.state);
+    return this.#decorate(snapshot);
   }
 
   startCoachTimer(command = {}) {
     if (!Number.isFinite(Number(command.durationSec))) throw new TypeError('INVALID_COACH_TIMER');
-    this.#pipeline.dispatch({ type: GAME_EVENT_TYPES.COACH_TIMER_STARTED, source: 'manual', gameTimeSec: this.#pipeline.state.gameTimeSec, payload: { kind: command.kind || 'GLYPH', durationSec: Number(command.durationSec), label: command.label || 'Manual timer', source: 'manual' } });
-    return this.snapshot();
+    const snapshot = this.#pipeline.dispatch({ type: GAME_EVENT_TYPES.COACH_TIMER_STARTED, source: 'manual', gameTimeSec: this.#pipeline.state.gameTimeSec, payload: { kind: command.kind || 'GLYPH', durationSec: Number(command.durationSec), label: command.label || 'Manual timer', source: 'manual' } });
+    this.#captureState(snapshot.state);
+    return this.#decorate(snapshot);
+  }
+
+  #captureState(state) {
+    this.#stateSamples.push(structuredClone({
+      gameTimeSec: state.gameTimeSec,
+      gold: state.gold,
+      gpm: state.gpm,
+      level: state.level,
+      alive: state.alive,
+      health: state.health,
+      maxHealth: state.maxHealth,
+      kills: state.kills,
+      deaths: state.deaths,
+      teamScore: state.teamScore,
+      targetItem: state.targetItem
+    }));
   }
 
   #decorate(snapshot) {
-    const active = snapshot.state.phase === 'playing';
+    const phase = snapshot.state.phase;
+    const active = phase === 'playing';
+    const review = this.#lastReview ? structuredClone(this.#lastReview) : null;
     return structuredClone({
       ...snapshot,
-      macroDecision: snapshot.decision,
+      decision: active ? snapshot.decision : null,
+      macroDecision: active ? snapshot.decision : null,
+      roleDecision: active ? snapshot.roleDecision : null,
+      laneDecision: active ? snapshot.laneDecision : null,
+      objectiveDecision: active ? snapshot.objectiveDecision : null,
+      powerSpike: active ? snapshot.powerSpike : null,
+      adaptiveBuild: active ? snapshot.adaptiveBuild : null,
+      coachCall: active ? snapshot.coachCall : null,
+      coach: active ? snapshot.coach : null,
+      review,
       runtimeMode: 'MOCK',
-      status: active ? 'MATCH_ACTIVE' : snapshot.state.phase === 'ended' ? 'MATCH_ENDED' : 'READY',
-      dataQuality: { overall: 'INFERRED', macro: 'INFERRED', role: 'INFERRED' },
-      runtimeMetadata: { source: 'canonical-mock-pipeline', engineProjections: true, sessionId: this.#sessionId }
+      status: active ? 'MATCH_ACTIVE' : phase === 'ended' ? 'MATCH_ENDED' : 'READY',
+      dataQuality: active
+        ? { overall: 'INFERRED', macro: 'INFERRED', role: 'INFERRED' }
+        : { overall: 'UNAVAILABLE', macro: 'UNAVAILABLE', role: 'UNAVAILABLE' },
+      runtimeMetadata: {
+        source: 'canonical-mock-pipeline',
+        engineProjections: active,
+        sessionId: this.#sessionId,
+        reviewAvailable: Boolean(review)
+      }
     });
   }
 }
