@@ -7,14 +7,17 @@ TRUST is an explainable, local-first live coaching assistant for Dota 2. A canon
 The premium desktop workspace uses React, TypeScript, Vite and Tailwind CSS. It keeps the existing runtime provider contract for mock, replay and Electron IPC modes. Supported product routes are `/`, `/about`, `/coach`, `/live`, `/overlay`, `/diagnostics`, `/validation`, `/privacy`, and `/terms`; the overlay is an intentionally separate compact surface.
 
 ```bash
-npm install --prefix apps/desktop
-npm run desktop:dev       # Vite development server
-npm run desktop:typecheck # strict TypeScript check
-npm run desktop:build     # production bundle
-npm test                  # core engine and pipeline suite
+npm install
+npm run dev       # Vite development server with SPA route fallback
+npm run mock      # production build + unified mock server on port 4173
+npm run typecheck # strict TypeScript check
+npm run build     # production bundle
+npm test          # core engine and pipeline suite
 ```
 
 Mock mode is the default. To select a runtime explicitly, set `VITE_DOTA_FLOW_RUNTIME_MODE=mock|replay|live`; live mode requires the existing Electron preload bridge and fails closed when it is unavailable.
+
+The Start Match control in mock mode dispatches the same canonical `MATCH_STARTED` event used by the core pipeline. It initializes the selected hero, role and draft, creates match/session identifiers, and publishes the resulting Macro, Role and Power Spike projections through the shared runtime snapshot. While a match is active, repeat starts are idempotent.
 
 ## 0.20 coverage
 
