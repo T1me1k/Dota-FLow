@@ -11,6 +11,7 @@ const PLACEHOLDER_PATTERNS = [
   /generic/i,
   /baseline/i
 ];
+const SYNTHETIC_ARTIFACT_PATTERN = /late_role_breakpoint|late role breakpoint|recovery progression|objective conversion|generic|baseline/i;
 
 function stable(value) {
   if (Array.isArray(value)) return value.map(stable);
@@ -72,6 +73,10 @@ function uniqueItemSequences(profile) {
   )).size;
 }
 
+function isSyntheticArtifact(value) {
+  return Boolean(value?.generic) || SYNTHETIC_ARTIFACT_PATTERN.test(`${value?.id ?? ''} ${value?.name ?? ''}`);
+}
+
 test('all 127 hero profiles meet the semantic quality bar', () => {
   const profiles = listHeroProfiles();
   const genericArtifacts = [];
@@ -99,8 +104,8 @@ test('all 127 hero profiles meet the semantic quality bar', () => {
     }
     if (!profile.benchmarkContract) missingBenchmarkContract.push(profile.id);
 
-    const explicitPlans = plans.filter((plan) => !plan.generic);
-    const explicitSpikes = spikes.filter((spike) => !spike.generic);
+    const explicitPlans = plans.filter((plan) => !isSyntheticArtifact(plan));
+    const explicitSpikes = spikes.filter((spike) => !isSyntheticArtifact(spike));
     if (explicitPlans.length < 4 || explicitSpikes.length < 4) {
       weakExplicitCoverage.push({
         hero: profile.id,
@@ -116,7 +121,7 @@ test('all 127 hero profiles meet the semantic quality bar', () => {
     }
 
     for (const plan of plans) {
-      if (plan.generic || /late_role_breakpoint|generic|baseline/i.test(`${plan.id} ${plan.name}`)) {
+      if (isSyntheticArtifact(plan)) {
         genericArtifacts.push({ hero: profile.id, kind: 'plan', id: plan.id, name: plan.name });
       }
       const items = plan.items ?? plan.coreItems ?? [];
@@ -133,7 +138,7 @@ test('all 127 hero profiles meet the semantic quality bar', () => {
     }
 
     for (const spike of spikes) {
-      if (spike.generic || /late_role_breakpoint|generic|baseline/i.test(`${spike.id} ${spike.name}`)) {
+      if (isSyntheticArtifact(spike)) {
         genericArtifacts.push({ hero: profile.id, kind: 'spike', id: spike.id, name: spike.name });
       }
       for (const requirement of spike.requires ?? []) {
