@@ -6,6 +6,7 @@ import { getHeroProfile, listHeroProfiles } from '../src/hero-profiles.mjs';
 import { createStrategicProfilePack } from '../src/strategic-profile-factory.mjs';
 
 const MID_TEMPO_IDS = ['broodmother','huskar','meepo','pugna','shadow_fiend','sniper','tinker','viper'];
+const FLEX_CORE_IDS = ['lone_druid','lycan','natures_prophet','visage','kez','windranger'];
 
 function semanticFingerprint(profile) {
   return JSON.stringify({
@@ -95,6 +96,50 @@ test('mid tempo profiles preserve explicit strategic direction', () => {
   assert.ok(tinker.spikes.find((spike) => spike.id === 'tinker_level_6').requires.some((requirement) => requirement.type === 'min_mana_pct'));
   assert.ok(huskar.spikes.find((spike) => spike.id === 'huskar_armlet').requires.some((requirement) => requirement.type === 'min_health_pct'));
   assert.ok(sniper.spikes.find((spike) => spike.id === 'sniper_hurricane_pike').actions.FIGHT < huskar.spikes.find((spike) => spike.id === 'huskar_armlet').actions.FIGHT);
+});
+
+test('flex core remediation replaces generated variants with explicit 7.41-era semantics', () => {
+  const fingerprints = new Set();
+  for (const id of FLEX_CORE_IDS) {
+    const profile = getHeroProfile(id);
+    const expectedVersion = id === 'kez' ? 'prototype-7.41-kez-conservative-v2' : 'prototype-7.41-flex-core-v2';
+    assert.equal(profile.calibrationVersion, expectedVersion);
+    assert.equal(profile.patchVersion, '7.41-review-required');
+    assert.doesNotMatch(profile.playstyleIdentity, /converts its distinct lane tools/i);
+    assert.ok(profile.buildPlans.every((plan) => !/Balanced role progression|Low-economy recovery|Objective conversion/.test(plan.name)));
+    assert.ok(profile.spikes.every((spike) => !/Level 6 role window|Defensive utility breakpoint|Two-item strategic breakpoint/.test(spike.name)));
+    const fingerprint = semanticFingerprint(profile);
+    assert.ok(!fingerprints.has(fingerprint), `semantic duplicate in remediated flex pack: ${id}`);
+    fingerprints.add(fingerprint);
+  }
+});
+
+test('flex core profiles preserve different map, objective and execution identities', () => {
+  const loneDruid = getHeroProfile('lone_druid');
+  const lycan = getHeroProfile('lycan');
+  const prophet = getHeroProfile('natures_prophet');
+  const visage = getHeroProfile('visage');
+  const kez = getHeroProfile('kez');
+  const windranger = getHeroProfile('windranger');
+
+  assert.ok(loneDruid.basePower.push > windranger.basePower.push);
+  assert.ok(lycan.basePower.objective > prophet.basePower.objective);
+  assert.ok(prophet.basePower.mobility > visage.basePower.mobility);
+  assert.ok(visage.basePower.survival > prophet.basePower.survival);
+  assert.ok(windranger.basePower.initiation > loneDruid.basePower.initiation);
+  assert.ok(kez.profileConfidence < windranger.profileConfidence);
+
+  assert.ok(loneDruid.telemetryLimitations.includes('inventory_does_not_distinguish_spirit_bear'));
+  assert.deepEqual(lycan.buildPlans.find((plan) => plan.id === 'lycan_balanced').items.slice(0, 2).map((item) => item.id), ['item_helm_of_the_dominator','item_black_king_bar']);
+  assert.ok(prophet.buildPlans.find((plan) => plan.id === 'natures_prophet_control_response').items.some((item) => item.id === 'item_sphere'));
+  assert.deepEqual(visage.buildPlans.find((plan) => plan.id === 'visage_objective').items.slice(0, 2).map((item) => item.id), ['item_solar_crest','item_assault']);
+  assert.ok(windranger.buildPlans.find((plan) => plan.id === 'windranger_objective').items.some((item) => item.id === 'item_gungir'));
+
+  assert.ok(lycan.spikes.find((spike) => spike.id === 'lycan_level_6').requires.some((requirement) => requirement.type === 'ultimate_ready'));
+  assert.ok(visage.spikes.find((spike) => spike.id === 'visage_level_6').requires.some((requirement) => requirement.type === 'ultimate_ready'));
+  assert.ok(prophet.spikes.find((spike) => spike.id === 'natures_prophet_level_6').requires.some((requirement) => requirement.type === 'min_mana_pct'));
+  assert.match(kez.calibrationSource, /conservative|ability-specific live calibration pending/i);
+  assert.ok(kez.telemetryLimitations.includes('ability_specific_state_not_available'));
 });
 
 test('strategic factory rejects unknown item keys instead of silently using Force Staff', () => {
