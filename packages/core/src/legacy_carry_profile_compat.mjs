@@ -5,21 +5,9 @@ import {
 
 export { HERO_IDS };
 
-/**
- * Preserve public runtime identifiers while the old carry definitions are
- * migrated into the explicit profile-pack contract.
- */
+/** Preserve lifecycle identifiers while the old carry definitions are migrated. */
 export function createProfilePack(dependencies) {
   const profiles = createBaseProfilePack(dependencies);
-
-  profiles.anti_mage = {
-    ...profiles.anti_mage,
-    buildPlans: profiles.anti_mage.buildPlans.map((plan) =>
-      plan.id === 'anti_mage_control_response'
-        ? { ...plan, id: 'bf_manta_bkb' }
-        : plan
-    )
-  };
 
   profiles.faceless_void = {
     ...profiles.faceless_void,
