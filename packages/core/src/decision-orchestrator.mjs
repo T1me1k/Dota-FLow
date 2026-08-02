@@ -32,22 +32,38 @@ function urgencyFor(action, domain, decision) {
   if (domain === 'BUILD') return 'LOW';
   return domain === 'MACRO' ? 'MEDIUM' : 'MEDIUM';
 }
+
+function scoreCandidate({ domain, urgency, confidence, quality, windowSec, blockers }) {
+  let score = (domainWeight[domain] ?? .5) * .42
+    + urgencyWeight[urgency] * .32
+    + confidence * .21
+    + (qualityWeight[quality] ?? .5) * .05;
+  if (windowSec <= 45) score += .09;
+  if (blockers.length) score -= .12;
+  return Math.max(0, Math.min(1, score));
+}
+
 function candidate(domain, d, fallbackQuality) {
   const action = actionOf(d); if (!action || action === 'NEUTRAL' || action === 'WAIT') return null;
   let urgency = urgencyFor(action, domain, d); const confidence = confidenceOf(d); const quality = qualityOf(d, fallbackQuality);
   // A macro RESET inferred without reliable telemetry must not outrank a verified role call.
   if (domain === 'MACRO' && action === 'RESET' && ['UNKNOWN', 'UNAVAILABLE'].includes(quality) && (d?.profile?.calibrationVersion?.startsWith('prototype') || d?.powerState?.permanentSpikes?.some?.((spike) => spike.id?.endsWith('_late_role_breakpoint'))) && (!reasonsOf(d).some((reason) => /здоров|health|мана|mana/i.test(reason)) || d?.powerState?.permanentSpikes?.some?.((spike) => spike.id?.endsWith('_late_role_breakpoint')))) urgency = 'MEDIUM';
   const windowSec = Number(d?.windowSec ?? d?.remainingSec ?? 90);
-  let score = (domainWeight[domain] ?? .5) * .42 + urgencyWeight[urgency] * .32 + confidence * .21 + (qualityWeight[quality] ?? .5) * .05;
-  if (windowSec <= 45) score += .09; if (d?.blockers?.length) score -= .12;
-  return { domain, action, confidence, urgency, quality, score: Math.min(1, score), reasons: reasonsOf(d), blockers: [...(d?.blockers ?? [])], missingSignals: [...(d?.missingSignals ?? d?.limitations ?? [])], windowSec, raw: d };
+  const base = { domain, action, confidence, urgency, quality, reasons: reasonsOf(d), blockers: [...(d?.blockers ?? [])], missingSignals: [...(d?.missingSignals ?? d?.limitations ?? [])], windowSec, raw: d };
+  return { ...base, score: scoreCandidate(base) };
 }
+
+function prepared(c, patch) {
+  const next = { ...c, ...patch };
+  return { ...next, score: scoreCandidate(next) };
+}
+
 function prepare(c) {
   const missing = new Set(c.missingSignals.map(String));
-  if (c.action === 'TAKE_ROSHAN' && [...missing].some(x => /vision|readiness/i.test(x))) return { ...c, action: 'PREPARE_ROSHAN', confidence: Math.min(c.confidence, .68), reasons: [...c.reasons, 'Roshan requires confirmed pit vision'], urgency: 'MEDIUM' };
-  if (/ROTATE/.test(c.action) && [...missing].some(x => /wave|lane/i.test(x))) return { ...c, action: 'PREPARE_ROTATION', confidence: Math.min(c.confidence, .68), reasons: [...c.reasons, 'Check and push the lane before rotating'], urgency: 'MEDIUM' };
-  if (c.action === 'MOVE_TO_WISDOM' && [...missing].some(x => /route|safety/i.test(x))) return { ...c, action: 'PREPARE_WISDOM', confidence: Math.min(c.confidence, .68), reasons: [...c.reasons, 'Confirm a safe route before moving'], urgency: 'MEDIUM' };
-  if (c.action === 'HIGH_GROUND' && [...missing].some(x => /buyback|cooldown/i.test(x))) return { ...c, action: 'HOLD_HIGH_GROUND_SETUP', confidence: Math.min(c.confidence, .68), reasons: [...c.reasons, 'Confirm buybacks and key cooldowns'], urgency: 'HIGH' };
+  if (c.action === 'TAKE_ROSHAN' && [...missing].some(x => /vision|readiness/i.test(x))) return prepared(c, { action: 'PREPARE_ROSHAN', confidence: Math.min(c.confidence, .68), reasons: [...c.reasons, 'Roshan requires confirmed pit vision'], urgency: 'MEDIUM' });
+  if (/ROTATE/.test(c.action) && [...missing].some(x => /wave|lane/i.test(x))) return prepared(c, { action: 'PREPARE_ROTATION', confidence: Math.min(c.confidence, .68), reasons: [...c.reasons, 'Check and push the lane before rotating'], urgency: 'MEDIUM' });
+  if (c.action === 'MOVE_TO_WISDOM' && [...missing].some(x => /route|safety/i.test(x))) return prepared(c, { action: 'PREPARE_WISDOM', confidence: Math.min(c.confidence, .68), reasons: [...c.reasons, 'Confirm a safe route before moving'], urgency: 'MEDIUM' });
+  if (c.action === 'HIGH_GROUND' && [...missing].some(x => /buyback|cooldown/i.test(x))) return prepared(c, { action: 'HOLD_HIGH_GROUND_SETUP', confidence: Math.min(c.confidence, .68), reasons: [...c.reasons, 'Confirm buybacks and key cooldowns'], urgency: 'HIGH' });
   return c;
 }
 const nowOf = s => Number(s?.gameTimeSec ?? 0);
