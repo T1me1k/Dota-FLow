@@ -8,7 +8,7 @@ import { HERO_IDS as MACRO_OFFLANE_IDS, createProfilePack as create_macro_offlan
 import { HERO_IDS as ROAMING_SUPPORT_IDS, createProfilePack as create_roaming_support } from './roaming_support_profile_pack.mjs';
 import { HERO_IDS as UTILITY_SUPPORT_IDS, createProfilePack as create_utility_support } from './utility_support_profile_pack.mjs';
 import { HERO_IDS as SAVE_SUPPORT_IDS, createProfilePack as create_save_support } from './save_support_profile_pack.mjs';
-import { HERO_IDS as CONTROL_SUPPORT_IDS, createProfilePack as create_control_support } from './control_support_profile_pack.mjs';
+import { HERO_IDS as CONTROL_SUPPORT_IDS, createProfilePack as create_control_support } from './control-support-profile-calibration.mjs';
 import { HERO_IDS as MACRO_SUPPORT_A_IDS, createProfilePack as create_macro_support_a } from './macro_support_a_profile_pack.mjs';
 import { HERO_IDS as MACRO_SUPPORT_B_IDS, createProfilePack as create_macro_support_b } from './macro_support_b_profile_pack.mjs';
 /** Canonical registry: catalog tiers and runtime profiles are both derived from this list. */
