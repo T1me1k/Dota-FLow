@@ -19,6 +19,7 @@ const ITEM_CATALOG = Object.freeze({
   aether_lens: { id: 'item_aether_lens', name: 'Aether Lens', cost: 2275 },
   dagon: { id: 'item_dagon', name: 'Dagon', cost: 2850 },
   shadow_blade: { id: 'item_invis_sword', name: 'Shadow Blade', cost: 3000 },
+  diffusal: { id: 'item_diffusal_blade', name: 'Diffusal Blade', cost: 2500 },
   drums: { id: 'item_ancient_janggo', name: 'Drum of Endurance', cost: 1650 },
   solar_crest: { id: 'item_solar_crest', name: 'Solar Crest', cost: 2600 },
   euls: { id: 'item_cyclone', name: "Eul's Scepter", cost: 2625 },
