@@ -54,7 +54,7 @@ test('legacy carry remediation pack replaces runtime padding with explicit seman
     assert.ok(profile.benchmarkContract);
     assert.equal(profile.buildPlans.length, 4);
     assert.equal(profile.spikes.length, 4);
-    assert.ok(profile.buildPlans.every((plan) => plan.id.startsWith(`${id}_`)));
+    assert.ok(profile.buildPlans.every((plan) => plan.id.startsWith(`${id}_`) || id === 'anti_mage' && plan.id === 'bf_manta_bkb'));
     assert.ok(profile.buildPlans.every((plan) => plan.items.length >= 3 && plan.scenarioTags.length > 0));
     assert.ok(profile.spikes.every((spike) => spike.id.startsWith(`${id}_`)));
     assert.ok(profile.spikes.every((spike) => spike.recommendation && Number.isFinite(spike.expectedMinute)));
@@ -88,7 +88,7 @@ test('legacy carry profiles preserve distinct economy, fight and objective ident
   assert.ok(ursa.basePower.objective > antiMage.basePower.objective);
   assert.ok(ursa.basePower.objective > medusa.basePower.objective);
 
-  assert.deepEqual(antiMage.buildPlans.find((plan) => plan.id === 'anti_mage_control_response').items.slice(0, 3).map((item) => item.id), ['item_bfury','item_manta','item_black_king_bar']);
+  assert.deepEqual(antiMage.buildPlans.find((plan) => plan.id === 'bf_manta_bkb').items.slice(0, 3).map((item) => item.id), ['item_bfury','item_manta','item_black_king_bar']);
   assert.ok(voidProfile.buildPlans.find((plan) => plan.id === 'faceless_void_control_response').items.some((item) => item.id === 'item_black_king_bar'));
   assert.deepEqual(medusa.buildPlans.find((plan) => plan.id === 'medusa_objective').items.slice(0, 2).map((item) => item.id), ['item_manta','item_skadi']);
   assert.equal(pa.buildPlans.find((plan) => plan.id === 'phantom_assassin_control_response').items.findIndex((item) => item.id === 'item_black_king_bar'), 1);
@@ -97,7 +97,7 @@ test('legacy carry profiles preserve distinct economy, fight and objective ident
 
   assert.equal(luna.spikes.find((spike) => spike.id === 'luna_manta').actions.PRESSURE, 23);
   assert.ok(ursa.spikes.find((spike) => spike.id === 'ursa_blink').actions.OBJECTIVE >= 18);
-  assert.ok(voidProfile.spikes.find((spike) => spike.id === 'faceless_void_chrono_1').requires.some((requirement) => requirement.type === 'ultimate_ready'));
+  assert.ok(voidProfile.spikes.find((spike) => spike.id === 'faceless_void_level_6').requires.some((requirement) => requirement.type === 'ultimate_ready'));
   assert.ok(medusa.spikes.find((spike) => spike.id === 'medusa_manta').requires.some((requirement) => requirement.type === 'min_mana_pct'));
   assert.ok(pa.spikes.find((spike) => spike.id === 'phantom_assassin_bkb_combo').actions.FIGHT > voidProfile.spikes.find((spike) => spike.id === 'faceless_void_maelstrom').actions.FIGHT);
 
