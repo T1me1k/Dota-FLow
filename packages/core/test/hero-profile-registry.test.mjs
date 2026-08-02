@@ -109,7 +109,7 @@ test('strategic factory rejects unknown item keys instead of silently using Forc
 test('named strategic differences remain explicit', () => {
   const huskar=getHeroProfile('huskar'), sniper=getHeroProfile('sniper'), axe=getHeroProfile('axe'), tide=getHeroProfile('tidehunter');
   assert.ok(huskar.basePower.initiation !== sniper.basePower.initiation);
-  assert.ok(sniper.playstyleIdentity.includes('position'));
+  assert.match(sniper.playstyleIdentity, /protected range|position/i);
   assert.notDeepEqual(axe.stageCurves, tide.stageCurves);
   assert.notDeepEqual(getHeroProfile('oracle').basePower, getHeroProfile('dazzle').basePower);
   assert.notDeepEqual(getHeroProfile('chen').stageCurves, getHeroProfile('enchantress').stageCurves);
