@@ -45,9 +45,14 @@ function scoreCandidate({ domain, urgency, confidence, quality, windowSec, block
 
 function candidate(domain, d, fallbackQuality) {
   const action = actionOf(d); if (!action || action === 'NEUTRAL' || action === 'WAIT') return null;
-  let urgency = urgencyFor(action, domain, d); const confidence = confidenceOf(d); const quality = qualityOf(d, fallbackQuality);
-  // A macro RESET inferred without reliable telemetry must not outrank a verified role call.
-  if (domain === 'MACRO' && action === 'RESET' && ['UNKNOWN', 'UNAVAILABLE'].includes(quality) && (d?.profile?.calibrationVersion?.startsWith('prototype') || d?.powerState?.permanentSpikes?.some?.((spike) => spike.id?.endsWith('_late_role_breakpoint'))) && (!reasonsOf(d).some((reason) => /здоров|health|мана|mana/i.test(reason)) || d?.powerState?.permanentSpikes?.some?.((spike) => spike.id?.endsWith('_late_role_breakpoint')))) urgency = 'MEDIUM';
+  let urgency = urgencyFor(action, domain, d); const rawConfidence = confidenceOf(d); const quality = qualityOf(d, fallbackQuality);
+  const syntheticLateBreakpoint = d?.powerState?.permanentSpikes?.some?.((spike) => spike.id?.endsWith('_late_role_breakpoint'));
+  // Only the known synthetic legacy breakpoint may downgrade an unverified RESET.
+  // A prototype hero profile must not weaken a generic gold, health or map-safety reset.
+  if (domain === 'MACRO' && action === 'RESET' && ['UNKNOWN', 'UNAVAILABLE'].includes(quality) && syntheticLateBreakpoint && !reasonsOf(d).some((reason) => /здоров|health|мана|mana/i.test(reason))) urgency = 'MEDIUM';
+  const confidence = domain === 'MACRO' && action === 'RESET' && urgency === 'CRITICAL'
+    ? Math.max(rawConfidence, .55)
+    : rawConfidence;
   const windowSec = Number(d?.windowSec ?? d?.remainingSec ?? 90);
   const base = { domain, action, confidence, urgency, quality, reasons: reasonsOf(d), blockers: [...(d?.blockers ?? [])], missingSignals: [...(d?.missingSignals ?? d?.limitations ?? [])], windowSec, raw: d };
   return { ...base, score: scoreCandidate(base) };
