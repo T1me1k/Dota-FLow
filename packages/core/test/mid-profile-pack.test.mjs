@@ -2,6 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 
 import { createInitialGameState } from '../src/game-state.mjs';
+import { StableDecisionCoordinator } from '../src/decision-engine.mjs';
 import { getHeroProfile, listHeroProfiles } from '../src/hero-profiles.mjs';
 import { evaluatePowerState } from '../src/power-spike-engine.mjs';
 
@@ -77,4 +78,39 @@ test('signature items activate hero-specific mid power spikes', () => {
       `${heroId} should activate a hero-specific spike from ${itemId}`
     );
   }
+});
+
+test('emergency RESET is released after respawn and resource recovery', () => {
+  const coordinator = new StableDecisionCoordinator({ minimumHoldSec: 300, switchMargin: 100 });
+  const dead = createInitialGameState({
+    phase: 'playing',
+    hero: 'puck',
+    role: 'mid',
+    gameTimeSec: 10 * 60,
+    alive: false,
+    health: 0,
+    maxHealth: 1200,
+    mana: 0,
+    maxMana: 800,
+    gold: 500,
+    unreliableGold: 0
+  });
+  assert.equal(coordinator.update(dead).action, 'RESET');
+
+  const recovered = createInitialGameState({
+    phase: 'playing',
+    hero: 'puck',
+    role: 'mid',
+    gameTimeSec: 10 * 60 + 5,
+    alive: true,
+    health: 1000,
+    maxHealth: 1200,
+    mana: 600,
+    maxMana: 800,
+    gold: 500,
+    unreliableGold: 0,
+    level: 11,
+    ultimateReady: true
+  });
+  assert.notEqual(coordinator.update(recovered).action, 'RESET');
 });
