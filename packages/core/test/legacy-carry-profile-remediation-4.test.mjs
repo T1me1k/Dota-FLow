@@ -5,10 +5,10 @@ import { listDetailedProfilePacks } from '../src/hero-profile-registry.mjs';
 
 const HERO_IDS = ['alchemist','clinkz','juggernaut','monkey_king','slark','troll_warlord'];
 const SUPPORTED_REQUIREMENTS = new Set(['ultimate_ready','min_health_pct','min_mana_pct']);
-const LEGACY_SPIKE_IDS = new Map([
+const PRESERVED_SPIKE_IDS = new Map([
   ['alchemist', ['alchemist_radiance','alchemist_blink','alchemist_bkb']],
   ['clinkz', ['clinkz_orchid','clinkz_desolator','clinkz_bkb']],
-  ['juggernaut', ['jugg_level_6','jugg_diffusal','jugg_manta']],
+  ['juggernaut', ['juggernaut_level_6','juggernaut_diffusal','juggernaut_manta']],
   ['monkey_king', ['monkey_king_echo','monkey_king_desolator','monkey_king_bkb']],
   ['slark', ['slark_diffusal','slark_aghs','slark_bkb']],
   ['troll_warlord', ['troll_warlord_battle_fury','troll_warlord_bkb','troll_warlord_basher']]
@@ -66,18 +66,25 @@ test('fourth legacy carry remediation pack replaces runtime padding and migrates
     assert.equal(profile.spikes.length, 4);
     assert.ok(profile.buildPlans.every((plan) => plan.id.startsWith(`${id}_`)));
     assert.ok(profile.buildPlans.every((plan) => plan.items.length >= 3 && plan.scenarioTags.length > 0));
+    assert.ok(profile.spikes.every((spike) => spike.id.startsWith(`${id}_`)));
     assert.ok(profile.spikes.every((spike) => spike.recommendation && Number.isFinite(spike.expectedMinute)));
     assert.ok(profile.spikes.flatMap((spike) => spike.requires ?? []).every((requirement) => SUPPORTED_REQUIREMENTS.has(requirement.type)));
     assert.ok(profile.buildPlans.every((plan) => !/^(Recovery progression|Objective conversion|Baseline.*)$/i.test(plan.name)));
     assert.ok(profile.spikes.every((spike) => !/^(Late role breakpoint|Baseline.*)$/i.test(spike.name)));
     assert.ok(profile.buildPlans.every((plan) => !plan.generic));
     assert.ok(profile.spikes.every((spike) => !spike.generic));
-    for (const spikeId of LEGACY_SPIKE_IDS.get(id)) assert.ok(profile.spikes.some((spike) => spike.id === spikeId), `${id} lost public spike ${spikeId}`);
+    for (const spikeId of PRESERVED_SPIKE_IDS.get(id)) assert.ok(profile.spikes.some((spike) => spike.id === spikeId), `${id} lost lifecycle spike ${spikeId}`);
 
     const fingerprint = semanticFingerprint(profile);
     assert.ok(!fingerprints.has(fingerprint), `semantic duplicate in fourth legacy carry remediation: ${id}`);
     fingerprints.add(fingerprint);
   }
+
+  assert.deepEqual(getHeroProfile('juggernaut').spikeAliases, {
+    jugg_level_6: 'juggernaut_level_6',
+    jugg_diffusal: 'juggernaut_diffusal',
+    jugg_manta: 'juggernaut_manta'
+  });
 });
 
 test('fourth legacy carry profiles preserve economy, stealth, sustain, zone, vision and target-lock identities', () => {
@@ -97,13 +104,14 @@ test('fourth legacy carry profiles preserve economy, stealth, sustain, zone, vis
 
   assert.deepEqual(alchemist.buildPlans.find((plan) => plan.id === 'alchemist_balanced').items.slice(0, 3).map((item) => item.id), ['item_radiance','item_blink','item_black_king_bar']);
   assert.equal(clinkz.buildPlans.find((plan) => plan.id === 'clinkz_balanced').items[0].id, 'item_orchid');
+  assert.equal(juggernaut.buildPlans.find((plan) => plan.id === 'juggernaut_recovery').items[0].id, 'item_maelstrom');
   assert.ok(juggernaut.buildPlans.find((plan) => plan.id === 'juggernaut_objective').requiredSignals.includes('healing_ward_zone_protectable'));
   assert.ok(monkey.buildPlans.find((plan) => plan.id === 'monkey_king_objective').requiredSignals.includes('constrained_fight_zone_confirmed'));
   assert.ok(slark.buildPlans.find((plan) => plan.id === 'slark_objective').requiredSignals.includes('enemy_vision_removed'));
   assert.ok(troll.buildPlans.find((plan) => plan.id === 'troll_warlord_objective').items.some((item) => item.id === 'item_assault'));
 
   assert.ok(alchemist.spikes.find((spike) => spike.id === 'alchemist_radiance').actions.FARM > (clinkz.spikes.find((spike) => spike.id === 'clinkz_orchid').actions.FARM ?? 0));
-  assert.ok(clinkz.spikes.find((spike) => spike.id === 'clinkz_orchid').actions.FIGHT > juggernaut.spikes.find((spike) => spike.id === 'jugg_manta').actions.FIGHT);
+  assert.ok(clinkz.spikes.find((spike) => spike.id === 'clinkz_orchid').actions.FIGHT > juggernaut.spikes.find((spike) => spike.id === 'juggernaut_manta').actions.FIGHT);
   assert.ok(juggernaut.spikes.find((spike) => spike.id === 'juggernaut_scepter').actions.OBJECTIVE > slark.spikes.find((spike) => spike.id === 'slark_bkb').actions.OBJECTIVE);
   assert.ok(monkey.spikes.find((spike) => spike.id === 'monkey_king_bkb').actions.FIGHT > clinkz.spikes.find((spike) => spike.id === 'clinkz_bkb').actions.FIGHT);
   assert.ok(troll.spikes.find((spike) => spike.id === 'troll_warlord_bkb').actions.OBJECTIVE > monkey.spikes.find((spike) => spike.id === 'monkey_king_bkb').actions.OBJECTIVE);
