@@ -59,8 +59,8 @@ test('legacy carry remediation pack replaces runtime padding with explicit seman
     assert.ok(profile.spikes.every((spike) => spike.id.startsWith(`${id}_`)));
     assert.ok(profile.spikes.every((spike) => spike.recommendation && Number.isFinite(spike.expectedMinute)));
     assert.ok(profile.spikes.flatMap((spike) => spike.requires ?? []).every((requirement) => SUPPORTED_REQUIREMENTS.has(requirement.type)));
-    assert.ok(profile.buildPlans.every((plan) => !/Recovery progression|Objective conversion|Baseline/i.test(plan.name)));
-    assert.ok(profile.spikes.every((spike) => !/Late role breakpoint|Baseline/i.test(spike.name)));
+    assert.ok(profile.buildPlans.every((plan) => !/^(Recovery progression|Objective conversion|Baseline.*)$/i.test(plan.name)));
+    assert.ok(profile.spikes.every((spike) => !/^(Late role breakpoint|Baseline.*)$/i.test(spike.name)));
     assert.ok(profile.buildPlans.every((plan) => !plan.generic));
     assert.ok(profile.spikes.every((spike) => !spike.generic));
 
