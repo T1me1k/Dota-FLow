@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import { HERO_CATALOG } from '../src/hero-catalog.mjs';
 import { DETAILED_HERO_IDS, listDetailedProfilePacks } from '../src/hero-profile-registry.mjs';
 import { getHeroProfile, listHeroProfiles } from '../src/hero-profiles.mjs';
+import { createStrategicProfilePack } from '../src/strategic-profile-factory.mjs';
 
 const MID_TEMPO_IDS = ['broodmother','huskar','meepo','pugna','shadow_fiend','sniper','tinker','viper'];
 
@@ -94,6 +95,15 @@ test('mid tempo profiles preserve explicit strategic direction', () => {
   assert.ok(tinker.spikes.find((spike) => spike.id === 'tinker_level_6').requires.some((requirement) => requirement.type === 'min_mana_pct'));
   assert.ok(huskar.spikes.find((spike) => spike.id === 'huskar_armlet').requires.some((requirement) => requirement.type === 'min_health_pct'));
   assert.ok(sniper.spikes.find((spike) => spike.id === 'sniper_hurricane_pike').actions.FIGHT < huskar.spikes.find((spike) => spike.id === 'huskar_armlet').actions.FIGHT);
+});
+
+test('strategic factory rejects unknown item keys instead of silently using Force Staff', () => {
+  assert.throws(() => createStrategicProfilePack([
+    { id:'invalid_profile', displayName:'Invalid Profile', role:'core', identity:'invalid', signature:'misspelled_item', variant:0 }
+  ], {
+    benchmark: (points) => points.map(([minute,gpm,level]) => ({ minute,gpm,level })),
+    condition: (type,value) => ({ type,value })
+  }), /Unknown item key/);
 });
 
 test('named strategic differences remain explicit', () => {
