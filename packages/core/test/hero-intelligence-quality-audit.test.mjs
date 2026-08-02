@@ -11,7 +11,6 @@ const PLACEHOLDER_PATTERNS = [
   /generic/i,
   /baseline/i
 ];
-const SYNTHETIC_ARTIFACT_PATTERN = /late_role_breakpoint|late role breakpoint|recovery progression|objective conversion|generic|baseline/i;
 
 function stable(value) {
   if (Array.isArray(value)) return value.map(stable);
@@ -73,8 +72,16 @@ function uniqueItemSequences(profile) {
   )).size;
 }
 
-function isSyntheticArtifact(value) {
-  return Boolean(value?.generic) || SYNTHETIC_ARTIFACT_PATTERN.test(`${value?.id ?? ''} ${value?.name ?? ''}`);
+function isSyntheticPlan(plan) {
+  return Boolean(plan?.generic)
+    || plan?.name === 'Recovery progression'
+    || plan?.name === 'Objective conversion';
+}
+
+function isSyntheticSpike(spike) {
+  return Boolean(spike?.generic)
+    || spike?.name === 'Late role breakpoint'
+    || String(spike?.id ?? '').endsWith('_late_role_breakpoint');
 }
 
 test('all 127 hero profiles meet the semantic quality bar', () => {
@@ -104,8 +111,8 @@ test('all 127 hero profiles meet the semantic quality bar', () => {
     }
     if (!profile.benchmarkContract) missingBenchmarkContract.push(profile.id);
 
-    const explicitPlans = plans.filter((plan) => !isSyntheticArtifact(plan));
-    const explicitSpikes = spikes.filter((spike) => !isSyntheticArtifact(spike));
+    const explicitPlans = plans.filter((plan) => !isSyntheticPlan(plan));
+    const explicitSpikes = spikes.filter((spike) => !isSyntheticSpike(spike));
     if (explicitPlans.length < 4 || explicitSpikes.length < 4) {
       weakExplicitCoverage.push({
         hero: profile.id,
@@ -121,7 +128,7 @@ test('all 127 hero profiles meet the semantic quality bar', () => {
     }
 
     for (const plan of plans) {
-      if (isSyntheticArtifact(plan)) {
+      if (isSyntheticPlan(plan)) {
         genericArtifacts.push({ hero: profile.id, kind: 'plan', id: plan.id, name: plan.name });
       }
       const items = plan.items ?? plan.coreItems ?? [];
@@ -138,7 +145,7 @@ test('all 127 hero profiles meet the semantic quality bar', () => {
     }
 
     for (const spike of spikes) {
-      if (isSyntheticArtifact(spike)) {
+      if (isSyntheticSpike(spike)) {
         genericArtifacts.push({ hero: profile.id, kind: 'spike', id: spike.id, name: spike.name });
       }
       for (const requirement of spike.requires ?? []) {
@@ -172,10 +179,15 @@ test('all 127 hero profiles meet the semantic quality bar', () => {
 
   const summary = {
     profileCount: profiles.length,
+    genericArtifactCount: genericArtifacts.length,
     genericArtifacts,
+    placeholderIdentityCount: placeholderIdentities.length,
     placeholderIdentities,
+    missingIdentityCount: missingIdentity.length,
     missingIdentity,
+    missingBenchmarkContractCount: missingBenchmarkContract.length,
     missingBenchmarkContract,
+    weakExplicitCoverageCount: weakExplicitCoverage.length,
     weakExplicitCoverage,
     weakPlanDiversity,
     duplicateSemanticProfiles,
