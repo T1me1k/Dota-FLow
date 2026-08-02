@@ -9,22 +9,32 @@ import { listDetailedProfilePacks } from '../src/hero-profile-registry.mjs';
 const addedIds = listDetailedProfilePacks().slice(3).flatMap((pack) => pack.heroIds);
 const stateFor = (hero, patch={}) => createInitialGameState({ phase:'playing', hero, role:getHeroProfile(hero).role, gameTimeSec:0, gpm:400, ...patch });
 
+function assertPlanMatchesHeroAndScenario(hero, recommendation, scenarioTag, reasonCode) {
+  const profile = getHeroProfile(hero);
+  const selected = recommendation.recommendedPlan;
+  assert.ok(selected.id.startsWith(`${hero}_`), `${hero}: selected plan must remain hero-specific`);
+  assert.ok(selected.scenarioTags.includes(scenarioTag), `${hero}: ${selected.id} must declare ${scenarioTag}`);
+  assert.ok(selected.reasons.includes(reasonCode), `${hero}: ${selected.id} must explain ${reasonCode}`);
+  assert.ok(profile.buildPlans.some((plan) => plan.id === selected.id), `${hero}: selected plan must belong to the profile`);
+  assert.ok(selected.items.some((item) => item.id === selected.coreItems.at(-1).id), `${hero}: target progression must remain inside the selected plan`);
+}
+
 test('adaptive build matrix covers balanced, control and recovery scenarios for all 79 added heroes', () => {
   for (const hero of addedIds) {
-    const balanced = recommendAdaptiveBuild(stateFor(hero));
-    assert.equal(balanced.recommendedPlan.id, `${hero}_balanced`);
-    assert.ok(balanced.recommendedPlan.reasons.includes('balanced_draft'));
-    assert.equal(recommendAdaptiveBuild(stateFor(hero)).recommendedPlan.id, balanced.recommendedPlan.id);
+    const balancedState = stateFor(hero);
+    const balanced = recommendAdaptiveBuild(balancedState);
+    assertPlanMatchesHeroAndScenario(hero, balanced, 'balanced', 'balanced_draft');
+    assert.equal(recommendAdaptiveBuild(balancedState).recommendedPlan.id, balanced.recommendedPlan.id);
 
     const controlState = stateFor(hero, { draft:{ radiant:[hero], dire:['lion','axe','puck','zeus','spirit_breaker'] } });
     const control = recommendAdaptiveBuild(controlState);
-    assert.equal(control.recommendedPlan.id, `${hero}_control_response`);
-    assert.ok(control.recommendedPlan.reasons.includes('enemy_control_high'));
-    assert.ok(control.recommendedPlan.items.some((item) => item.id === control.recommendedPlan.coreItems.at(-1).id));
+    assertPlanMatchesHeroAndScenario(hero, control, 'enemy_control_high', 'enemy_control_high');
+    assert.equal(recommendAdaptiveBuild(controlState).recommendedPlan.id, control.recommendedPlan.id);
 
-    const recovery = recommendAdaptiveBuild(stateFor(hero,{gameTimeSec:15*60,gpm:250}));
-    assert.equal(recovery.recommendedPlan.id, `${hero}_recovery`);
-    assert.ok(recovery.recommendedPlan.reasons.includes('player_behind'));
+    const recoveryState = stateFor(hero,{gameTimeSec:15*60,gpm:250});
+    const recovery = recommendAdaptiveBuild(recoveryState);
+    assertPlanMatchesHeroAndScenario(hero, recovery, 'player_behind', 'player_behind');
+    assert.equal(recommendAdaptiveBuild(recoveryState).recommendedPlan.id, recovery.recommendedPlan.id);
     assert.ok(recovery.limitations.some((entry) => entry.startsWith('missing_signal:')));
     assert.equal(getHeroProfile(hero).id, hero);
   }
