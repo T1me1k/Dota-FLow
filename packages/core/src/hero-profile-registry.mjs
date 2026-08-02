@@ -2,6 +2,7 @@ import { CARRY_PROFILE_PACK_IDS, createCarryProfilePack } from './carry-profile-
 import { MID_PROFILE_IDS, createMidProfilePack } from './mid-profile-pack.mjs';
 import { HERO_IDS as LEGACY_CARRY_PACK_IDS, createProfilePack as createLegacyCarryPack } from './legacy_carry_profile_compat.mjs';
 import { HERO_IDS as LEGACY_CARRY_PACK_2_IDS, createProfilePack as createLegacyCarryPack2 } from './legacy_carry_profile_pack_2.mjs';
+import { HERO_IDS as LEGACY_CARRY_PACK_3_IDS, createProfilePack as createLegacyCarryPack3 } from './legacy_carry_profile_pack_3.mjs';
 import { HERO_IDS as MID_TEMPO_IDS, createProfilePack as createMidTempoPack } from './mid_tempo_core_profile_pack.mjs';
 
 import { HERO_IDS as FLEX_CORE_IDS, createProfilePack as create_flex_core } from './flex_core_profile_pack.mjs';
@@ -18,7 +19,8 @@ import { HERO_IDS as MACRO_SUPPORT_B_IDS, createProfilePack as create_macro_supp
 const BUILTIN_PROFILE_IDS = Object.freeze(['juggernaut', 'sven']);
 const REMEDIATED_CARRY_ID_SET = new Set([
   ...LEGACY_CARRY_PACK_IDS,
-  ...LEGACY_CARRY_PACK_2_IDS
+  ...LEGACY_CARRY_PACK_2_IDS,
+  ...LEGACY_CARRY_PACK_3_IDS
 ]);
 const ACTIVE_CARRY_PROFILE_PACK_IDS = Object.freeze(
   CARRY_PROFILE_PACK_IDS.filter((id) => !REMEDIATED_CARRY_ID_SET.has(id))
@@ -35,6 +37,7 @@ const PACKS = [
   { id: 'mid', ids: MID_PROFILE_IDS, create: createMidProfilePack },
   { id: 'legacy-carry-remediation-1', ids: LEGACY_CARRY_PACK_IDS, create: createLegacyCarryPack },
   { id: 'legacy-carry-remediation-2', ids: LEGACY_CARRY_PACK_2_IDS, create: createLegacyCarryPack2 },
+  { id: 'legacy-carry-remediation-3', ids: LEGACY_CARRY_PACK_3_IDS, create: createLegacyCarryPack3 },
   { id: 'mid-tempo-core', ids: MID_TEMPO_IDS, create: createMidTempoPack },
   { id: 'flex-core', ids: FLEX_CORE_IDS, create: create_flex_core },
   { id: 'frontline-initiator', ids: FRONTLINE_INITIATOR_IDS, create: create_frontline_initiator },
