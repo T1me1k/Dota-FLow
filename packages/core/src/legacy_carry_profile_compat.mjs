@@ -11,7 +11,6 @@ export function createProfilePack(dependencies) {
 
   profiles.faceless_void = {
     ...profiles.faceless_void,
-    calibrationVersion: 'review-required-7.41-faceless-void-conservative-v2',
     spikes: profiles.faceless_void.spikes.map((spike) =>
       spike.id === 'faceless_void_chrono_1'
         ? { ...spike, id: 'faceless_void_level_6' }
