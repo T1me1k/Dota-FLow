@@ -1,5 +1,6 @@
 const ITEM_CATALOG = Object.freeze({
   phase_boots: { id: 'item_phase_boots', name: 'Phase Boots', cost: 1500 },
+  arcane_boots: { id: 'item_arcane_boots', name: 'Arcane Boots', cost: 1300 },
   travel_boots: { id: 'item_travel_boots', name: 'Boots of Travel', cost: 2500 },
   vanguard: { id: 'item_vanguard', name: 'Vanguard', cost: 1700 },
   blink: { id: 'item_blink', name: 'Blink Dagger', cost: 2250 },
@@ -23,6 +24,7 @@ const ITEM_CATALOG = Object.freeze({
   vladmir: { id: 'item_vladmir', name: "Vladmir's Offering", cost: 2200 },
   bloodstone: { id: 'item_bloodstone', name: 'Bloodstone', cost: 4400 },
   guardian_greaves: { id: 'item_guardian_greaves', name: 'Guardian Greaves', cost: 5050 },
+  mekansm: { id: 'item_mekansm', name: 'Mekansm', cost: 1775 },
   hand_of_midas: { id: 'item_hand_of_midas', name: 'Hand of Midas', cost: 2200 }
 });
 
