@@ -2645,14 +2645,14 @@
       },
       {
         "gameTimeSec": 1516,
-        "expectedPrimaryAction": "RESET",
+        "expectedPrimaryAction": "RESET_BEFORE_OBJECTIVE",
         "allowedAlternativeActions": [],
         "forbiddenActions": [
           "FIGHT"
         ],
         "expectedUrgency": "CRITICAL",
         "requiredReasonCodes": [
-          ""
+          "HEALTH_IS_CRITICALLY_LOW_15"
         ],
         "expectedMissingSignals": [
           "combatStats",

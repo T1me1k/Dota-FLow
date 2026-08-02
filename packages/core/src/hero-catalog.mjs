@@ -144,11 +144,12 @@ const TEMPLATE_MEMBERS = {
 
 const DETAILED_HEROES = new Set([
   'alchemist', 'anti_mage', 'arc_warden', 'bloodseeker', 'chaos_knight', 'clinkz',
-  'dawnbreaker', 'dragon_knight', 'drow_ranger', 'faceless_void', 'gyrocopter',
-  'juggernaut', 'lifestealer', 'luna', 'marci', 'medusa', 'monkey_king', 'morphling',
-  'muerta', 'naga_siren', 'phantom_assassin', 'phantom_lancer', 'razor', 'slark',
-  'spectre', 'sven', 'terrorblade', 'tiny', 'troll_warlord', 'ursa', 'weaver',
-  'wraith_king'
+  'dawnbreaker', 'dragon_knight', 'drow_ranger', 'ember_spirit', 'faceless_void', 'gyrocopter',
+  'invoker', 'juggernaut', 'lifestealer', 'lina', 'luna', 'marci',
+  'medusa', 'monkey_king', 'morphling', 'muerta', 'naga_siren', 'phantom_assassin',
+  'phantom_lancer', 'puck', 'queen_of_pain', 'razor', 'slark', 'spectre',
+  'storm_spirit', 'sven', 'terrorblade', 'tiny', 'troll_warlord', 'ursa',
+  'void_spirit', 'weaver', 'wraith_king', 'zeus'
 ]);
 
 const INTERNAL_ALIASES = {

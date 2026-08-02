@@ -19,6 +19,7 @@
 {"type":"CLOCK_UPDATED","gameTimeSec":690,"payload":{"gameTimeSec":690}}
 {"type":"CLOCK_UPDATED","gameTimeSec":728,"payload":{"gameTimeSec":728}}
 {"type":"GAME_SNAPSHOT","gameTimeSec":767,"payload":{"gameTimeSec":767,"level":11,"gold":2900,"gpm":450,"xpm":480,"health":1000,"maxHealth":1200,"mana":600,"maxMana":800,"alive":true,"kills":2,"deaths":1,"lastHits":160,"buybackAvailable":null,"context":{"synthetic":true,"objectiveWindow":true}}}
+{"type":"ITEM_ADDED","gameTimeSec":790,"payload":{"itemId":"blink","goldAfter":650}}
 {"type":"CLOCK_UPDATED","gameTimeSec":805,"payload":{"gameTimeSec":805}}
 {"type":"CLOCK_UPDATED","gameTimeSec":843,"payload":{"gameTimeSec":843}}
 {"type":"CLOCK_UPDATED","gameTimeSec":882,"payload":{"gameTimeSec":882}}

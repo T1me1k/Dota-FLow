@@ -26,13 +26,13 @@ test('current Dota roster exposes 127 unique hero profiles including Largo', () 
   assert.ok(profiles.some((profile) => profile.id === 'largo'));
 });
 
-test('carry profile pack exposes 32 detailed heroes while uncalibrated heroes stay conservative', () => {
+test('hero intelligence packs expose 40 detailed heroes while uncalibrated heroes stay conservative', () => {
   const profiles = listHeroProfiles();
   const detailed = profiles.filter((profile) => profile.calibrationTier === HERO_PROFILE_TIERS.DETAILED);
   const baseline = profiles.filter((profile) => profile.calibrationTier === HERO_PROFILE_TIERS.BASELINE);
 
-  assert.equal(detailed.length, 32);
-  assert.equal(baseline.length, 95);
+  assert.equal(detailed.length, 40);
+  assert.equal(baseline.length, 87);
   assert.ok(['anti_mage', 'faceless_void', 'medusa', 'naga_siren', 'slark', 'spectre', 'terrorblade']
     .every((heroId) => detailed.some((profile) => profile.id === heroId)));
   assert.ok(detailed.every((profile) => profile.buildPlans.some((plan) => plan.items.length >= 4)));

@@ -209,8 +209,16 @@ export class StableDecisionCoordinator {
     const heldFor = state.gameTimeSec - this.changedAtGameTime;
     const urgent = candidate.action === MACRO_ACTIONS.RESET && candidate.scores.RESET >= 50;
     const strongSwitch = candidate.margin >= this.switchMargin;
+    const staleResetCleared = this.current.action === MACRO_ACTIONS.RESET
+      && candidate.action !== MACRO_ACTIONS.RESET
+      && state.alive !== false
+      && healthPct(state) >= 0.58
+      && manaPct(state) >= 0.25
+      && Number(state.gold ?? 0) < 2200
+      && Number(state.unreliableGold ?? 0) < 1800
+      && state.context?.safeRouteAvailable !== false;
 
-    if (urgent || (heldFor >= this.minimumHoldSec && strongSwitch)) {
+    if (urgent || staleResetCleared || (heldFor >= this.minimumHoldSec && strongSwitch)) {
       return this.#accept(candidate, state.gameTimeSec);
     }
 

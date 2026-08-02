@@ -1,5 +1,6 @@
 import { HERO_CATALOG, HERO_PROFILE_TIERS, getHeroCatalogEntry, resolveHeroId } from './hero-catalog.mjs';
 import { createCarryProfilePack } from './carry-profile-pack.mjs';
+import { createMidProfilePack } from './mid-profile-pack.mjs';
 
 const ITEMS = {
   abyssal: { id: 'item_abyssal_blade', name: 'Abyssal Blade', cost: 6250 },
@@ -423,6 +424,7 @@ function enrichDetailedProfile(entry, profile) {
 }
 
 Object.assign(detailedProfiles, createCarryProfilePack({ ITEMS, benchmark, condition }));
+Object.assign(detailedProfiles, createMidProfilePack({ ITEMS, benchmark, condition }));
 
 const profiles = Object.fromEntries(HERO_CATALOG.map((entry) => [
   entry.id,
