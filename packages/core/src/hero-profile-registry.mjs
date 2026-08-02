@@ -1,5 +1,6 @@
 import { CARRY_PROFILE_PACK_IDS, createCarryProfilePack } from './carry-profile-pack.mjs';
 import { MID_PROFILE_IDS, createMidProfilePack } from './mid-profile-pack.mjs';
+import { HERO_IDS as LEGACY_CARRY_PACK_IDS, createProfilePack as createLegacyCarryPack } from './legacy_carry_profile_compat.mjs';
 import { HERO_IDS as MID_TEMPO_IDS, createProfilePack as createMidTempoPack } from './mid_tempo_core_profile_pack.mjs';
 
 import { HERO_IDS as FLEX_CORE_IDS, createProfilePack as create_flex_core } from './flex_core_profile_pack.mjs';
@@ -11,13 +12,24 @@ import { HERO_IDS as SAVE_SUPPORT_IDS, createProfilePack as create_save_support 
 import { HERO_IDS as CONTROL_SUPPORT_IDS, createProfilePack as create_control_support } from './control-support-profile-calibration.mjs';
 import { HERO_IDS as MACRO_SUPPORT_A_IDS, createProfilePack as create_macro_support_a } from './macro_support_a_profile_pack.mjs';
 import { HERO_IDS as MACRO_SUPPORT_B_IDS, createProfilePack as create_macro_support_b } from './macro_support_b_profile_pack.mjs';
+
 /** Canonical registry: catalog tiers and runtime profiles are both derived from this list. */
-const BUILTIN_PROFILE_IDS = Object.freeze(['luna', 'juggernaut', 'sven', 'ursa', 'phantom_assassin']);
+const BUILTIN_PROFILE_IDS = Object.freeze(['juggernaut', 'sven']);
+const LEGACY_CARRY_PACK_ID_SET = new Set(LEGACY_CARRY_PACK_IDS);
+const ACTIVE_CARRY_PROFILE_PACK_IDS = Object.freeze(
+  CARRY_PROFILE_PACK_IDS.filter((id) => !LEGACY_CARRY_PACK_ID_SET.has(id))
+);
+
+function createActiveCarryProfilePack(dependencies) {
+  const profiles = createCarryProfilePack(dependencies);
+  return Object.fromEntries(ACTIVE_CARRY_PROFILE_PACK_IDS.map((id) => [id, profiles[id]]));
+}
 
 const PACKS = [
   { id: 'builtin', ids: BUILTIN_PROFILE_IDS, create: ({ builtinProfiles }) => Object.fromEntries(BUILTIN_PROFILE_IDS.map((id) => [id, builtinProfiles[id]])) },
-  { id: 'carry', ids: CARRY_PROFILE_PACK_IDS, create: createCarryProfilePack },
+  { id: 'carry', ids: ACTIVE_CARRY_PROFILE_PACK_IDS, create: createActiveCarryProfilePack },
   { id: 'mid', ids: MID_PROFILE_IDS, create: createMidProfilePack },
+  { id: 'legacy-carry-remediation-1', ids: LEGACY_CARRY_PACK_IDS, create: createLegacyCarryPack },
   { id: 'mid-tempo-core', ids: MID_TEMPO_IDS, create: createMidTempoPack },
   { id: 'flex-core', ids: FLEX_CORE_IDS, create: create_flex_core },
   { id: 'frontline-initiator', ids: FRONTLINE_INITIATOR_IDS, create: create_frontline_initiator },
