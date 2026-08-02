@@ -163,7 +163,7 @@ test('adaptive build advisor selects the defensive Anti-Mage plan against contro
   });
   const result = recommendAdaptiveBuild(state);
   assert.equal(result.status, 'READY');
-  assert.equal(result.recommendedPlan.id, 'bf_manta_bkb');
+  assert.equal(result.recommendedPlan.id, 'anti_mage_control_response');
   assert.ok(result.recommendedPlan.reasons.some((reason) => reason.includes('Black King Bar')));
 });
 
