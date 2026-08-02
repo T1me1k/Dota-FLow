@@ -24,7 +24,7 @@ Each profile includes:
 
 The Puck objective replay exposed that an emergency macro `RESET` could remain pinned after respawn even when health, mana, gold, and route safety had recovered. The stable decision coordinator now releases that stale emergency state immediately instead of waiting for an unrelated large score margin.
 
-The Invoker safety replay also keeps critical resources and Roshan availability explicit, so its final safety recommendation is driven by confirmed state rather than a contradictory objective fixture.
+The Invoker safety replay keeps critical resources and objective readiness explicit. Its checkpoint now verifies the precise `RESET_BEFORE_OBJECTIVE` safety call and the `HEALTH_IS_CRITICALLY_LOW_15` reason code rather than accepting a generic reset label.
 
 ## Calibration boundary
 
