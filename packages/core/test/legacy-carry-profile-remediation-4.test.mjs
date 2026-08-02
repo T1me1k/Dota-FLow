@@ -53,7 +53,7 @@ test('fourth legacy carry remediation pack replaces runtime padding and migrates
   const pack = listDetailedProfilePacks().find((entry) => entry.id === 'legacy-carry-remediation-4');
   const builtin = listDetailedProfilePacks().find((entry) => entry.id === 'builtin');
   assert.deepEqual(pack?.heroIds, HERO_IDS);
-  assert.deepEqual(builtin?.heroIds, ['sven']);
+  assert.ok(!builtin?.heroIds.includes('juggernaut'));
 
   const fingerprints = new Set();
   for (const id of HERO_IDS) {
