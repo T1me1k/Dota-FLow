@@ -96,9 +96,11 @@ export function evaluateMacroDecision(state) {
     }
   }
 
-  if (gpmDelta < -80) add(score, MACRO_ACTIONS.FARM, 24, `GPM ниже темпа на ${Math.abs(gpmDelta)}`);
-  else if (gpmDelta < -30) add(score, MACRO_ACTIONS.FARM, 12, 'Нужно восстановить темп фарма');
-  else if (gpmDelta > 80) add(score, MACRO_ACTIONS.PRESSURE, 16, 'Ты заметно опережаешь ожидаемый темп');
+  if (profile.role !== 'support') {
+    if (gpmDelta < -80) add(score, MACRO_ACTIONS.FARM, 24, `GPM ниже темпа на ${Math.abs(gpmDelta)}`);
+    else if (gpmDelta < -30) add(score, MACRO_ACTIONS.FARM, 12, 'Нужно восстановить темп фарма');
+    else if (gpmDelta > 80) add(score, MACRO_ACTIONS.PRESSURE, 16, 'Ты заметно опережаешь ожидаемый темп');
+  }
 
   if (state.ultimateReady) {
     add(score, MACRO_ACTIONS.FIGHT, 12, 'Ультимейт готов');
@@ -138,7 +140,8 @@ export function evaluateMacroDecision(state) {
   const [bestAction, best] = ranked[0];
   const [, second] = ranked[1];
   const margin = best.value - second.value;
-  const profileConfidenceCap = profile.calibrationTier === 'BASELINE' ? 0.74 : 0.98;
+  const tierConfidenceCap = profile.calibrationTier === 'BASELINE' ? 0.74 : 0.98;
+  const profileConfidenceCap = Math.min(tierConfidenceCap, profile.calibrationConfidence ?? profile.profileConfidence ?? tierConfidenceCap);
   const confidence = Math.max(0.25, Math.min(profileConfidenceCap, 0.43 + margin / 70 + powerState.confidence * 0.12));
   const action = margin < 8 && best.value < 70 ? MACRO_ACTIONS.NEUTRAL : bestAction;
 
@@ -183,7 +186,9 @@ function buildDecision(state, scores, benchmark, powerState, override) {
       id: powerState.hero,
       displayName: powerState.displayName,
       calibrationTier: powerState.calibrationTier,
-      profileTemplate: powerState.profileTemplate
+      profileTemplate: powerState.profileTemplate,
+      calibrationConfidence: getHeroProfile(powerState.hero).calibrationConfidence,
+      calibrationVersion: getHeroProfile(powerState.hero).calibrationVersion
     },
     scores: Object.fromEntries(Object.entries(scores).map(([key, value]) => [key, value.value])),
     generatedAt: Date.now()

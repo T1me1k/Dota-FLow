@@ -18,9 +18,21 @@ const ITEM_SIGNALS = Object.freeze({
   item_hurricane_pike: { kite: 18, ranged: 8, label: 'позиционирование против kite' }
 });
 
-function planScore(plan, draft, index) {
+function planScore(plan, draft, state, index) {
   let score = 50 - index * 3;
   const reasons = [];
+  const tags = new Set(plan.scenarioTags ?? []);
+  const signals = [
+    ['enemy_control_high', draft.enemyControl >= 0.5],
+    ['enemy_magic_burst_high', draft.enemyBurst >= 0.5],
+    ['enemy_physical_dps_high', draft.enemyDurability >= 0.55],
+    ['enemy_healing_high', draft.enemySave >= 0.45],
+    ['player_ahead', Number(state.gpm ?? 0) >= 550],
+    ['player_behind', state.gameTimeSec >= 12 * 60 && Number(state.gpm ?? 0) < 350],
+    ['objective_window', Boolean(state.objectives?.roshanAvailable || state.enemyTeam?.some?.((hero) => hero?.alive === false))]
+  ];
+  for (const [code, active] of signals) if (active && tags.has(code)) { score += 32; reasons.push(code); }
+  if (tags.has('balanced') && !signals.some(([, active]) => active)) { score += 12; reasons.push('balanced_draft'); }
   for (const item of plan.items ?? []) {
     const signal = ITEM_SIGNALS[item.id];
     if (!signal) continue;
@@ -58,7 +70,7 @@ export function recommendAdaptiveBuild(state) {
   }
 
   const ranked = plans
-    .map((plan, index) => planScore(plan, draft, index))
+    .map((plan, index) => planScore(plan, draft, state, index))
     .sort((a, b) => b.score - a.score);
   const selected = ranked[0];
   const selectedIds = new Set((selected.plan.items ?? []).map((item) => item.id));
@@ -71,7 +83,7 @@ export function recommendAdaptiveBuild(state) {
     recommendedPlan: {
       ...selected.plan,
       score: Math.round(selected.score),
-      reasons: selected.reasons.length ? selected.reasons.slice(0, 3) : ['Стандартный план профиля героя']
+      reasons: selected.reasons.length ? [...new Set(selected.reasons)].slice(0, 4) : ['balanced_draft']
     },
     alternatives: ranked.slice(1, 3).map((entry) => ({
       id: entry.plan.id,
@@ -80,9 +92,10 @@ export function recommendAdaptiveBuild(state) {
       reasons: entry.reasons.slice(0, 2)
     })),
     deviations,
-    confidence: Math.max(0.35, Math.min(0.92, draft.confidence * (plans.length > 1 ? 1 : 0.82))),
+    confidence: Math.max(0.30, Math.min(profile.calibrationConfidence ?? 0.88, draft.confidence * (plans.length > 1 ? 1 : 0.82))),
     limitations: [
-      ...(draft.enemyTeam.length < 5 ? ['Вражеский draft неполный'] : []),
+      ...(draft.enemyTeam.length < 5 ? ['missing_signal:complete_enemy_draft'] : []),
+      ...(!state.role ? ['missing_signal:role_context'] : []),
       ...(profile.balanceCalibration?.startsWith('prototype') ? ['Тайминги профиля требуют live-калибровки'] : [])
     ]
   };
