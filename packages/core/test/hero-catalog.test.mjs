@@ -26,15 +26,18 @@ test('current Dota roster exposes 127 unique hero profiles including Largo', () 
   assert.ok(profiles.some((profile) => profile.id === 'largo'));
 });
 
-test('hero intelligence packs expose 40 detailed heroes while uncalibrated heroes stay conservative', () => {
+test('hero intelligence packs expose 48 detailed heroes while uncalibrated heroes stay conservative', () => {
   const profiles = listHeroProfiles();
   const detailed = profiles.filter((profile) => profile.calibrationTier === HERO_PROFILE_TIERS.DETAILED);
   const baseline = profiles.filter((profile) => profile.calibrationTier === HERO_PROFILE_TIERS.BASELINE);
 
-  assert.equal(detailed.length, 40);
-  assert.equal(baseline.length, 87);
-  assert.ok(['anti_mage', 'faceless_void', 'medusa', 'naga_siren', 'slark', 'spectre', 'terrorblade']
-    .every((heroId) => detailed.some((profile) => profile.id === heroId)));
+  assert.equal(detailed.length, 48);
+  assert.equal(baseline.length, 79);
+  assert.ok([
+    'anti_mage', 'faceless_void', 'medusa', 'naga_siren', 'slark', 'spectre', 'terrorblade',
+    'leshrac', 'death_prophet', 'kunkka', 'necrophos', 'outworld_destroyer', 'pangolier',
+    'primal_beast', 'templar_assassin'
+  ].every((heroId) => detailed.some((profile) => profile.id === heroId)));
   assert.ok(detailed.every((profile) => profile.buildPlans.some((plan) => plan.items.length >= 4)));
   assert.ok(detailed.every((profile) => profile.spikes.length >= 3));
   assert.ok(baseline.every((profile) => profile.buildPlans[0].items.length === 0));
@@ -114,7 +117,6 @@ test('state normalization accepts internal hero ids and stores canonical ids', (
   assert.equal(result.diagnostics.warnings.length, 0);
 });
 
-
 test('starting a baseline hero match keeps the item target empty instead of inheriting Luna data', () => {
   const state = applyGameEvent(createInitialGameState(), {
     type: GAME_EVENT_TYPES.MATCH_STARTED,
@@ -126,7 +128,6 @@ test('starting a baseline hero match keeps the item target empty instead of inhe
   assert.equal(state.targetItem, null);
   assert.equal(state.buildPlanId, 'baseline_manual');
 });
-
 
 test('unknown draft hero ids do not inherit Luna tags', () => {
   assert.deepEqual(getHeroTags('npc_dota_hero_future_unknown'), []);
