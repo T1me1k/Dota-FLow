@@ -1,6 +1,5 @@
 import { HERO_CATALOG, HERO_PROFILE_TIERS, getHeroCatalogEntry, resolveHeroId } from './hero-catalog.mjs';
-import { createCarryProfilePack } from './carry-profile-pack.mjs';
-import { createMidProfilePack } from './mid-profile-pack.mjs';
+import { createDetailedHeroRegistry } from './hero-profile-registry.mjs';
 
 const ITEMS = {
   abyssal: { id: 'item_abyssal_blade', name: 'Abyssal Blade', cost: 6250 },
@@ -413,18 +412,30 @@ function makeBaselineProfile(entry) {
 }
 
 function enrichDetailedProfile(entry, profile) {
-  return {
-    ...profile,
-    roles: entry.roles,
-    draftTags: entry.draftTags,
-    profileTemplate: entry.profileTemplate,
-    calibrationTier: HERO_PROFILE_TIERS.DETAILED,
-    profileConfidence: 0.96
-  };
+  const existingPlans = profile.buildPlans.map((plan, index) => ({
+    ...plan,
+    role: plan.role ?? profile.role,
+    scenarioTags: plan.scenarioTags ?? (index === 0 ? ['balanced'] : ['enemy_control_high']),
+    priority: plan.priority ?? 60 - index,
+    coreItems: plan.coreItems ?? plan.items,
+    optionalItems: plan.optionalItems ?? [],
+    situationalItems: plan.situationalItems ?? [],
+    avoidWhen: plan.avoidWhen ?? [],
+    reasons: plan.reasons ?? (index === 0 ? ['balanced_draft'] : ['enemy_control_high']),
+    requiredSignals: plan.requiredSignals ?? [],
+    confidence: plan.confidence ?? 0.88,
+    calibrationVersion: plan.calibrationVersion ?? 'legacy-detailed-v1'
+  }));
+  const seed = existingPlans[0]?.items ?? [];
+  const buildPlans = [...existingPlans];
+  if (buildPlans.length < 3 && seed.length >= 3) buildPlans.push({ ...existingPlans[0], id: `${profile.id}_recovery`, name: 'Recovery progression', scenarioTags: ['player_behind'], reasons: ['player_behind'], priority: 55, items: [...seed].reverse(), coreItems: [...seed].reverse() });
+  if (buildPlans.length < 3 && seed.length >= 3) buildPlans.push({ ...existingPlans[0], id: `${profile.id}_objective`, name: 'Objective conversion', scenarioTags: ['objective_window','player_ahead'], reasons: ['objective_window'], priority: 70, items: [...seed.slice(1), seed[0]], coreItems: [...seed.slice(1), seed[0]] });
+  const spikes = [...profile.spikes];
+  if (spikes.length < 4) spikes.push({ id:`${profile.id}_late_role_breakpoint`, name:'Late role breakpoint', priority:72, trigger:{all:[condition('level_gte',18)]}, expectedMinute:28, earlyToleranceMin:3, lateToleranceMin:6, activeDurationSec:240, fadeDurationSec:180, permanent:{fight:9,objective:6}, window:{fight:10,objective:8}, actions:{FIGHT:9,OBJECTIVE:8}, recommendation:`Use ${profile.displayName}'s late level window around a controlled objective.`, calibrationVersion:'legacy-detailed-v1' });
+  return { ...profile, buildPlans, spikes, roles: entry.roles, draftTags: entry.draftTags, profileTemplate: entry.profileTemplate, calibrationTier: HERO_PROFILE_TIERS.DETAILED, profileConfidence: profile.profileConfidence ?? 0.96 };
 }
 
-Object.assign(detailedProfiles, createCarryProfilePack({ ITEMS, benchmark, condition }));
-Object.assign(detailedProfiles, createMidProfilePack({ ITEMS, benchmark, condition }));
+Object.assign(detailedProfiles, createDetailedHeroRegistry({ ITEMS, benchmark, condition, builtinProfiles: detailedProfiles }));
 
 const profiles = Object.fromEntries(HERO_CATALOG.map((entry) => [
   entry.id,

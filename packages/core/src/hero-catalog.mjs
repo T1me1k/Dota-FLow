@@ -1,3 +1,4 @@
+import { DETAILED_HERO_ID_SET } from './hero-profile-registry.mjs';
 export const HERO_PROFILE_TIERS = Object.freeze({
   DETAILED: 'DETAILED',
   BASELINE: 'BASELINE'
@@ -142,17 +143,6 @@ const TEMPLATE_MEMBERS = {
   hard_carry: new Set('alchemist anti_mage arc_warden chaos_knight drow_ranger faceless_void gyrocopter juggernaut lifestealer lone_druid luna medusa morphling muerta naga_siren phantom_assassin phantom_lancer slark sniper spectre sven terrorblade troll_warlord ursa weaver wraith_king'.split(' '))
 };
 
-const DETAILED_HEROES = new Set([
-  'alchemist', 'anti_mage', 'arc_warden', 'bloodseeker', 'chaos_knight', 'clinkz',
-  'dawnbreaker', 'death_prophet', 'dragon_knight', 'drow_ranger', 'ember_spirit', 'faceless_void',
-  'gyrocopter', 'invoker', 'juggernaut', 'kunkka', 'leshrac', 'lifestealer',
-  'lina', 'luna', 'marci', 'medusa', 'monkey_king', 'morphling',
-  'muerta', 'naga_siren', 'necrophos', 'outworld_destroyer', 'pangolier', 'phantom_assassin',
-  'phantom_lancer', 'primal_beast', 'puck', 'queen_of_pain', 'razor', 'slark',
-  'spectre', 'storm_spirit', 'sven', 'templar_assassin', 'terrorblade', 'tiny',
-  'troll_warlord', 'ursa', 'void_spirit', 'weaver', 'wraith_king', 'zeus'
-]);
-
 const INTERNAL_ALIASES = {
   antimage: 'anti_mage',
   centaur: 'centaur_warrunner',
@@ -236,7 +226,7 @@ export const HERO_CATALOG = Object.freeze(HERO_NAMES.map(([id, displayName]) => 
     primaryRole: metadata.primaryRole,
     roles: [...metadata.roles],
     draftTags: draftTagsFor(id, profileTemplate),
-    calibrationTier: DETAILED_HEROES.has(id) ? HERO_PROFILE_TIERS.DETAILED : HERO_PROFILE_TIERS.BASELINE
+    calibrationTier: DETAILED_HERO_ID_SET.has(id) ? HERO_PROFILE_TIERS.DETAILED : HERO_PROFILE_TIERS.BASELINE
   });
 }));
 

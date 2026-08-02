@@ -44,9 +44,9 @@ const SIGNATURE_ITEMS = Object.freeze({
   templar_assassin: 'item_desolator'
 });
 
-test('two mid intelligence packs raise detailed coverage from 32 to 48 heroes', () => {
+test('mid intelligence packs remain registered within complete hero coverage', () => {
   const detailed = listHeroProfiles().filter((profile) => profile.calibrationTier === 'DETAILED');
-  assert.equal(detailed.length, 48);
+  assert.equal(detailed.length, 127);
 
   for (const heroId of MID_PROFILE_IDS) {
     assert.ok(detailed.some((profile) => profile.id === heroId), `${heroId} must be detailed`);

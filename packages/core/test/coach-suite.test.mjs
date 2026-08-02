@@ -167,10 +167,11 @@ test('adaptive build advisor selects the defensive Anti-Mage plan against contro
   assert.ok(result.recommendedPlan.reasons.some((reason) => reason.includes('Black King Bar')));
 });
 
-test('adaptive build advisor keeps baseline heroes honest when no build is calibrated', () => {
+test('adaptive build advisor serves a bounded scenario plan for newly calibrated supports', () => {
   const result = recommendAdaptiveBuild(createInitialGameState({ hero: 'bane', role: 'hard_support' }));
-  assert.equal(result.status, 'NOT_CALIBRATED');
-  assert.equal(result.recommendedPlan, null);
+  assert.equal(result.status, 'READY');
+  assert.equal(result.recommendedPlan.id, 'bane_balanced');
+  assert.ok(result.confidence <= 0.72);
 });
 
 test('Flow progress profile aggregates dimensions and detects an improving trend', () => {

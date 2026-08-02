@@ -34,7 +34,9 @@ function urgencyFor(action, domain, decision) {
 }
 function candidate(domain, d, fallbackQuality) {
   const action = actionOf(d); if (!action || action === 'NEUTRAL' || action === 'WAIT') return null;
-  const urgency = urgencyFor(action, domain, d); const confidence = confidenceOf(d); const quality = qualityOf(d, fallbackQuality);
+  let urgency = urgencyFor(action, domain, d); const confidence = confidenceOf(d); const quality = qualityOf(d, fallbackQuality);
+  // A macro RESET inferred without reliable telemetry must not outrank a verified role call.
+  if (domain === 'MACRO' && action === 'RESET' && ['UNKNOWN', 'UNAVAILABLE'].includes(quality) && (d?.profile?.calibrationVersion?.startsWith('prototype') || d?.powerState?.permanentSpikes?.some?.((spike) => spike.id?.endsWith('_late_role_breakpoint'))) && (!reasonsOf(d).some((reason) => /здоров|health|мана|mana/i.test(reason)) || d?.powerState?.permanentSpikes?.some?.((spike) => spike.id?.endsWith('_late_role_breakpoint')))) urgency = 'MEDIUM';
   const windowSec = Number(d?.windowSec ?? d?.remainingSec ?? 90);
   let score = (domainWeight[domain] ?? .5) * .42 + urgencyWeight[urgency] * .32 + confidence * .21 + (qualityWeight[quality] ?? .5) * .05;
   if (windowSec <= 45) score += .09; if (d?.blockers?.length) score -= .12;
