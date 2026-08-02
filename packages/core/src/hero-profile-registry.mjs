@@ -1,6 +1,6 @@
 import { CARRY_PROFILE_PACK_IDS, createCarryProfilePack } from './carry-profile-pack.mjs';
 import { MID_PROFILE_IDS, createMidProfilePack } from './mid-profile-pack.mjs';
-import { HERO_IDS as LEGACY_CARRY_PACK_IDS, createProfilePack as createLegacyCarryPack } from './legacy_carry_profile_pack.mjs';
+import { HERO_IDS as LEGACY_CARRY_PACK_IDS, createProfilePack as createLegacyCarryPack } from './legacy_carry_profile_compat.mjs';
 import { HERO_IDS as MID_TEMPO_IDS, createProfilePack as createMidTempoPack } from './mid_tempo_core_profile_pack.mjs';
 
 import { HERO_IDS as FLEX_CORE_IDS, createProfilePack as create_flex_core } from './flex_core_profile_pack.mjs';
