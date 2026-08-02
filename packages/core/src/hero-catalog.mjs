@@ -3,135 +3,135 @@ export const HERO_PROFILE_TIERS = Object.freeze({
   BASELINE: 'BASELINE'
 });
 
-const HERO_NAMES = [
-  ['abaddon', 'Abaddon'],
-  ['alchemist', 'Alchemist'],
-  ['ancient_apparition', 'Ancient Apparition'],
-  ['anti_mage', 'Anti-Mage'],
-  ['arc_warden', 'Arc Warden'],
-  ['axe', 'Axe'],
-  ['bane', 'Bane'],
-  ['batrider', 'Batrider'],
-  ['beastmaster', 'Beastmaster'],
-  ['bloodseeker', 'Bloodseeker'],
-  ['bounty_hunter', 'Bounty Hunter'],
-  ['brewmaster', 'Brewmaster'],
-  ['bristleback', 'Bristleback'],
-  ['broodmother', 'Broodmother'],
-  ['centaur_warrunner', 'Centaur Warrunner'],
-  ['chaos_knight', 'Chaos Knight'],
-  ['chen', 'Chen'],
-  ['clinkz', 'Clinkz'],
-  ['clockwerk', 'Clockwerk'],
-  ['crystal_maiden', 'Crystal Maiden'],
-  ['dark_seer', 'Dark Seer'],
-  ['dark_willow', 'Dark Willow'],
-  ['dawnbreaker', 'Dawnbreaker'],
-  ['dazzle', 'Dazzle'],
-  ['death_prophet', 'Death Prophet'],
-  ['disruptor', 'Disruptor'],
-  ['doom', 'Doom'],
-  ['dragon_knight', 'Dragon Knight'],
-  ['drow_ranger', 'Drow Ranger'],
-  ['earth_spirit', 'Earth Spirit'],
-  ['earthshaker', 'Earthshaker'],
-  ['elder_titan', 'Elder Titan'],
-  ['ember_spirit', 'Ember Spirit'],
-  ['enchantress', 'Enchantress'],
-  ['enigma', 'Enigma'],
-  ['faceless_void', 'Faceless Void'],
-  ['grimstroke', 'Grimstroke'],
-  ['gyrocopter', 'Gyrocopter'],
-  ['hoodwink', 'Hoodwink'],
-  ['huskar', 'Huskar'],
-  ['invoker', 'Invoker'],
-  ['io', 'Io'],
-  ['jakiro', 'Jakiro'],
-  ['juggernaut', 'Juggernaut'],
-  ['keeper_of_the_light', 'Keeper of the Light'],
-  ['kez', 'Kez'],
-  ['kunkka', 'Kunkka'],
-  ['largo', 'Largo'],
-  ['legion_commander', 'Legion Commander'],
-  ['leshrac', 'Leshrac'],
-  ['lich', 'Lich'],
-  ['lifestealer', 'Lifestealer'],
-  ['lina', 'Lina'],
-  ['lion', 'Lion'],
-  ['lone_druid', 'Lone Druid'],
-  ['luna', 'Luna'],
-  ['lycan', 'Lycan'],
-  ['magnus', 'Magnus'],
-  ['marci', 'Marci'],
-  ['mars', 'Mars'],
-  ['medusa', 'Medusa'],
-  ['meepo', 'Meepo'],
-  ['mirana', 'Mirana'],
-  ['monkey_king', 'Monkey King'],
-  ['morphling', 'Morphling'],
-  ['muerta', 'Muerta'],
-  ['naga_siren', 'Naga Siren'],
-  ['natures_prophet', "Nature's Prophet"],
-  ['necrophos', 'Necrophos'],
-  ['night_stalker', 'Night Stalker'],
-  ['nyx_assassin', 'Nyx Assassin'],
-  ['ogre_magi', 'Ogre Magi'],
-  ['omniknight', 'Omniknight'],
-  ['oracle', 'Oracle'],
-  ['outworld_destroyer', 'Outworld Destroyer'],
-  ['pangolier', 'Pangolier'],
-  ['phantom_assassin', 'Phantom Assassin'],
-  ['phantom_lancer', 'Phantom Lancer'],
-  ['phoenix', 'Phoenix'],
-  ['primal_beast', 'Primal Beast'],
-  ['puck', 'Puck'],
-  ['pudge', 'Pudge'],
-  ['pugna', 'Pugna'],
-  ['queen_of_pain', 'Queen of Pain'],
-  ['razor', 'Razor'],
-  ['riki', 'Riki'],
-  ['ringmaster', 'Ringmaster'],
-  ['rubick', 'Rubick'],
-  ['sand_king', 'Sand King'],
-  ['shadow_demon', 'Shadow Demon'],
-  ['shadow_fiend', 'Shadow Fiend'],
-  ['shadow_shaman', 'Shadow Shaman'],
-  ['silencer', 'Silencer'],
-  ['skywrath_mage', 'Skywrath Mage'],
-  ['slardar', 'Slardar'],
-  ['slark', 'Slark'],
-  ['snapfire', 'Snapfire'],
-  ['sniper', 'Sniper'],
-  ['spectre', 'Spectre'],
-  ['spirit_breaker', 'Spirit Breaker'],
-  ['storm_spirit', 'Storm Spirit'],
-  ['sven', 'Sven'],
-  ['techies', 'Techies'],
-  ['templar_assassin', 'Templar Assassin'],
-  ['terrorblade', 'Terrorblade'],
-  ['tidehunter', 'Tidehunter'],
-  ['timbersaw', 'Timbersaw'],
-  ['tinker', 'Tinker'],
-  ['tiny', 'Tiny'],
-  ['treant_protector', 'Treant Protector'],
-  ['troll_warlord', 'Troll Warlord'],
-  ['tusk', 'Tusk'],
-  ['underlord', 'Underlord'],
-  ['undying', 'Undying'],
-  ['ursa', 'Ursa'],
-  ['vengeful_spirit', 'Vengeful Spirit'],
-  ['venomancer', 'Venomancer'],
-  ['viper', 'Viper'],
-  ['visage', 'Visage'],
-  ['void_spirit', 'Void Spirit'],
-  ['warlock', 'Warlock'],
-  ['weaver', 'Weaver'],
-  ['windranger', 'Windranger'],
-  ['winter_wyvern', 'Winter Wyvern'],
-  ['witch_doctor', 'Witch Doctor'],
-  ['wraith_king', 'Wraith King'],
-  ['zeus', 'Zeus']
-];
+const HERO_NAMES = `
+abaddon|Abaddon
+alchemist|Alchemist
+ancient_apparition|Ancient Apparition
+anti_mage|Anti-Mage
+arc_warden|Arc Warden
+axe|Axe
+bane|Bane
+batrider|Batrider
+beastmaster|Beastmaster
+bloodseeker|Bloodseeker
+bounty_hunter|Bounty Hunter
+brewmaster|Brewmaster
+bristleback|Bristleback
+broodmother|Broodmother
+centaur_warrunner|Centaur Warrunner
+chaos_knight|Chaos Knight
+chen|Chen
+clinkz|Clinkz
+clockwerk|Clockwerk
+crystal_maiden|Crystal Maiden
+dark_seer|Dark Seer
+dark_willow|Dark Willow
+dawnbreaker|Dawnbreaker
+dazzle|Dazzle
+death_prophet|Death Prophet
+disruptor|Disruptor
+doom|Doom
+dragon_knight|Dragon Knight
+drow_ranger|Drow Ranger
+earth_spirit|Earth Spirit
+earthshaker|Earthshaker
+elder_titan|Elder Titan
+ember_spirit|Ember Spirit
+enchantress|Enchantress
+enigma|Enigma
+faceless_void|Faceless Void
+grimstroke|Grimstroke
+gyrocopter|Gyrocopter
+hoodwink|Hoodwink
+huskar|Huskar
+invoker|Invoker
+io|Io
+jakiro|Jakiro
+juggernaut|Juggernaut
+keeper_of_the_light|Keeper of the Light
+kez|Kez
+kunkka|Kunkka
+largo|Largo
+legion_commander|Legion Commander
+leshrac|Leshrac
+lich|Lich
+lifestealer|Lifestealer
+lina|Lina
+lion|Lion
+lone_druid|Lone Druid
+luna|Luna
+lycan|Lycan
+magnus|Magnus
+marci|Marci
+mars|Mars
+medusa|Medusa
+meepo|Meepo
+mirana|Mirana
+monkey_king|Monkey King
+morphling|Morphling
+muerta|Muerta
+naga_siren|Naga Siren
+natures_prophet|Nature's Prophet
+necrophos|Necrophos
+night_stalker|Night Stalker
+nyx_assassin|Nyx Assassin
+ogre_magi|Ogre Magi
+omniknight|Omniknight
+oracle|Oracle
+outworld_destroyer|Outworld Destroyer
+pangolier|Pangolier
+phantom_assassin|Phantom Assassin
+phantom_lancer|Phantom Lancer
+phoenix|Phoenix
+primal_beast|Primal Beast
+puck|Puck
+pudge|Pudge
+pugna|Pugna
+queen_of_pain|Queen of Pain
+razor|Razor
+riki|Riki
+ringmaster|Ringmaster
+rubick|Rubick
+sand_king|Sand King
+shadow_demon|Shadow Demon
+shadow_fiend|Shadow Fiend
+shadow_shaman|Shadow Shaman
+silencer|Silencer
+skywrath_mage|Skywrath Mage
+slardar|Slardar
+slark|Slark
+snapfire|Snapfire
+sniper|Sniper
+spectre|Spectre
+spirit_breaker|Spirit Breaker
+storm_spirit|Storm Spirit
+sven|Sven
+techies|Techies
+templar_assassin|Templar Assassin
+terrorblade|Terrorblade
+tidehunter|Tidehunter
+timbersaw|Timbersaw
+tinker|Tinker
+tiny|Tiny
+treant_protector|Treant Protector
+troll_warlord|Troll Warlord
+tusk|Tusk
+underlord|Underlord
+undying|Undying
+ursa|Ursa
+vengeful_spirit|Vengeful Spirit
+venomancer|Venomancer
+viper|Viper
+visage|Visage
+void_spirit|Void Spirit
+warlock|Warlock
+weaver|Weaver
+windranger|Windranger
+winter_wyvern|Winter Wyvern
+witch_doctor|Witch Doctor
+wraith_king|Wraith King
+zeus|Zeus
+`.trim().split('\n').map((line) => line.split('|'));
 
 const TEMPLATE_MEMBERS = {
   support: new Set('ancient_apparition bane bounty_hunter chen crystal_maiden dark_willow dazzle disruptor enchantress grimstroke hoodwink io jakiro keeper_of_the_light largo lich lion mirana ogre_magi omniknight oracle phoenix ringmaster rubick shadow_demon shadow_shaman silencer skywrath_mage snapfire techies treant_protector undying vengeful_spirit venomancer warlock winter_wyvern witch_doctor'.split(' ')),
@@ -144,12 +144,13 @@ const TEMPLATE_MEMBERS = {
 
 const DETAILED_HEROES = new Set([
   'alchemist', 'anti_mage', 'arc_warden', 'bloodseeker', 'chaos_knight', 'clinkz',
-  'dawnbreaker', 'dragon_knight', 'drow_ranger', 'ember_spirit', 'faceless_void', 'gyrocopter',
-  'invoker', 'juggernaut', 'lifestealer', 'lina', 'luna', 'marci',
-  'medusa', 'monkey_king', 'morphling', 'muerta', 'naga_siren', 'phantom_assassin',
-  'phantom_lancer', 'puck', 'queen_of_pain', 'razor', 'slark', 'spectre',
-  'storm_spirit', 'sven', 'terrorblade', 'tiny', 'troll_warlord', 'ursa',
-  'void_spirit', 'weaver', 'wraith_king', 'zeus'
+  'dawnbreaker', 'death_prophet', 'dragon_knight', 'drow_ranger', 'ember_spirit', 'faceless_void',
+  'gyrocopter', 'invoker', 'juggernaut', 'kunkka', 'leshrac', 'lifestealer',
+  'lina', 'luna', 'marci', 'medusa', 'monkey_king', 'morphling',
+  'muerta', 'naga_siren', 'necrophos', 'outworld_destroyer', 'pangolier', 'phantom_assassin',
+  'phantom_lancer', 'primal_beast', 'puck', 'queen_of_pain', 'razor', 'slark',
+  'spectre', 'storm_spirit', 'sven', 'templar_assassin', 'terrorblade', 'tiny',
+  'troll_warlord', 'ursa', 'void_spirit', 'weaver', 'wraith_king', 'zeus'
 ]);
 
 const INTERNAL_ALIASES = {
@@ -187,7 +188,7 @@ const TAG_SETS = {
   fragile: new Set('ancient_apparition crystal_maiden dark_willow dazzle disruptor hoodwink lich lion oracle pugna ringmaster shadow_demon shadow_shaman skywrath_mage sniper warlock witch_doctor'.split(' ')),
   ranged_core: new Set('arc_warden drow_ranger gyrocopter lina lone_druid luna medusa morphling muerta razor shadow_fiend sniper templar_assassin troll_warlord viper windranger'.split(' ')),
   late_game: new Set('anti_mage arc_warden chaos_knight drow_ranger faceless_void medusa morphling naga_siren phantom_assassin phantom_lancer spectre terrorblade'.split(' ')),
-  objective: new Set('alchemist beastmaster chen juggernaut lone_druid lycan meepo shadow_shaman troll_warlord ursa visage'.split(' '))
+  objective: new Set('alchemist beastmaster chen juggernaut lone_druid lycan meepo shadow_shaman templar_assassin troll_warlord ursa visage'.split(' '))
 };
 
 const TEMPLATE_METADATA = {

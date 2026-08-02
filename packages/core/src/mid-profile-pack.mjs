@@ -42,6 +42,28 @@ const PRESETS = Object.freeze({
       late: { fight: 18, survival: 8, objective: 7 }
     },
     benchmarks: [[5,335,6],[10,440,9],[15,520,13],[20,585,16],[25,635,19],[30,675,22],[40,720,26]]
+  },
+  durable_caster: {
+    archetypes: ['durable_mid', 'sustain_core', 'teamfight_frontliner'],
+    vulnerabilities: ['anti_heal', 'mana_pressure', 'kite'],
+    basePower: { farm: 61, fight: 67, push: 58, survival: 69, initiation: 48, objective: 57, mobility: 43 },
+    stageCurves: {
+      early: { farm: 3, survival: 5 },
+      mid: { farm: 10, fight: 18, push: 10, objective: 8 },
+      late: { fight: 10, survival: 12, objective: 7 }
+    },
+    benchmarks: [[5,335,6],[10,435,9],[15,515,13],[20,580,16],[25,630,19],[30,670,22],[40,715,26]]
+  },
+  physical_tempo: {
+    archetypes: ['physical_mid', 'objective_core', 'pickoff_core'],
+    vulnerabilities: ['control', 'armor', 'save'],
+    basePower: { farm: 68, fight: 68, push: 65, survival: 49, initiation: 55, objective: 72, mobility: 54 },
+    stageCurves: {
+      early: { farm: 5, fight: 4 },
+      mid: { farm: 10, fight: 18, push: 13, objective: 14 },
+      late: { fight: 8, push: 10, objective: 9 }
+    },
+    benchmarks: [[5,345,6],[10,450,9],[15,535,13],[20,600,16],[25,650,19],[30,690,22],[40,730,26]]
   }
 });
 
@@ -63,6 +85,7 @@ function buildTrigger(trigger, items, condition) {
 
 function makeProfile(config, { items, benchmark, condition }) {
   const preset = PRESETS[config.preset];
+  if (!preset) throw new Error(`Unknown mid profile preset: ${config.preset}`);
   return {
     id: config.id,
     displayName: config.displayName,
@@ -96,9 +119,9 @@ function makeProfile(config, { items, benchmark, condition }) {
       window: spike.window ?? {},
       actions: spike.actions ?? {},
       recommendation: spike.recommendation,
-      balanceCalibration: 'prototype_mid_pack_v1'
+      balanceCalibration: 'prototype_mid_pack_v2'
     })),
-    balanceCalibration: 'prototype_mid_pack_v1'
+    balanceCalibration: 'prototype_mid_pack_v2'
   };
 }
 
@@ -213,6 +236,118 @@ const CONFIGS = Object.freeze([
       { id: 'level_6', name: "Thundergod's Wrath level 1", priority: 63, trigger: { level: 6 }, expectedMinute: 6.5, requiresUltimate: true, permanent: { fight: 8, initiation: 5 }, window: { connect: 15, fight: 11 }, actions: { CONNECT: 16, FIGHT: 11 }, recommendation: 'Синхронизируй глобальный урон с уже начатым действием союзников.' },
       { id: 'scepter', name: 'Aghanim global pressure', priority: 88, trigger: { item: 'scepter' }, expectedMinute: 18, permanent: { fight: 18, push: 8, objective: 6 }, window: { connect: 18, pressure: 12 }, actions: { CONNECT: 19, PRESSURE: 12 }, recommendation: 'Создавай глобальное численное преимущество, не покидая безопасную позицию.' },
       { id: 'refresher_bkb', name: 'Refresher + BKB decisive fight', priority: 98, trigger: { items: ['refresher','bkb'] }, expectedMinute: 30, permanent: { fight: 28, survival: 22, objective: 10 }, window: { fight: 25, objective: 12 }, actions: { FIGHT: 28, OBJECTIVE: 12 }, recommendation: 'Форсируй решающую драку вокруг обзора и заранее подготовленной позиции.' }
+    ]
+  },
+  {
+    id: 'leshrac', displayName: 'Leshrac', preset: 'durable_caster',
+    vulnerabilities: ['silence', 'burst', 'anti_heal'],
+    basePower: { farm: 72, fight: 73, push: 73, survival: 61, objective: 66, mobility: 47 },
+    buildPlans: [
+      { id: 'travel_bkb_scepter', name: 'Travels → BKB → Aghanim', items: ['travel_boots','bkb','scepter','refresher'] },
+      { id: 'scepter_bkb_linken', name: 'Aghanim → BKB → Linken', items: ['scepter','bkb','linken','refresher'] }
+    ],
+    spikes: [
+      { id: 'level_6', name: 'Pulse Nova sustain fight', priority: 68, trigger: { level: 6 }, expectedMinute: 6.5, requiresUltimate: true, permanent: { fight: 9, push: 7 }, window: { fight: 17, pressure: 12 }, actions: { FIGHT: 17, PRESSURE: 12 }, recommendation: 'Входи после первого контроля союзников и следи, чтобы mana хватала на полный цикл Pulse Nova.' },
+      { id: 'travel', name: 'Travels map acceleration', priority: 82, trigger: { item: 'travel_boots' }, expectedMinute: 13, permanent: { farm: 18, mobility: 16, push: 12 }, window: { pressure: 17, farm: 9 }, actions: { PRESSURE: 18, FARM: 10 }, recommendation: 'Толкай дальнюю волну и телепортируйся в следующее командное действие раньше соперника.' },
+      { id: 'bkb_scepter', name: 'BKB + Aghanim front-line window', priority: 97, trigger: { items: ['bkb','scepter'] }, expectedMinute: 24, permanent: { fight: 24, survival: 24, push: 9 }, window: { fight: 24, objective: 14 }, actions: { FIGHT: 26, OBJECTIVE: 14 }, recommendation: 'Форсируй затяжную драку вокруг объекта, не отделяясь от сейвов команды.' }
+    ]
+  },
+  {
+    id: 'death_prophet', displayName: 'Death Prophet', preset: 'durable_caster',
+    vulnerabilities: ['burst', 'kite', 'dispel'],
+    basePower: { farm: 60, fight: 72, push: 82, survival: 66, objective: 79, mobility: 49 },
+    buildPlans: [
+      { id: 'travel_bkb_scepter', name: 'Travels → BKB → Aghanim', items: ['travel_boots','bkb','scepter','refresher'] },
+      { id: 'bkb_scepter_refresher', name: 'BKB → Aghanim → Refresher', items: ['bkb','scepter','refresher','heart'] }
+    ],
+    spikes: [
+      { id: 'level_6', name: 'Exorcism first objective', priority: 76, trigger: { level: 6 }, expectedMinute: 6.5, requiresUltimate: true, permanent: { fight: 10, push: 14, objective: 15 }, window: { pressure: 22, objective: 18, fight: 12 }, actions: { PRESSURE: 23, OBJECTIVE: 19, FIGHT: 12 }, recommendation: 'Привяжи Exorcism к башне или важной командной драке, а не к случайному размену.' },
+      { id: 'bkb', name: 'BKB Exorcism commitment', priority: 90, trigger: { item: 'bkb' }, expectedMinute: 17, permanent: { survival: 22, fight: 15 }, window: { fight: 22, objective: 17 }, actions: { FIGHT: 23, OBJECTIVE: 18 }, recommendation: 'Соберись с командой и преврати первый BKB-заряд в башню, Roshan или выигранную драку.' },
+      { id: 'scepter_refresher', name: 'Aghanim + Refresher siege', priority: 99, trigger: { items: ['scepter','refresher'] }, expectedMinute: 31, permanent: { fight: 27, push: 22, objective: 22 }, window: { objective: 25, pressure: 22, fight: 18 }, actions: { OBJECTIVE: 27, PRESSURE: 23, FIGHT: 18 }, recommendation: 'Форсируй решающий объект, сохраняя второе Exorcism для продолжения или отхода.' }
+    ]
+  },
+  {
+    id: 'kunkka', displayName: 'Kunkka', preset: 'durable_caster',
+    vulnerabilities: ['kite', 'save', 'armor'],
+    basePower: { farm: 67, fight: 72, push: 62, survival: 75, initiation: 70, objective: 60, mobility: 40 },
+    buildPlans: [
+      { id: 'armlet_scepter_bkb', name: 'Armlet → Aghanim → BKB', items: ['armlet','scepter','bkb','assault_cuirass'] },
+      { id: 'blink_bkb_scepter', name: 'Blink → BKB → Aghanim', items: ['blink','bkb','scepter','assault_cuirass'] }
+    ],
+    spikes: [
+      { id: 'level_6', name: 'Ghostship damage reduction', priority: 70, trigger: { level: 6 }, expectedMinute: 6.5, requiresUltimate: true, permanent: { fight: 10, survival: 10, initiation: 6 }, window: { connect: 17, fight: 16 }, actions: { CONNECT: 18, FIGHT: 16 }, recommendation: 'Начинай действие через X Mark и используй Ghostship так, чтобы команда получила Rum до основного урона.' },
+      { id: 'scepter', name: 'Aghanim area-control timing', priority: 89, trigger: { item: 'scepter' }, expectedMinute: 18, permanent: { fight: 20, initiation: 16, objective: 7 }, window: { fight: 22, connect: 14 }, actions: { FIGHT: 23, CONNECT: 15 }, recommendation: 'Играй вокруг узких проходов и не трать полный контроль на одиночную неважную цель.' },
+      { id: 'bkb_scepter', name: 'BKB + Aghanim front-line control', priority: 98, trigger: { items: ['bkb','scepter'] }, expectedMinute: 25, permanent: { fight: 25, survival: 24, initiation: 10 }, window: { fight: 25, objective: 11 }, actions: { FIGHT: 27, OBJECTIVE: 11 }, recommendation: 'Форсируй командную драку первым номером, сохраняя X Mark для ключевого героя.' }
+    ]
+  },
+  {
+    id: 'necrophos', displayName: 'Necrophos', preset: 'durable_caster',
+    vulnerabilities: ['burst', 'anti_heal', 'silence'],
+    basePower: { farm: 64, fight: 69, push: 54, survival: 77, initiation: 52, objective: 58, mobility: 34 },
+    buildPlans: [
+      { id: 'radiance_scepter_bkb', name: 'Radiance → Aghanim → BKB', items: ['radiance','scepter','bkb','heart'] },
+      { id: 'scepter_bkb_refresher', name: 'Aghanim → BKB → Refresher', items: ['scepter','bkb','refresher','heart'] }
+    ],
+    spikes: [
+      { id: 'level_6', name: "Reaper's Scythe execution", priority: 65, trigger: { level: 6 }, expectedMinute: 6.5, requiresUltimate: true, permanent: { fight: 9, initiation: 7 }, window: { fight: 16, connect: 10 }, actions: { FIGHT: 16, CONNECT: 10 }, recommendation: 'Сохраняй Scythe для гарантированного добивания важной цели, а не для открытия драки.' },
+      { id: 'radiance', name: 'Radiance attrition timing', priority: 86, trigger: { item: 'radiance' }, expectedMinute: 17, permanent: { farm: 17, fight: 14, push: 9, survival: 7 }, window: { pressure: 14, fight: 13 }, actions: { PRESSURE: 15, FIGHT: 13 }, recommendation: 'Занимай опасную волну вместе с командой и растягивай бой, не заходя первым под burst.' },
+      { id: 'scepter_bkb', name: 'Aghanim + BKB sustain window', priority: 97, trigger: { items: ['scepter','bkb'] }, expectedMinute: 25, permanent: { fight: 24, survival: 27, objective: 9 }, window: { fight: 24, objective: 11 }, actions: { FIGHT: 26, OBJECTIVE: 11 }, recommendation: 'Форсируй затяжную драку после раскрытия anti-heal и ключевого контроля противника.' }
+    ]
+  },
+  {
+    id: 'outworld_destroyer', displayName: 'Outworld Destroyer', preset: 'scaling_caster',
+    vulnerabilities: ['silence', 'mana_pressure', 'save'],
+    basePower: { farm: 60, fight: 76, push: 47, survival: 55, initiation: 63, objective: 55, mobility: 42 },
+    buildPlans: [
+      { id: 'pike_bkb_scepter', name: 'Hurricane Pike → BKB → Aghanim', items: ['hurricane_pike','bkb','scepter','bloodthorn'] },
+      { id: 'scepter_bkb_bloodthorn', name: 'Aghanim → BKB → Bloodthorn', items: ['scepter','bkb','bloodthorn','hurricane_pike'] }
+    ],
+    spikes: [
+      { id: 'level_6', name: "Sanity's Eclipse burst", priority: 67, trigger: { level: 6 }, expectedMinute: 6.5, requiresUltimate: true, permanent: { fight: 10 }, window: { fight: 17, connect: 9 }, actions: { FIGHT: 17, CONNECT: 9 }, recommendation: 'Не раскрывай Eclipse до использования Astral на сейв или фиксацию основной цели.' },
+      { id: 'pike', name: 'Hurricane Pike positioning', priority: 84, trigger: { item: 'hurricane_pike' }, expectedMinute: 16, permanent: { mobility: 18, survival: 15, fight: 11 }, window: { fight: 18, pressure: 8 }, actions: { FIGHT: 19, PRESSURE: 8 }, recommendation: 'Держи Pike для разрыва дистанции или добивания из безопасной позиции.' },
+      { id: 'bkb_scepter', name: 'BKB + Aghanim damage window', priority: 98, trigger: { items: ['bkb','scepter'] }, expectedMinute: 25, permanent: { fight: 27, survival: 24, initiation: 8 }, window: { fight: 25, objective: 10 }, actions: { FIGHT: 28, OBJECTIVE: 10 }, recommendation: 'Форсируй драку вокруг обзора, пока можешь непрерывно наносить Arcane Orb damage.' }
+    ]
+  },
+  {
+    id: 'pangolier', displayName: 'Pangolier', preset: 'control_caster',
+    vulnerabilities: ['silence', 'instant_disable', 'mana_pressure'],
+    basePower: { farm: 59, fight: 75, push: 50, survival: 60, initiation: 84, objective: 48, mobility: 82 },
+    buildPlans: [
+      { id: 'diffusal_blink_scepter', name: 'Diffusal → Blink → Aghanim', items: ['diffusal','blink','scepter','bkb'] },
+      { id: 'blink_scepter_bkb', name: 'Blink → Aghanim → BKB', items: ['blink','scepter','bkb','refresher'] }
+    ],
+    spikes: [
+      { id: 'level_6', name: 'Rolling Thunder initiation', priority: 72, trigger: { level: 6 }, expectedMinute: 6.5, requiresUltimate: true, permanent: { initiation: 16, mobility: 10, fight: 8 }, window: { connect: 20, fight: 17 }, actions: { CONNECT: 21, FIGHT: 17 }, recommendation: 'Входи Rolling Thunder через стену или узкий проход и заранее выбери безопасную траекторию выхода.' },
+      { id: 'diffusal', name: 'Diffusal skirmish timing', priority: 84, trigger: { item: 'diffusal' }, expectedMinute: 13.5, permanent: { fight: 15, farm: 8, mobility: 6 }, window: { fight: 20, pressure: 9 }, actions: { FIGHT: 21, PRESSURE: 9 }, recommendation: 'Ускорь темп короткими драками до появления у врага защитных предметов.' },
+      { id: 'blink_scepter', name: 'Blink + Aghanim teamfight control', priority: 97, trigger: { items: ['blink','scepter'] }, expectedMinute: 23, permanent: { fight: 23, initiation: 25, mobility: 12 }, window: { fight: 24, connect: 19, objective: 8 }, actions: { FIGHT: 26, CONNECT: 19, OBJECTIVE: 8 }, recommendation: 'Форсируй драку из тумана и разделяй заднюю линию соперника несколькими проходами.' }
+    ]
+  },
+  {
+    id: 'primal_beast', displayName: 'Primal Beast', preset: 'durable_caster',
+    vulnerabilities: ['kite', 'save', 'percentage_damage'],
+    basePower: { farm: 55, fight: 78, push: 55, survival: 78, initiation: 88, objective: 54, mobility: 68 },
+    buildPlans: [
+      { id: 'blade_mail_bkb_scepter', name: 'Blade Mail → BKB → Aghanim', items: ['blade_mail','bkb','scepter','blink'] },
+      { id: 'blink_bkb_scepter', name: 'Blink → BKB → Aghanim', items: ['blink','bkb','scepter','heart'] }
+    ],
+    spikes: [
+      { id: 'level_6', name: 'Pulverize lockdown', priority: 74, trigger: { level: 6 }, expectedMinute: 6.5, requiresUltimate: true, permanent: { initiation: 14, fight: 10 }, window: { connect: 19, fight: 18 }, actions: { CONNECT: 20, FIGHT: 18 }, recommendation: 'Начинай по цели без мгновенного сейва и не используй весь mobility до Pulverize.' },
+      { id: 'blade_mail', name: 'Blade Mail dive timing', priority: 84, trigger: { item: 'blade_mail' }, expectedMinute: 12.5, permanent: { survival: 14, fight: 13 }, window: { fight: 21, pressure: 8 }, actions: { FIGHT: 22, PRESSURE: 8 }, recommendation: 'Врывайся в героя, который вынужден наносить урон, пока союзники закрывают путь отхода.' },
+      { id: 'bkb_scepter', name: 'BKB + Aghanim full commit', priority: 98, trigger: { items: ['bkb','scepter'] }, expectedMinute: 24, permanent: { fight: 25, survival: 27, initiation: 12 }, window: { fight: 25, objective: 10 }, actions: { FIGHT: 28, OBJECTIVE: 10 }, recommendation: 'Форсируй ключевую драку первым номером и держи Pulverize для самого ценного героя.' }
+    ]
+  },
+  {
+    id: 'templar_assassin', displayName: 'Templar Assassin', preset: 'physical_tempo',
+    vulnerabilities: ['damage_over_time', 'control', 'save'],
+    basePower: { farm: 75, fight: 73, push: 70, survival: 53, initiation: 60, objective: 86, mobility: 55 },
+    buildPlans: [
+      { id: 'desolator_blink_bkb', name: 'Desolator → Blink → BKB', items: ['desolator','blink','bkb','daedalus'] },
+      { id: 'blink_desolator_bkb', name: 'Blink → Desolator → BKB', items: ['blink','desolator','bkb','hurricane_pike'] }
+    ],
+    spikes: [
+      { id: 'level_6', name: 'Psionic Trap map control', priority: 60, trigger: { level: 6 }, expectedMinute: 6.5, requiresUltimate: true, permanent: { initiation: 7, objective: 8 }, window: { pressure: 11, connect: 9 }, actions: { PRESSURE: 12, CONNECT: 9 }, recommendation: 'Поставь ловушки на рунах, Roshan и маршрутах отхода до следующего действия.' },
+      { id: 'desolator', name: 'Desolator objective timing', priority: 91, trigger: { item: 'desolator' }, expectedMinute: 14.5, permanent: { fight: 17, push: 18, objective: 22 }, window: { objective: 23, pressure: 18, fight: 13 }, actions: { OBJECTIVE: 24, PRESSURE: 19, FIGHT: 13 }, recommendation: 'Собери команду на Roshan или внешнюю башню до появления у врага брони и сейвов.' },
+      { id: 'blink_bkb', name: 'Blink + BKB backline access', priority: 98, trigger: { items: ['blink','bkb'] }, expectedMinute: 22, permanent: { fight: 25, survival: 23, initiation: 20 }, window: { fight: 25, objective: 15 }, actions: { FIGHT: 27, OBJECTIVE: 15 }, recommendation: 'Начинай по задней цели из тумана и конвертируй выигранную драку в Roshan.' }
     ]
   }
 ]);
