@@ -18,7 +18,12 @@ const ITEM_CATALOG = Object.freeze({
   assault_cuirass: { id: 'item_assault', name: 'Assault Cuirass', cost: 5125 },
   echo_sabre: { id: 'item_echo_sabre', name: 'Echo Sabre', cost: 2700 },
   linken: { id: 'item_sphere', name: "Linken's Sphere", cost: 4800 },
-  satanic: { id: 'item_satanic', name: 'Satanic', cost: 5050 }
+  satanic: { id: 'item_satanic', name: 'Satanic', cost: 5050 },
+  helm_dominator: { id: 'item_helm_of_the_dominator', name: 'Helm of the Dominator', cost: 2625 },
+  vladmir: { id: 'item_vladmir', name: "Vladmir's Offering", cost: 2200 },
+  bloodstone: { id: 'item_bloodstone', name: 'Bloodstone', cost: 4400 },
+  guardian_greaves: { id: 'item_guardian_greaves', name: 'Guardian Greaves', cost: 5050 },
+  hand_of_midas: { id: 'item_hand_of_midas', name: 'Hand of Midas', cost: 2200 }
 });
 
 function getItem(key) {
