@@ -23,6 +23,7 @@ const ITEM_CATALOG = Object.freeze({
   drums: { id: 'item_ancient_janggo', name: 'Drum of Endurance', cost: 1650 },
   solar_crest: { id: 'item_solar_crest', name: 'Solar Crest', cost: 2600 },
   euls: { id: 'item_cyclone', name: "Eul's Scepter", cost: 2625 },
+  hurricane_pike: { id: 'item_hurricane_pike', name: 'Hurricane Pike', cost: 4450 },
   octarine_core: { id: 'item_octarine_core', name: 'Octarine Core', cost: 4800 },
   refresher: { id: 'item_refresher', name: 'Refresher Orb', cost: 5000 },
   scepter: { id: 'item_ultimate_scepter', name: "Aghanim's Scepter", cost: 4200 },
