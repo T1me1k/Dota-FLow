@@ -33,7 +33,7 @@
 {"type":"CLOCK_UPDATED","gameTimeSec":1244,"payload":{"gameTimeSec":1244}}
 {"type":"CLOCK_UPDATED","gameTimeSec":1283,"payload":{"gameTimeSec":1283}}
 {"type":"CLOCK_UPDATED","gameTimeSec":1322,"payload":{"gameTimeSec":1322}}
-{"type":"GAME_SNAPSHOT","gameTimeSec":1361,"payload":{"gameTimeSec":1361,"level":18,"gold":4700,"gpm":525,"xpm":540,"health":180,"maxHealth":1200,"mana":200,"maxMana":800,"alive":true,"kills":3,"deaths":1,"lastHits":280,"buybackAvailable":null,"context":{"synthetic":true,"objectiveWindow":false}}}
+{"type":"GAME_SNAPSHOT","gameTimeSec":1361,"payload":{"gameTimeSec":1361,"level":18,"gold":4700,"gpm":525,"xpm":540,"health":180,"maxHealth":1200,"mana":200,"maxMana":800,"alive":true,"kills":3,"deaths":1,"lastHits":280,"buybackAvailable":null,"context":{"synthetic":true,"objectiveWindow":false,"roshanAvailable":false}}}
 {"type":"CLOCK_UPDATED","gameTimeSec":1399,"payload":{"gameTimeSec":1399}}
 {"type":"CLOCK_UPDATED","gameTimeSec":1438,"payload":{"gameTimeSec":1438}}
 {"type":"CLOCK_UPDATED","gameTimeSec":1477,"payload":{"gameTimeSec":1477}}
