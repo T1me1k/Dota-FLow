@@ -44,7 +44,7 @@
     "overwolf:install": "npm --prefix apps/overwolf-electron install",
     "overwolf:build": "npm --prefix apps/overwolf-electron run build",
     "overwolf:start": "npm --prefix apps/overwolf-electron run start",
-    "overwolf:dev": "npm run overwolf:preflight && npm run overwolf:build && npm run overwolf:start",
+    "overwolf:dev": "node scripts/overwolf-dev.mjs",
     "runtime:mock": "node scripts/runtime-dev.mjs mock",
     "runtime:replay": "node scripts/runtime-dev.mjs replay",
     "runtime:live": "node scripts/runtime-dev.mjs live",
