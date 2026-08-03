@@ -4,12 +4,26 @@
   "private": true,
   "type": "module",
   "main": "dist/main/main.js",
+  "productName": "Dota Flow",
+  "author": {
+    "name": "Yander Production"
+  },
   "scripts": {
-    "dev": "echo \"Run with the Overwolf Electron SDK after app whitelisting. See README.md\"",
+    "dev": "npm run build && npm run start",
+    "start": "ow-electron . --remote-debugging-port=9222 --owepm-packages-url=https://electronapi-qa.overwolf.com/v2/packages",
     "build": "tsc -p tsconfig.json",
-    "typecheck": "tsc -p ./tsconfig.json --noEmit"
+    "typecheck": "tsc -p ./tsconfig.json --noEmit",
+    "build:ow-electron": "ow-electron-builder --publish=never"
+  },
+  "overwolf": {
+    "packages": [
+      "gep",
+      "overlay"
+    ]
   },
   "devDependencies": {
+    "@overwolf/ow-electron": "^39.8.12",
+    "@overwolf/ow-electron-builder": "^26.9.0",
     "@types/node": "^22.0.0",
     "electron": "^37.0.0",
     "typescript": "^5.8.0"
