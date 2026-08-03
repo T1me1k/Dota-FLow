@@ -43,10 +43,11 @@ test('root launch flow validates credentials without persisting or printing them
   assert.doesNotMatch(preflight, /['"]\.env['"]/);
 });
 
-test('one-console launcher waits for the renderer and owns both process trees', () => {
+test('one-console launcher waits for the live renderer and owns both process trees', () => {
   assert.equal(rootPackage.scripts['overwolf:dev'], 'node scripts/overwolf-dev.mjs');
   assert.match(devLauncher, /runNpmScript\('overwolf:preflight'\)/);
-  assert.match(devLauncher, /runNpmScript\('build'\)/);
+  assert.match(devLauncher, /runNpmScript\('build', \{ VITE_DOTA_FLOW_RUNTIME_MODE: 'live' \}\)/);
+  assert.match(devLauncher, /env: \{ \.\.\.process\.env, \.\.\.envOverrides \}/);
   assert.match(devLauncher, /runNpmScript\('overwolf:build'\)/);
   assert.match(devLauncher, /startNpmScript\('overwolf:start'\)/);
   assert.match(devLauncher, /process\.env\.npm_execpath/);
