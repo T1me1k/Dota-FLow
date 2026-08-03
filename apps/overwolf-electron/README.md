@@ -20,28 +20,36 @@ $env:OW_CLI_API_KEY = 'your-api-key'
 
 ## First local launch
 
-From the repository root, in the same elevated PowerShell session:
+Install the Overwolf Electron dependencies once from the repository root:
 
 ```powershell
-npm run overwolf:preflight
 npm run overwolf:install
-npm run build
-npm run mock
 ```
 
-Leave the mock dashboard running. Open a second elevated PowerShell in the repository root, set the same environment variables there, then run:
-
-```powershell
-npm run overwolf:build
-npm run overwolf:start
-```
-
-The start command uses the Overwolf QA gaming-package channel required for local Dota 2 GEP development and opens a remote debugging endpoint on port `9222`.
-
-For later launches, after dependencies are installed and the browser dashboard is running:
+Then use one elevated PowerShell session with the credentials set and run:
 
 ```powershell
 npm run overwolf:dev
+```
+
+The one-console launcher:
+
+1. validates Windows, credentials and gaming-package configuration;
+2. builds the browser dashboard and Overwolf Electron main process;
+3. starts the dashboard server;
+4. waits until `http://127.0.0.1:4173/live` is reachable;
+5. starts Overwolf Electron only after the renderer is ready;
+6. stops both process trees when the app closes or `Ctrl+C` is pressed.
+
+The Overwolf start command uses the QA gaming-package channel required for local Dota 2 GEP development and opens a remote debugging endpoint on port `9222`.
+
+The individual commands remain available for diagnostics:
+
+```powershell
+npm run overwolf:preflight
+npm run build
+npm run overwolf:build
+npm run overwolf:start
 ```
 
 ## Current GEP flow
