@@ -27,10 +27,10 @@ function npmInvocation(script) {
   return { command: 'npm', args: ['run', script] };
 }
 
-function startProcess(command, args, label) {
+function startProcess(command, args, label, envOverrides = {}) {
   const child = spawn(command, args, {
     cwd: root,
-    env: process.env,
+    env: { ...process.env, ...envOverrides },
     stdio: 'inherit',
     windowsHide: false
   });
@@ -47,13 +47,13 @@ function startProcess(command, args, label) {
   return { child, exit, label };
 }
 
-function startNpmScript(script) {
+function startNpmScript(script, envOverrides = {}) {
   const invocation = npmInvocation(script);
-  return startProcess(invocation.command, invocation.args, script);
+  return startProcess(invocation.command, invocation.args, script, envOverrides);
 }
 
-async function runNpmScript(script) {
-  const processHandle = startNpmScript(script);
+async function runNpmScript(script, envOverrides = {}) {
+  const processHandle = startNpmScript(script, envOverrides);
   const result = await processHandle.exit;
   if (result.code !== 0) {
     throw new Error(`${script} failed (${result.code ?? result.signal ?? 'unknown exit'}).`);
@@ -119,7 +119,7 @@ process.once('SIGTERM', () => handleSignal(143));
 async function main() {
   console.log('Dota Flow: starting one-console Overwolf dev mode.');
   await runNpmScript('overwolf:preflight');
-  await runNpmScript('build');
+  await runNpmScript('build', { VITE_DOTA_FLOW_RUNTIME_MODE: 'live' });
   await runNpmScript('overwolf:build');
 
   const dashboard = startProcess(process.execPath, ['apps/mock-dashboard/server.mjs'], 'dashboard');
