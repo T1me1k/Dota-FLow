@@ -4,10 +4,28 @@ import { resolve } from 'node:path';
 import process from 'node:process';
 
 const root = resolve(import.meta.dirname, '..');
-const npmCommand = process.platform === 'win32' ? 'npm.cmd' : 'npm';
 const dashboardUrl = 'http://127.0.0.1:4173/live';
 const trackedChildren = new Map();
 let shutdownPromise = null;
+
+function npmInvocation(script) {
+  const npmCliPath = process.env.npm_execpath;
+  if (npmCliPath) {
+    return {
+      command: process.execPath,
+      args: [npmCliPath, 'run', script]
+    };
+  }
+
+  if (process.platform === 'win32') {
+    return {
+      command: process.env.ComSpec || 'cmd.exe',
+      args: ['/d', '/s', '/c', `npm run ${script}`]
+    };
+  }
+
+  return { command: 'npm', args: ['run', script] };
+}
 
 function startProcess(command, args, label) {
   const child = spawn(command, args, {
@@ -29,8 +47,13 @@ function startProcess(command, args, label) {
   return { child, exit, label };
 }
 
+function startNpmScript(script) {
+  const invocation = npmInvocation(script);
+  return startProcess(invocation.command, invocation.args, script);
+}
+
 async function runNpmScript(script) {
-  const processHandle = startProcess(npmCommand, ['run', script], script);
+  const processHandle = startNpmScript(script);
   const result = await processHandle.exit;
   if (result.code !== 0) {
     throw new Error(`${script} failed (${result.code ?? result.signal ?? 'unknown exit'}).`);
@@ -65,7 +88,7 @@ function terminateProcessTree(child) {
 
   if (process.platform === 'win32') {
     return new Promise((resolveKill) => {
-      const killer = spawn('taskkill', ['/pid', String(child.pid), '/T', '/F'], {
+      const killer = spawn('taskkill.exe', ['/pid', String(child.pid), '/T', '/F'], {
         stdio: 'ignore',
         windowsHide: true
       });
@@ -112,7 +135,7 @@ async function main() {
   console.log(`Dashboard ready: ${dashboardUrl}`);
   console.log('Starting Overwolf Electron. Keep this PowerShell open; Ctrl+C stops both processes.');
 
-  const electron = startProcess(npmCommand, ['run', 'overwolf:start'], 'overwolf:start');
+  const electron = startNpmScript('overwolf:start');
   const outcome = await Promise.race([
     electron.exit.then((result) => ({ source: 'electron', result })),
     dashboard.exit.then((result) => ({ source: 'dashboard', result }))

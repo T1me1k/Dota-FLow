@@ -48,11 +48,14 @@ test('one-console launcher waits for the renderer and owns both process trees', 
   assert.match(devLauncher, /runNpmScript\('overwolf:preflight'\)/);
   assert.match(devLauncher, /runNpmScript\('build'\)/);
   assert.match(devLauncher, /runNpmScript\('overwolf:build'\)/);
+  assert.match(devLauncher, /startNpmScript\('overwolf:start'\)/);
+  assert.match(devLauncher, /process\.env\.npm_execpath/);
+  assert.match(devLauncher, /process\.env\.ComSpec \|\| 'cmd\.exe'/);
+  assert.doesNotMatch(devLauncher, /npm\.cmd/);
   assert.match(devLauncher, /apps\/mock-dashboard\/server\.mjs/);
   assert.match(devLauncher, /http:\/\/127\.0\.0\.1:4173\/live/);
   assert.match(devLauncher, /waitForDashboard\(\)/);
-  assert.match(devLauncher, /\['run', 'overwolf:start'\]/);
-  assert.match(devLauncher, /taskkill/);
+  assert.match(devLauncher, /taskkill\.exe/);
   assert.match(devLauncher, /SIGINT/);
   assert.match(devLauncher, /SIGTERM/);
   assert.doesNotMatch(devLauncher, /OW_CLI_API_KEY|OW_DEV_KEY/);
