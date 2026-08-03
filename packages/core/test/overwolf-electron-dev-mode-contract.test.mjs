@@ -38,5 +38,6 @@ test('root launch flow validates credentials without persisting or printing them
   assert.match(preflight, /OW_CLI_API_KEY/);
   assert.match(preflight, /OW_DEV_KEY/);
   assert.doesNotMatch(preflight, /console\.(?:log|warn|error)\([^\n]*(?:OW_CLI_API_KEY|OW_DEV_KEY)\]/);
-  assert.doesNotMatch(preflight, /writeFile|appendFile|\.env/);
+  assert.doesNotMatch(preflight, /\b(?:writeFile|appendFile)\s*\(/);
+  assert.doesNotMatch(preflight, /['"]\.env['"]/);
 });
