@@ -23,11 +23,11 @@ function unwrap(raw) {
   return raw;
 }
 
-function canonical(type, payload, gameTimeSec) {
+function canonical(type, payload, gameTimeSec, source = 'gep') {
   return {
     type,
     payload: payload && typeof payload === 'object' ? payload : {},
-    source: 'gep',
+    source,
     ...(Number.isFinite(Number(gameTimeSec)) ? { gameTimeSec: Number(gameTimeSec) } : {})
   };
 }
@@ -51,10 +51,13 @@ function mapSingleGameEvent(rawEvent) {
   const name = rawEvent?.name ?? rawEvent?.feature ?? rawEvent?.event ?? null;
   const unwrapped = unwrap(rawEvent);
   const data = unwrapped && typeof unwrapped === 'object' ? unwrapped : {};
-  const eventTime = data.clock_time ?? data.game_time ?? rawEvent?.gameTimeSec;
+  const eventTime = data.clock_time ?? data.game_time ?? data.gameTimeSec ?? rawEvent?.gameTimeSec;
   let event = null;
 
   switch (name) {
+    case 'gsi_snapshot':
+      event = canonical(GAME_EVENT_TYPES.GAME_SNAPSHOT, data, eventTime, 'gsi');
+      break;
     case 'new_game':
       event = canonical(GAME_EVENT_TYPES.MATCH_STARTED, {
         matchId: data.match_id,
