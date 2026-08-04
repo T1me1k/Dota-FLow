@@ -25,6 +25,7 @@ const LANING_ALLOWED=new Set([
   'SECURE_RUNE','TAKE_POWER_RUNE','PREPARE_POWER_RUNE','FARM','FARM_SAFE','HOLD_SAFE_LANE',
   'TRADE','HARASS','PROTECT_CARRY','CONTEST_WISDOM','WAIT'
 ]);
+void LANING_ALLOWED;
 
 export function deriveMatchStage(snapshot:RuntimeSnapshot):MatchStage{
   const phase=String(snapshot.state?.phase??'').toLowerCase();
@@ -106,8 +107,6 @@ export function selectPresentedCoachCall(snapshot:RuntimeSnapshot):PresentedCoac
     return laningCall(snapshot);
   }
   if(!existing)return fallback(stage,existing);
-  const action=String(existing?.primaryAction??existing?.action??'').toUpperCase();
-  if(stage==='LANING'&&!LANING_ALLOWED.has(action))return fallback(stage,existing);
   return{
     primaryAction:String(existing.primaryAction??existing.action??'HOLD_POSITION'),
     confidence:Number(existing.confidence)||.55,
