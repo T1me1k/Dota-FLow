@@ -5,7 +5,7 @@ export type GepEnvelope = {
   gameId?: number;
   payload: unknown;
   receivedAt: number;
-  sourceSequence: number;
+  sourceSequence: number | string;
 };
 
 export type GepSink = (event: GepEnvelope) => void;
