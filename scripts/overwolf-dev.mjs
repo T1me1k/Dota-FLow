@@ -5,8 +5,10 @@ import process from 'node:process';
 
 const root = resolve(import.meta.dirname, '..');
 const dashboardUrl = 'http://127.0.0.1:4173/live';
+const WINDOWS_STATUS_CONTROL_C_EXIT = 0xc000013a;
 const trackedChildren = new Map();
 let shutdownPromise = null;
+let shutdownRequested = false;
 
 function npmInvocation(script) {
   const npmCliPath = process.env.npm_execpath;
@@ -109,7 +111,17 @@ function shutdown() {
   return shutdownPromise;
 }
 
+function isControlCExit(result) {
+  const code = Number(result?.code);
+  return result?.signal === 'SIGINT'
+    || code === 130
+    || code === WINDOWS_STATUS_CONTROL_C_EXIT
+    || code === -1073741510;
+}
+
 function handleSignal(exitCode) {
+  shutdownRequested = true;
+  console.log('\nStopping Dota Flow, dashboard and Overwolf Electron.');
   void shutdown().finally(() => process.exit(exitCode));
 }
 
@@ -129,6 +141,7 @@ async function main() {
   ]);
 
   if (dashboardStartup.type === 'exit') {
+    if (shutdownRequested || isControlCExit(dashboardStartup.result)) return;
     throw new Error(`Dashboard stopped before startup (${dashboardStartup.result.code ?? dashboardStartup.result.signal ?? 'unknown exit'}).`);
   }
 
@@ -141,6 +154,7 @@ async function main() {
     dashboard.exit.then((result) => ({ source: 'dashboard', result }))
   ]);
 
+  if (shutdownRequested || isControlCExit(outcome.result)) return;
   if (outcome.source === 'dashboard') {
     throw new Error(`Dashboard stopped while Overwolf was running (${outcome.result.code ?? outcome.result.signal ?? 'unknown exit'}).`);
   }
