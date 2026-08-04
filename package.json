@@ -55,5 +55,5 @@
     "capture:first-match": "node scripts/capture-tool.mjs validate",
     "scenarios:session": "node scripts/session-coach-scenarios.mjs"
   },
-  "engines": { "node": ">=20" }
+  "engines": { "node": ">=22.12.0" }
 }
