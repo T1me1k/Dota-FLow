@@ -73,11 +73,12 @@ console.log(`Platform: ${process.platform === 'win32' ? 'Windows OK' : process.p
 console.log(`Node.js: ${process.versions.node}${nodeVersion && versionAtLeast(nodeVersion, MINIMUM_NODE) ? ' OK' : ' UNSUPPORTED'}`);
 console.log(`Credentials: ${credentialStatus}`);
 console.log(`Gaming packages: ${[...packages].join(', ') || 'none'}`);
+console.log('Privilege rule: Dota Flow and Dota 2 must run at the same privilege level; use normal non-admin PowerShell when Steam/Dota run normally.');
 for (const warning of warnings) console.warn(`WARNING: ${warning}`);
 
 if (errors.length > 0) {
   for (const error of errors) console.error(`ERROR: ${error}`);
   process.exitCode = 1;
 } else {
-  console.log('READY: dependencies, live renderer, sandbox preload and Overwolf Electron can be built from this elevated PowerShell session.');
+  console.log('READY: dependencies, live renderer, sandbox preload and Overwolf Electron can be built from this PowerShell session.');
 }
