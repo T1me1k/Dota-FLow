@@ -3,7 +3,7 @@ import { resolveHeroId } from './hero-catalog.mjs';
 
 const VALID_PHASES = new Set(['idle', 'pregame', 'playing', 'ended']);
 const VALID_TEAMS = new Set(['radiant', 'dire']);
-const VALID_ROLES = new Set(['carry', 'mid', 'offlane', 'soft_support', 'hard_support']);
+const VALID_ROLES = new Set(['carry', 'mid', 'offlane', 'soft_support', 'hard_support', 'unknown']);
 const KNOWN_ITEMS = new Set(Object.values(ITEMS).map((item) => item.id));
 const RESET_EVENTS = new Set(['MATCH_STARTED']);
 
