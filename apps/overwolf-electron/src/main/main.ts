@@ -336,7 +336,8 @@ app.whenReady().then(async () => {
 
   ipcMain.handle('runtime:get-status', () => {
     const snapshot = runtimeWireSnapshot(liveBridge.snapshot());
-    return { runtimeMode: snapshot.runtimeMode, status: snapshot.bridge.state, message: snapshot.bridge.message };
+    const bridge = snapshot.bridge as { state?: unknown; message?: unknown };
+    return { runtimeMode: snapshot.runtimeMode, status: bridge.state, message: bridge.message };
   });
   ipcMain.handle('runtime:get-snapshot', () => runtimeWireSnapshot(liveBridge.snapshot()));
   ipcMain.handle('runtime:start', () => ({ status: 'GEP_INITIALIZING' }));
