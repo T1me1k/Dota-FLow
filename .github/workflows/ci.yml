@@ -28,11 +28,20 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Install Overwolf Electron dependencies
+        run: npm --prefix apps/overwolf-electron install --ignore-scripts
+
       - name: Core tests
         run: npm test
 
       - name: TypeScript
         run: npm run typecheck
 
+      - name: Overwolf Electron TypeScript
+        run: npm run electron:typecheck
+
       - name: Production build
         run: npm run build
+
+      - name: Overwolf Electron build contract
+        run: npm run overwolf:build
