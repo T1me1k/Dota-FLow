@@ -3,6 +3,7 @@ import type{RuntimeSnapshot}from'./runtime/provider';
 import{useAppSettings}from'./app-settings';
 import{deriveMatchStage,selectPresentedCoachCall,stageTranslationKey}from'./phase-aware';
 import'./window-frame.css';
+import'./themes-settings.css';
 
 type WindowState={compact:boolean;alwaysOnTop:boolean};
 const fallbackState:WindowState={compact:true,alwaysOnTop:false};
