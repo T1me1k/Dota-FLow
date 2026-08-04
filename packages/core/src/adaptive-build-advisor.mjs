@@ -18,6 +18,23 @@ const ITEM_SIGNALS = Object.freeze({
   item_hurricane_pike: { kite: 18, ranged: 8, label: 'позиционирование против kite' }
 });
 
+function normalizeItemId(value) {
+  const id = String(value ?? '').trim().toLowerCase();
+  if (!id) return '';
+  return id.startsWith('item_') ? id : `item_${id}`;
+}
+
+function ownedItemIds(state) {
+  return new Set((Array.isArray(state.inventory) ? state.inventory : [])
+    .map((item) => normalizeItemId(typeof item === 'string' ? item : item?.id))
+    .filter(Boolean));
+}
+
+function nextUnownedItem(plan, state) {
+  const owned = ownedItemIds(state);
+  return (plan?.items ?? []).find((item) => !owned.has(normalizeItemId(item.id))) ?? null;
+}
+
 function planScore(plan, draft, state, index) {
   let score = 50 - index * 3;
   const reasons = [];
@@ -53,20 +70,35 @@ function planScore(plan, draft, state, index) {
   return { plan, score, reasons };
 }
 
+function withPresentation(result, plan, state, { activePlanId = plan?.id ?? null } = {}) {
+  const nextItem = nextUnownedItem(plan, state);
+  const reason = result.recommendedPlan?.reasons?.[0] ?? result.limitations?.[0] ?? null;
+  return {
+    ...result,
+    activePlanId,
+    activePlan: plan?.name ?? null,
+    nextItemId: nextItem?.id ?? null,
+    nextItem: nextItem?.name ?? null,
+    nextItemReason: reason,
+    completed: Boolean(plan && !nextItem),
+    dataQuality: plan ? (String(state.source ?? '').toLowerCase() === 'gsi' ? 'LIVE' : 'INFERRED') : 'UNAVAILABLE'
+  };
+}
+
 export function recommendAdaptiveBuild(state) {
   const profile = getHeroProfile(state.hero);
   const plans = (profile.buildPlans ?? []).filter((plan) => !plan.generic && (plan.items?.length ?? 0) > 0);
   const draft = analyzeDraft(state);
   const counterItems = recommendCounterItems(state, { limit: 5 });
   if (!plans.length) {
-    return {
+    return withPresentation({
       status: 'NOT_CALIBRATED',
       recommendedPlan: null,
       alternatives: [],
       deviations: counterItems.recommendations.slice(0, 3),
       confidence: Math.min(0.55, counterItems.confidence),
       limitations: ['Для героя ещё нет детализированного build plan']
-    };
+    }, null, state);
   }
 
   const ranked = plans
@@ -78,7 +110,7 @@ export function recommendAdaptiveBuild(state) {
     .filter((item) => !selectedIds.has(item.id))
     .slice(0, 3);
 
-  return {
+  const result = {
     status: 'READY',
     recommendedPlan: {
       ...selected.plan,
@@ -99,16 +131,68 @@ export function recommendAdaptiveBuild(state) {
       ...(profile.balanceCalibration?.startsWith('prototype') ? ['Тайминги профиля требуют live-калибровки'] : [])
     ]
   };
+  return withPresentation(result, result.recommendedPlan, state);
 }
 
 export class AdaptiveBuildCoordinator {
-  constructor({ cooldownSec = 120, scoreMargin = 8 } = {}) { this.cooldownSec=cooldownSec; this.scoreMargin=scoreMargin; this.current=null; this.history=[]; }
+  constructor({ cooldownSec = 120, scoreMargin = 8 } = {}) {
+    this.cooldownSec = cooldownSec;
+    this.scoreMargin = scoreMargin;
+    this.current = null;
+    this.history = [];
+  }
+
   update(state) {
-    const proposed=recommendAdaptiveBuild(state); const plan=proposed.recommendedPlan;
-    if(!plan) return {...proposed,history:[...this.history]};
-    if(!this.current){this.current={planId:plan.id,target:plan.items?.find(i=>!state.inventory?.some(x=>x.id===i.id))?.id??null,score:plan.score,changedAt:state.gameTimeSec};return {...proposed,history:[...this.history]};}
-    const elapsed=state.gameTimeSec-this.current.changedAt;
-    if(plan.id!==this.current.planId&&elapsed>=this.cooldownSec&&plan.score>=this.current.score+this.scoreMargin){const nextTarget=plan.items?.find(i=>!state.inventory?.some(x=>x.id===i.id))?.id??null;this.history.push({previousPlanId:this.current.planId,nextPlanId:plan.id,previousTarget:this.current.target,nextTarget,reasons:plan.reasons,trigger:'DRAFT_OR_THREAT_CHANGED',confidence:proposed.confidence,gameTimeSec:state.gameTimeSec});this.current={planId:plan.id,target:nextTarget,score:plan.score,changedAt:state.gameTimeSec};}
-    return {...proposed,activePlanId:this.current.planId,history:[...this.history]};
+    const proposed = recommendAdaptiveBuild(state);
+    const proposedPlan = proposed.recommendedPlan;
+    if (!proposedPlan) return { ...proposed, history: [...this.history] };
+
+    if (!this.current) {
+      const target = nextUnownedItem(proposedPlan, state);
+      this.current = {
+        planId: proposedPlan.id,
+        planName: proposedPlan.name,
+        plan: proposedPlan,
+        targetId: target?.id ?? null,
+        targetName: target?.name ?? null,
+        score: proposedPlan.score,
+        changedAt: state.gameTimeSec
+      };
+      return { ...withPresentation(proposed, proposedPlan, state, { activePlanId: proposedPlan.id }), history: [...this.history] };
+    }
+
+    const elapsed = state.gameTimeSec - this.current.changedAt;
+    if (proposedPlan.id !== this.current.planId && elapsed >= this.cooldownSec && proposedPlan.score >= this.current.score + this.scoreMargin) {
+      const previous = this.current;
+      const target = nextUnownedItem(proposedPlan, state);
+      this.history.push({
+        previousPlanId: previous.planId,
+        nextPlanId: proposedPlan.id,
+        previousTarget: previous.targetId,
+        nextTarget: target?.id ?? null,
+        reasons: proposedPlan.reasons,
+        trigger: 'DRAFT_OR_THREAT_CHANGED',
+        confidence: proposed.confidence,
+        gameTimeSec: state.gameTimeSec
+      });
+      this.current = {
+        planId: proposedPlan.id,
+        planName: proposedPlan.name,
+        plan: proposedPlan,
+        targetId: target?.id ?? null,
+        targetName: target?.name ?? null,
+        score: proposedPlan.score,
+        changedAt: state.gameTimeSec
+      };
+    } else {
+      const target = nextUnownedItem(this.current.plan, state);
+      this.current = { ...this.current, targetId: target?.id ?? null, targetName: target?.name ?? null };
+    }
+
+    const activePlan = this.current.plan;
+    return {
+      ...withPresentation(proposed, activePlan, state, { activePlanId: this.current.planId }),
+      history: [...this.history]
+    };
   }
 }

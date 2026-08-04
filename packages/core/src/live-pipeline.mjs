@@ -10,6 +10,7 @@ import { ObjectiveEngine } from './objective-engine.mjs';
 import { AdaptiveBuildCoordinator } from './adaptive-build-advisor.mjs';
 import { evaluateRoleV2 } from './role-engine/index.mjs';
 import { DecisionOrchestratorCoordinator } from './decision-orchestrator.mjs';
+import { presentPowerSpike } from './power-spike-presentation.mjs';
 
 const HISTORY_LIMIT = 200;
 function appendBounded(history, value) { history.push(value); if (history.length > HISTORY_LIMIT) history.splice(0, history.length - HISTORY_LIMIT); }
@@ -84,7 +85,8 @@ export class GameEventPipeline {
     this.state = applyGameEvent(this.state, event);
     this.decision = this.coordinator.update(this.state);
     this.roleDecision = evaluateRoleV2(this.state);
-    const previousLane=this.laneDecision; const previousObjective=this.objectiveDecision;
+    const previousLane = this.laneDecision;
+    const previousObjective = this.objectiveDecision;
     this.laneDecision = this.laneEngine.evaluate(this.state);
     this.objectiveDecision = this.objectiveEngine.evaluate(this.state);
     this.adaptiveBuild = this.buildCoordinator.update(this.state);
@@ -97,8 +99,8 @@ export class GameEventPipeline {
     if (this.roleDecision.action !== previousRoleDecision?.action || this.roleDecision.role !== previousRoleDecision?.role) {
       appendBounded(this.roleDecisionHistory, roleHistoryEntry(this.state, previousRoleDecision, this.roleDecision, event));
     }
-    if(this.laneDecision.action!==previousLane?.action)appendBounded(this.laneDecisionHistory,historyEntry(this.state,previousLane,this.laneDecision,event));
-    if(this.objectiveDecision.action!==previousObjective?.action)appendBounded(this.objectiveDecisionHistory,historyEntry(this.state,previousObjective,this.objectiveDecision,event));
+    if (this.laneDecision.action !== previousLane?.action) appendBounded(this.laneDecisionHistory, historyEntry(this.state, previousLane, this.laneDecision, event));
+    if (this.objectiveDecision.action !== previousObjective?.action) appendBounded(this.objectiveDecisionHistory, historyEntry(this.state, previousObjective, this.objectiveDecision, event));
 
     this.coach = buildCoachSuiteSnapshot(this.snapshotBase());
     return this.snapshot();
@@ -115,24 +117,42 @@ export class GameEventPipeline {
       state: this.state,
       decision: this.decision,
       roleDecision: this.roleDecision,
-      laneDecision:this.laneDecision,
-      objectiveDecision:this.objectiveDecision,
-      powerSpike:this.decision?.powerState??null,
-      adaptiveBuild:this.adaptiveBuild,
-      dataQuality:{lane:this.laneDecision?.dataQuality,objective:this.objectiveDecision?.dataQuality,role:this.state.roleContext?.meta?.quality??'UNKNOWN'},
+      laneDecision: this.laneDecision,
+      objectiveDecision: this.objectiveDecision,
+      powerSpike: presentPowerSpike(this.decision?.powerState ?? null),
+      adaptiveBuild: this.adaptiveBuild,
+      dataQuality: {
+        lane: this.laneDecision?.dataQuality,
+        objective: this.objectiveDecision?.dataQuality,
+        role: this.state.roleContext?.meta?.quality ?? 'UNKNOWN'
+      },
       decisionHistory: [...this.decisionHistory],
       roleDecisionHistory: [...this.roleDecisionHistory],
-      laneDecisionHistory:[...this.laneDecisionHistory],
-      objectiveDecisionHistory:[...this.objectiveDecisionHistory],
-      buildPlanHistory:[...(this.buildCoordinator?.history??[])],
-      coachCall:this.coachCall,
-      coachCallHistory:[...this.orchestrator.history],
+      laneDecisionHistory: [...this.laneDecisionHistory],
+      objectiveDecisionHistory: [...this.objectiveDecisionHistory],
+      buildPlanHistory: [...(this.buildCoordinator?.history ?? [])],
+      coachCall: this.coachCall,
+      coachCallHistory: [...this.orchestrator.history],
       eventCount: this.eventCount
     };
   }
 
   updateCoachCall(reason) {
-    return this.orchestrator.update({ state:this.state, powerSpike:this.decision?.powerState??null, macroDecision:this.decision, roleDecision:this.roleDecision, laneDecision:this.laneDecision, objectiveDecision:this.objectiveDecision, adaptiveBuild:this.adaptiveBuild, coachProfile:this.state.coachProfile, dataQuality:{ lane:this.laneDecision?.dataQuality, objective:this.objectiveDecision?.dataQuality, role:this.state.roleContext?.meta?.quality??'UNKNOWN' } }, reason);
+    return this.orchestrator.update({
+      state: this.state,
+      powerSpike: this.decision?.powerState ?? null,
+      macroDecision: this.decision,
+      roleDecision: this.roleDecision,
+      laneDecision: this.laneDecision,
+      objectiveDecision: this.objectiveDecision,
+      adaptiveBuild: this.adaptiveBuild,
+      coachProfile: this.state.coachProfile,
+      dataQuality: {
+        lane: this.laneDecision?.dataQuality,
+        objective: this.objectiveDecision?.dataQuality,
+        role: this.state.roleContext?.meta?.quality ?? 'UNKNOWN'
+      }
+    }, reason);
   }
 
   snapshot() {
