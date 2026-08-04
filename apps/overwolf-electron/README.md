@@ -6,12 +6,12 @@ The Electron shell owns one Live Bridge, one overlay window and one real-match c
 
 - Windows.
 - Node.js 22.12.0 or newer for the pinned build toolchain.
-- PowerShell opened as Administrator.
+- PowerShell running at the same privilege level as Dota 2. Use normal non-admin PowerShell when Steam and Dota run normally.
 - Approved Overwolf developer account.
 - Either `OW_CLI_EMAIL` plus `OW_CLI_API_KEY`, or an approved developer key in `OW_DEV_KEY`.
 - Dota 2 Steam launch options include `-gamestateintegration`.
 
-Never commit developer credentials. Set them only in the elevated PowerShell session used to launch Dota Flow.
+Never commit developer credentials. Set them only in the PowerShell session used to launch Dota Flow.
 
 For a Console API key:
 
@@ -32,7 +32,7 @@ Do not leave both credential modes set. The preflight rejects ambiguous credenti
 
 ## First local launch
 
-From the repository root, in the same elevated PowerShell session:
+From the repository root, in the same PowerShell session:
 
 ```powershell
 npm run overwolf:preflight

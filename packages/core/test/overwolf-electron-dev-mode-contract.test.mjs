@@ -9,6 +9,7 @@ const electronTsconfig = JSON.parse(await readFile(resolve(root, 'apps/overwolf-
 const rootPackage = JSON.parse(await readFile(resolve(root, 'package.json'), 'utf8'));
 const preflight = await readFile(resolve(root, 'scripts/overwolf-dev-preflight.mjs'), 'utf8');
 const devLauncher = await readFile(resolve(root, 'scripts/overwolf-dev.mjs'), 'utf8');
+const adapterReadme = await readFile(resolve(root, 'apps/overwolf-electron/README.md'), 'utf8');
 const preload = await readFile(resolve(root, 'apps/overwolf-electron/src/preload/preload.cts'), 'utf8');
 const finalizeBuild = await readFile(resolve(root, 'apps/overwolf-electron/scripts/finalize-build.mjs'), 'utf8');
 const desktopIndex = await readFile(resolve(root, 'apps/desktop/index.html'), 'utf8');
@@ -45,6 +46,11 @@ test('root launch flow validates credentials without persisting or printing them
   assert.match(preflight, /OW_CLI_EMAIL/);
   assert.match(preflight, /OW_CLI_API_KEY/);
   assert.match(preflight, /OW_DEV_KEY/);
+  assert.match(preflight, /same privilege level/);
+  assert.match(preflight, /normal non-admin PowerShell/);
+  assert.doesNotMatch(preflight, /from this elevated PowerShell session/);
+  assert.match(adapterReadme, /same privilege level as Dota 2/);
+  assert.doesNotMatch(adapterReadme, /PowerShell opened as Administrator/);
   assert.doesNotMatch(preflight, /console\.(?:log|warn|error)\([^\n]*(?:OW_CLI_API_KEY|OW_DEV_KEY)\]/);
   assert.doesNotMatch(preflight, /\b(?:writeFile|appendFile)\s*\(/);
   assert.doesNotMatch(preflight, /['"]\.env['"]/);
@@ -65,6 +71,9 @@ test('one-console launcher waits for the live renderer and owns both process tre
   assert.match(devLauncher, /taskkill\.exe/);
   assert.match(devLauncher, /SIGINT/);
   assert.match(devLauncher, /SIGTERM/);
+  assert.match(devLauncher, /WINDOWS_STATUS_CONTROL_C_EXIT = 0xc000013a/);
+  assert.match(devLauncher, /shutdownRequested \|\| isControlCExit/);
+  assert.match(devLauncher, /Stopping Dota Flow, dashboard and Overwolf Electron/);
   assert.doesNotMatch(devLauncher, /OW_CLI_API_KEY|OW_DEV_KEY/);
   assert.doesNotMatch(devLauncher, /\b(?:writeFile|appendFile)\s*\(/);
 });
