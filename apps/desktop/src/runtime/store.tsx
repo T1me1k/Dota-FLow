@@ -2,6 +2,11 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 import type { ReactNode } from 'react';
 import type { DotaFlowRuntimeProvider, RuntimeSnapshot } from './provider';
 
+type RuntimeContextValue = {
+  snapshot: RuntimeSnapshot;
+  provider: DotaFlowRuntimeProvider;
+};
+
 type LiveBridgeWireSnapshot = RuntimeSnapshot & {
   bridge?: {
     state?: unknown;
@@ -12,10 +17,7 @@ type LiveBridgeWireSnapshot = RuntimeSnapshot & {
   };
 };
 
-const RuntimeContext = createContext<{
-  snapshot: RuntimeSnapshot;
-  provider: DotaFlowRuntimeProvider;
-} | null>(null);
+const RuntimeContext = createContext<RuntimeContextValue | null>(null);
 
 const BRIDGE_STATUS_LABELS: Record<string, string> = {
   WAITING: 'Connecting',
@@ -104,8 +106,8 @@ export function RuntimeProvider({
   );
 }
 
-export function useRuntime() {
-  const value = useContext(RuntimeContext);
+export function useRuntime(): RuntimeContextValue {
+  const value = useContext<RuntimeContextValue | null>(RuntimeContext);
   if (!value) throw new Error('useRuntime requires RuntimeProvider');
   return value;
 }
