@@ -60,6 +60,7 @@ test('Overwolf dev launcher installs and starts the local Dota GSI fallback', as
   const installer = await readFile(resolve(root, 'scripts/dota-gsi-install.mjs'), 'utf8');
   const main = await readFile(resolve(root, 'apps/overwolf-electron/src/main/main.ts'), 'utf8');
   const adapter = await readFile(resolve(root, 'apps/overwolf-electron/src/main/dota-gsi-adapter.ts'), 'utf8');
+  const runtimeStore = await readFile(resolve(root, 'apps/desktop/src/runtime/store.tsx'), 'utf8');
 
   assert.equal(rootPackage.scripts['dota:gsi:install'], 'node scripts/dota-gsi-install.mjs');
   assert.match(launcher, /runNpmScript\('dota:gsi:install'\)/);
@@ -74,5 +75,9 @@ test('Overwolf dev launcher installs and starts the local Dota GSI fallback', as
   assert.match(adapter, /GSI_CONNECTED/);
   assert.match(adapter, /gsi_snapshot/);
   assert.match(adapter, /127\.0\.0\.1/);
+  assert.match(runtimeStore, /diagnostics\?\.pipeline/);
+  assert.match(runtimeStore, /BRIDGE_STATUS_LABELS/);
+  assert.match(runtimeStore, /macroDecision:\s*pipeline\.macroDecision\s*\?\?\s*pipeline\.decision/);
+  assert.match(runtimeStore, /transport:\s*source === 'gsi'/);
   assert.doesNotMatch(installer, /OW_DEV_KEY|OW_CLI_API_KEY/);
 });
