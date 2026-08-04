@@ -101,7 +101,7 @@ function inactiveCoachCall(state,now){
 
 export function orchestrateDecision(input={}){
   const state=input.state??{},now=nowOf(state),globalQuality=input.dataQuality?.status??input.dataQuality?.overall??'UNKNOWN';
-  if(state.phase!=='playing')return inactiveCoachCall(state,now);
+  if(typeof state.phase==='string'&&state.phase!=='playing')return inactiveCoachCall(state,now);
   const candidates=[],hp=hpOf(state),alive=state.alive!==false;
   if(alive&&hp<=.22)candidates.push(candidate('SAFETY',{action:input.objectiveDecision&&actionOf(input.objectiveDecision)!=='NEUTRAL'?'RESET_BEFORE_OBJECTIVE':'RESET',confidence:.96,urgency:'CRITICAL',reasons:[`Health is critically low (${Math.round(hp*100)}%)`]},globalQuality));
   if(!alive)candidates.push(candidate('SAFETY',{action:'WAIT_RESPAWN',confidence:1,urgency:'INFORMATIONAL',reasons:['Hero is dead; re-evaluate after respawn']},globalQuality));
