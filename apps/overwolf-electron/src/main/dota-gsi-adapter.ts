@@ -94,6 +94,11 @@ function abilitiesFromGsi(abilities: JsonObject | undefined): Record<string, Rec
   }));
 }
 
+function ultimateReadyFromAbilities(abilities: Record<string, Record<string, unknown>>): boolean | undefined {
+  const ultimate = Object.values(abilities).find((ability) => ability.ultimate === true && Number(ability.level) > 0);
+  return ultimate ? Boolean(ultimate.canCast) : undefined;
+}
+
 function statusEffectsFromGsi(hero: JsonObject | undefined): Record<string, boolean> {
   if (!hero) return {};
   return {
@@ -127,6 +132,9 @@ export function createSnapshotPayload(snapshot: DotaGsiSnapshot): Record<string,
   const buybackCooldown = finiteNumber(hero.buyback_cooldown);
   const positionX = finiteNumber(hero.xpos);
   const positionY = finiteNumber(hero.ypos);
+  const netWorth = finiteNumber(player.net_worth ?? player.networth);
+  const abilities = abilitiesFromGsi(snapshot.abilities);
+  const ultimateReady = ultimateReadyFromAbilities(abilities);
 
   return {
     source: 'gsi',
@@ -148,13 +156,16 @@ export function createSnapshotPayload(snapshot: DotaGsiSnapshot): Record<string,
       roshanAvailable: false
     },
     roleContext: {
+      playerNetWorth: netWorth ?? 0,
       safeMoveAvailable: null,
       teamReady: 0,
       dangerLevel: 0,
       visionNeed: 0,
       meta: {
-        quality: 'UNAVAILABLE',
-        signals: {}
+        quality: netWorth !== undefined ? 'LIVE' : 'UNAVAILABLE',
+        signals: netWorth !== undefined
+          ? { playerNetWorth: { quality: 'LIVE', value: netWorth, observedAtSec: gameTimeSec } }
+          : {}
       }
     },
     ...(matchId && matchId !== '0' ? { matchId } : {}),
@@ -172,6 +183,7 @@ export function createSnapshotPayload(snapshot: DotaGsiSnapshot): Record<string,
     ...(finiteNumber(player.gold_unreliable) !== undefined ? { unreliableGold: finiteNumber(player.gold_unreliable) } : {}),
     ...(finiteNumber(player.gpm) !== undefined ? { gpm: finiteNumber(player.gpm) } : {}),
     ...(finiteNumber(player.xpm) !== undefined ? { xpm: finiteNumber(player.xpm) } : {}),
+    ...(netWorth !== undefined ? { netWorth } : {}),
     ...(health !== undefined ? { health } : {}),
     ...(maxHealth !== undefined ? { maxHealth } : {}),
     ...(mana !== undefined ? { mana } : {}),
@@ -183,8 +195,9 @@ export function createSnapshotPayload(snapshot: DotaGsiSnapshot): Record<string,
     ...(finiteNumber(player.denies) !== undefined ? { denies: finiteNumber(player.denies) } : {}),
     ...(typeof hero.alive === 'boolean' ? { alive: hero.alive } : {}),
     ...(buybackCooldown !== undefined ? { buybackAvailable: buybackCooldown <= 0 } : {}),
+    ...(ultimateReady !== undefined ? { ultimateReady } : {}),
     inventory: inventoryFromGsi(snapshot.items),
-    abilities: abilitiesFromGsi(snapshot.abilities),
+    abilities,
     statusEffects: statusEffectsFromGsi(hero),
     ...(finiteNumber(map.ward_purchase_cooldown) !== undefined
       ? { wardPurchaseCooldownSec: finiteNumber(map.ward_purchase_cooldown) }
