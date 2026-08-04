@@ -46,6 +46,8 @@
     "overwolf:build": "npm --prefix apps/overwolf-electron run build",
     "overwolf:start": "npm --prefix apps/overwolf-electron run start",
     "overwolf:dev": "node scripts/overwolf-dev.mjs",
+    "gsi:start": "npm --prefix apps/overwolf-electron run start:gsi",
+    "gsi:dev": "node scripts/overwolf-dev.mjs --gsi-only",
     "runtime:mock": "node scripts/runtime-dev.mjs mock",
     "runtime:replay": "node scripts/runtime-dev.mjs replay",
     "runtime:live": "node scripts/runtime-dev.mjs live",

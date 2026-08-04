@@ -6,6 +6,9 @@ import process from 'node:process';
 const root = resolve(import.meta.dirname, '..');
 const dashboardUrl = 'http://127.0.0.1:4173/live';
 const WINDOWS_STATUS_CONTROL_C_EXIT = 0xc000013a;
+const OWEPM_INVALID_VERIFICATION_EXIT = 0xffff7003;
+const OWEPM_INVALID_VERIFICATION_SIGNED_EXIT = -36861;
+const gsiOnlyRequested = process.argv.includes('--gsi-only') || process.env.DOTA_FLOW_GSI_ONLY === '1';
 const trackedChildren = new Map();
 let shutdownPromise = null;
 let shutdownRequested = false;
@@ -119,18 +122,50 @@ function isControlCExit(result) {
     || code === -1073741510;
 }
 
+function isOwepmVerificationExit(result) {
+  const code = Number(result?.code);
+  return code === OWEPM_INVALID_VERIFICATION_EXIT
+    || code === OWEPM_INVALID_VERIFICATION_SIGNED_EXIT;
+}
+
 function handleSignal(exitCode) {
   shutdownRequested = true;
-  console.log('\nStopping Dota Flow, dashboard and Overwolf Electron.');
+  console.log('\nStopping Dota Flow, dashboard and Overwolf Electron/GSI runtime.');
   void shutdown().finally(() => process.exit(exitCode));
+}
+
+function waitForRuntimeOrDashboard(runtime, dashboard) {
+  return Promise.race([
+    runtime.exit.then((result) => ({ source: 'runtime', result })),
+    dashboard.exit.then((result) => ({ source: 'dashboard', result }))
+  ]);
+}
+
+function assertRuntimeOutcome(outcome, runtimeLabel) {
+  if (shutdownRequested || isControlCExit(outcome.result)) return false;
+  if (outcome.source === 'dashboard') {
+    throw new Error(`Dashboard stopped while ${runtimeLabel} was running (${outcome.result.code ?? outcome.result.signal ?? 'unknown exit'}).`);
+  }
+  if (outcome.result.code !== 0) {
+    throw new Error(`${runtimeLabel} stopped with ${outcome.result.code ?? outcome.result.signal ?? 'unknown exit'}.`);
+  }
+  return true;
 }
 
 process.once('SIGINT', () => handleSignal(130));
 process.once('SIGTERM', () => handleSignal(143));
 
 async function main() {
-  console.log('Dota Flow: starting one-console Overwolf dev mode.');
-  await runNpmScript('overwolf:preflight');
+  console.log(gsiOnlyRequested
+    ? 'Dota Flow: starting stable GSI-only desktop mode.'
+    : 'Dota Flow: starting one-console Overwolf dev mode.');
+
+  if (!gsiOnlyRequested) {
+    await runNpmScript('overwolf:preflight');
+  } else {
+    console.log('GSI-only mode: Overwolf credentials and gaming-package verification are not required.');
+  }
+
   await runNpmScript('dota:gsi:install');
   await runNpmScript('build', { VITE_DOTA_FLOW_RUNTIME_MODE: 'live' });
   await runNpmScript('overwolf:build');
@@ -147,21 +182,30 @@ async function main() {
   }
 
   console.log(`Dashboard ready: ${dashboardUrl}`);
-  console.log('Starting Overwolf Electron. Keep this PowerShell open; Ctrl+C stops both processes.');
 
-  const electron = startNpmScript('overwolf:start');
-  const outcome = await Promise.race([
-    electron.exit.then((result) => ({ source: 'electron', result })),
-    dashboard.exit.then((result) => ({ source: 'dashboard', result }))
-  ]);
+  if (gsiOnlyRequested) {
+    console.log('Starting stable Electron GSI runtime. Keep this PowerShell open; Ctrl+C stops both processes.');
+    const gsiRuntime = startNpmScript('gsi:start', { DOTA_FLOW_GSI_ONLY: '1' });
+    const outcome = await waitForRuntimeOrDashboard(gsiRuntime, dashboard);
+    assertRuntimeOutcome(outcome, 'GSI Electron');
+    return;
+  }
+
+  console.log('Starting Overwolf Electron. Keep this PowerShell open; Ctrl+C stops both processes.');
+  const overwolfRuntime = startNpmScript('overwolf:start');
+  const outcome = await waitForRuntimeOrDashboard(overwolfRuntime, dashboard);
 
   if (shutdownRequested || isControlCExit(outcome.result)) return;
-  if (outcome.source === 'dashboard') {
-    throw new Error(`Dashboard stopped while Overwolf was running (${outcome.result.code ?? outcome.result.signal ?? 'unknown exit'}).`);
+  if (outcome.source === 'runtime' && isOwepmVerificationExit(outcome.result)) {
+    console.warn('WARNING: Overwolf package verification failed (0xFFFF7003).');
+    console.warn('Switching automatically to stable GSI-only Electron mode; Dota telemetry and the coaching UI will keep working without owepm.');
+    const gsiRuntime = startNpmScript('gsi:start', { DOTA_FLOW_GSI_ONLY: '1' });
+    const fallbackOutcome = await waitForRuntimeOrDashboard(gsiRuntime, dashboard);
+    assertRuntimeOutcome(fallbackOutcome, 'GSI fallback Electron');
+    return;
   }
-  if (outcome.result.code !== 0) {
-    throw new Error(`Overwolf Electron stopped with ${outcome.result.code ?? outcome.result.signal ?? 'unknown exit'}.`);
-  }
+
+  assertRuntimeOutcome(outcome, 'Overwolf Electron');
 }
 
 try {
