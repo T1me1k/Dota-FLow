@@ -5,6 +5,7 @@ const DEFAULT_GSI_HOST = '127.0.0.1';
 const DEFAULT_GSI_PORT = 32123;
 const DEFAULT_GSI_PATH = '/dota-flow-gsi';
 const DEFAULT_GSI_TOKEN = 'dota-flow-local-v1';
+const DEFAULT_GSI_EMIT_INTERVAL_MS = 250;
 const MAX_BODY_BYTES = 2 * 1024 * 1024;
 
 type JsonObject = Record<string, unknown>;
@@ -24,6 +25,7 @@ export type DotaGsiAdapterOptions = {
   port?: number;
   path?: string;
   token?: string;
+  emitIntervalMs?: number;
 };
 
 function finiteNumber(value: unknown): number | undefined {
@@ -107,30 +109,63 @@ function statusEffectsFromGsi(hero: JsonObject | undefined): Record<string, bool
   };
 }
 
-function createSnapshotPayload(snapshot: DotaGsiSnapshot): Record<string, unknown> {
+export function createSnapshotPayload(snapshot: DotaGsiSnapshot): Record<string, unknown> {
   const provider = snapshot.provider ?? {};
   const map = snapshot.map ?? {};
   const player = snapshot.player ?? {};
   const hero = snapshot.hero ?? {};
-  const gameTimeSec = finiteNumber(map.clock_time) ?? finiteNumber(map.game_time) ?? 0;
+  const phase = normalizePhase(map.game_state);
+  const rawGameTimeSec = finiteNumber(map.clock_time) ?? finiteNumber(map.game_time) ?? 0;
+  const gameTimeSec = phase === 'pregame'
+    ? Math.abs(Math.trunc(rawGameTimeSec))
+    : Math.max(0, Math.trunc(rawGameTimeSec));
   const matchId = nonEmptyString(map.matchid);
   const health = finiteNumber(hero.health);
   const maxHealth = finiteNumber(hero.max_health);
   const mana = finiteNumber(hero.mana);
   const maxMana = finiteNumber(hero.max_mana);
   const buybackCooldown = finiteNumber(hero.buyback_cooldown);
+  const positionX = finiteNumber(hero.xpos);
+  const positionY = finiteNumber(hero.ypos);
 
   return {
     source: 'gsi',
-    phase: normalizePhase(map.game_state),
+    phase,
     gameTimeSec,
     clock_time: gameTimeSec,
+    clockMode: phase === 'pregame' ? 'countdown' : 'elapsed',
+    rawClockTimeSec: rawGameTimeSec,
+    rawGameState: nonEmptyString(map.game_state),
+    role: 'unknown',
+    targetItem: null,
+    buildPlanId: null,
+    context: {
+      enemyCoreDead: false,
+      alliesReady: 0,
+      enemiesVisible: 0,
+      recentDeathSec: null,
+      safeRouteAvailable: false,
+      roshanAvailable: false
+    },
+    roleContext: {
+      safeMoveAvailable: null,
+      teamReady: 0,
+      dangerLevel: 0,
+      visionNeed: 0,
+      meta: {
+        quality: 'UNAVAILABLE',
+        signals: {}
+      }
+    },
     ...(matchId && matchId !== '0' ? { matchId } : {}),
     ...(nonEmptyString(provider.steamid) || nonEmptyString(player.steamid)
       ? { steamId: nonEmptyString(provider.steamid) ?? nonEmptyString(player.steamid) }
       : {}),
     ...(normalizeHero(hero.name) ? { hero: normalizeHero(hero.name) } : {}),
     ...(normalizeTeam(player.team_name) ? { team: normalizeTeam(player.team_name) } : {}),
+    ...(positionX !== undefined && positionY !== undefined
+      ? { position: { x: positionX, y: positionY } }
+      : {}),
     ...(finiteNumber(hero.level) !== undefined ? { level: finiteNumber(hero.level) } : {}),
     ...(finiteNumber(player.gold) !== undefined ? { gold: finiteNumber(player.gold) } : {}),
     ...(finiteNumber(player.gold_reliable) !== undefined ? { reliableGold: finiteNumber(player.gold_reliable) } : {}),
@@ -168,9 +203,13 @@ export class DotaGsiAdapter {
   readonly #port: number;
   readonly #path: string;
   readonly #token: string;
+  readonly #emitIntervalMs: number;
   #server: Server | null = null;
   #sourceSequence = 0;
   #connected = false;
+  #latestSnapshot: DotaGsiSnapshot | null = null;
+  #emitTimer: ReturnType<typeof setTimeout> | null = null;
+  #lastSnapshotEmittedAt = 0;
 
   constructor(sink: GepSink, options: DotaGsiAdapterOptions = {}) {
     this.#sink = sink;
@@ -178,6 +217,10 @@ export class DotaGsiAdapter {
     this.#port = Number(options.port ?? process.env.DOTA_FLOW_GSI_PORT ?? DEFAULT_GSI_PORT);
     this.#path = options.path ?? process.env.DOTA_FLOW_GSI_PATH ?? DEFAULT_GSI_PATH;
     this.#token = options.token ?? process.env.DOTA_FLOW_GSI_TOKEN ?? DEFAULT_GSI_TOKEN;
+    this.#emitIntervalMs = Math.max(
+      50,
+      Number(options.emitIntervalMs ?? process.env.DOTA_FLOW_GSI_EMIT_INTERVAL_MS ?? DEFAULT_GSI_EMIT_INTERVAL_MS)
+    );
   }
 
   #emit(envelope: Omit<GepEnvelope, 'receivedAt' | 'sourceSequence'>): void {
@@ -187,6 +230,36 @@ export class DotaGsiAdapter {
       receivedAt: Date.now(),
       sourceSequence: `gsi:${this.#sourceSequence}`
     });
+  }
+
+  #flushSnapshot(): void {
+    const snapshot = this.#latestSnapshot;
+    this.#latestSnapshot = null;
+    this.#emitTimer = null;
+    if (!snapshot) return;
+    this.#lastSnapshotEmittedAt = Date.now();
+    this.#emit({
+      type: 'game-event',
+      gameId: DEFAULT_DOTA_GAME_ID,
+      payload: {
+        name: 'gsi_snapshot',
+        data: createSnapshotPayload(snapshot)
+      }
+    });
+  }
+
+  #queueSnapshot(snapshot: DotaGsiSnapshot): void {
+    this.#latestSnapshot = snapshot;
+    const elapsed = Date.now() - this.#lastSnapshotEmittedAt;
+    if (this.#lastSnapshotEmittedAt === 0 || elapsed >= this.#emitIntervalMs) {
+      this.#flushSnapshot();
+      return;
+    }
+    if (this.#emitTimer) return;
+    this.#emitTimer = setTimeout(
+      () => this.#flushSnapshot(),
+      Math.max(0, this.#emitIntervalMs - elapsed)
+    );
   }
 
   async start(): Promise<void> {
@@ -208,6 +281,7 @@ export class DotaGsiAdapter {
       server.listen(this.#port, this.#host);
     });
     console.log(`[Dota Flow GSI] Listening on http://${this.#host}:${this.#port}${this.#path}`);
+    console.log(`[Dota Flow GSI] Renderer update limit: ${Math.round(1000 / this.#emitIntervalMs)} Hz.`);
     this.#emit({
       type: 'status',
       gameId: DEFAULT_DOTA_GAME_ID,
@@ -222,6 +296,9 @@ export class DotaGsiAdapter {
   }
 
   async stop(): Promise<void> {
+    if (this.#emitTimer) clearTimeout(this.#emitTimer);
+    this.#emitTimer = null;
+    this.#latestSnapshot = null;
     const server = this.#server;
     this.#server = null;
     if (!server) return;
@@ -274,14 +351,7 @@ export class DotaGsiAdapter {
           });
         }
 
-        this.#emit({
-          type: 'game-event',
-          gameId: DEFAULT_DOTA_GAME_ID,
-          payload: {
-            name: 'gsi_snapshot',
-            data: createSnapshotPayload(snapshot)
-          }
-        });
+        this.#queueSnapshot(snapshot);
         response.writeHead(204);
         response.end();
       } catch (error) {
