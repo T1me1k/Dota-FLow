@@ -131,6 +131,7 @@ process.once('SIGTERM', () => handleSignal(143));
 async function main() {
   console.log('Dota Flow: starting one-console Overwolf dev mode.');
   await runNpmScript('overwolf:preflight');
+  await runNpmScript('dota:gsi:install');
   await runNpmScript('build', { VITE_DOTA_FLOW_RUNTIME_MODE: 'live' });
   await runNpmScript('overwolf:build');
 
