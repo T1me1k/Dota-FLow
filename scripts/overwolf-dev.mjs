@@ -130,7 +130,7 @@ function isOwepmVerificationExit(result) {
 
 function handleSignal(exitCode) {
   shutdownRequested = true;
-  console.log('\nStopping Dota Flow dashboard and desktop runtime.');
+  console.log('\nStopping Dota Flow, dashboard and Overwolf Electron/GSI runtime.');
   void shutdown().finally(() => process.exit(exitCode));
 }
 
