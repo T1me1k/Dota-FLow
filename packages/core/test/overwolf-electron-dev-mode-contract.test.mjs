@@ -65,6 +65,9 @@ test('one-console launcher waits for the live renderer and owns both process tre
   assert.match(devLauncher, /taskkill\.exe/);
   assert.match(devLauncher, /SIGINT/);
   assert.match(devLauncher, /SIGTERM/);
+  assert.match(devLauncher, /WINDOWS_STATUS_CONTROL_C_EXIT = 0xc000013a/);
+  assert.match(devLauncher, /shutdownRequested \|\| isControlCExit/);
+  assert.match(devLauncher, /Stopping Dota Flow, dashboard and Overwolf Electron/);
   assert.doesNotMatch(devLauncher, /OW_CLI_API_KEY|OW_DEV_KEY/);
   assert.doesNotMatch(devLauncher, /\b(?:writeFile|appendFile)\s*\(/);
 });
