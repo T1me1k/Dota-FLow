@@ -95,8 +95,8 @@ function safeTheme(value:string|null):ThemeId{return THEMES.some(theme=>theme.id
 const SettingsContext=createContext<SettingsContextValue|null>(null);
 
 export function AppSettingsProvider({children}:{children:React.ReactNode}){
-  const[language,setLanguageState]=useState<Language>(()=>safeLanguage(localStorage.getItem('trust-language')));
-  const[theme,setThemeState]=useState<ThemeId>(()=>safeTheme(localStorage.getItem('trust-theme')));
+  const[language,setLanguageState]=useState<Language>(safeLanguage(localStorage.getItem('trust-language')));
+  const[theme,setThemeState]=useState<ThemeId>(safeTheme(localStorage.getItem('trust-theme')));
   useEffect(()=>{document.documentElement.dataset.theme=theme;localStorage.setItem('trust-theme',theme)},[theme]);
   useEffect(()=>{document.documentElement.lang=language;localStorage.setItem('trust-language',language)},[language]);
   const context=useMemo<SettingsContextValue>(()=>({
@@ -119,7 +119,7 @@ export function AppSettingsProvider({children}:{children:React.ReactNode}){
 }
 
 export function useAppSettings():SettingsContextValue{
-  const value=useContext(SettingsContext);
+  const value=useContext(SettingsContext)as SettingsContextValue|null;
   if(!value)throw new Error('AppSettingsProvider is missing');
   return value;
 }
