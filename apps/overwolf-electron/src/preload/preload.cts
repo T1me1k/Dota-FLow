@@ -15,7 +15,10 @@ const INVOKE_CHANNELS = new Set([
   'manual-context:send',
   'coach-timer:start',
   'diagnostics:get',
-  'diagnostics:export'
+  'diagnostics:export',
+  'window:get-state',
+  'window:set-compact',
+  'window:set-always-on-top'
 ]);
 
 function delay(ms: number): Promise<void> {

@@ -8,6 +8,7 @@ import {
   type GepEnvelope
 } from './overwolf-gep-adapter.js';
 import { DotaGsiAdapter } from './dota-gsi-adapter.js';
+import { MainWindowController } from './main-window-controller.js';
 import { RealMatchCaptureRecorder } from './real-match-capture-recorder.js';
 import { createManualContextEnvelope, type ManualContextEnvelope } from '../../../../packages/core/src/manual-context.mjs';
 import { createCoachEventEnvelope, type CoachEventEnvelope } from '../../../../packages/core/src/coach-events.mjs';
@@ -20,6 +21,7 @@ type RuntimeWireSnapshot = LiveBridgeSnapshot & {
 };
 
 let mainWindow: BrowserWindow | null = null;
+let mainWindowController: MainWindowController | null = null;
 let overlayWindow: BrowserWindow | null = null;
 let captureRecorder: RealMatchCaptureRecorder | null = null;
 let dotaGsiAdapter: DotaGsiAdapter | null = null;
@@ -112,6 +114,7 @@ async function createWindows(): Promise<void> {
     minHeight: 600,
     webPreferences: { preload, contextIsolation: true, nodeIntegration: false }
   });
+  mainWindowController = await MainWindowController.create(mainWindow);
 
   const overlayWidth = 460;
   const overlayHeight = 184;
@@ -158,7 +161,12 @@ function publishLiveSnapshot(snapshot: LiveBridgeSnapshot): void {
   overlayWindow?.webContents.send('runtime:snapshot', wire);
 }
 
-function requireObject(payload: unknown): Record<string, unknown> { if (!payload || typeof payload !== 'object' || Array.isArray(payload)) throw Object.assign(new Error('Payload must be an object'), { code: 'INVALID_IPC_PAYLOAD' }); return payload as Record<string, unknown>; }
+function requireObject(payload: unknown): Record<string, unknown> {
+  if (!payload || typeof payload !== 'object' || Array.isArray(payload)) {
+    throw Object.assign(new Error('Payload must be an object'), { code: 'INVALID_IPC_PAYLOAD' });
+  }
+  return payload as Record<string, unknown>;
+}
 
 function publishOverlaySettings(): void {
   mainWindow?.webContents.send('dota-flow:overlay-settings', overlaySettings);
@@ -330,8 +338,22 @@ app.whenReady().then(async () => {
   });
   ipcMain.handle('dota-flow:get-manual-context-shortcuts', () => ({ ...MANUAL_CONTEXT_SHORTCUTS }));
   ipcMain.handle('dota-flow:apply-coach-event', (_event: unknown, eventType: unknown, payload: unknown) => {
-    const safePayload = payload && typeof payload === 'object' && !Array.isArray(payload) ? payload as Record<string, unknown> : {};
+    const safePayload = payload && typeof payload === 'object' && !Array.isArray(payload)
+      ? payload as Record<string, unknown>
+      : {};
     return applyCoachEvent(String(eventType ?? ''), safePayload);
+  });
+
+  ipcMain.handle('window:get-state', () => mainWindowController?.getState() ?? { compact: false, alwaysOnTop: false });
+  ipcMain.handle('window:set-compact', async (_event, payload) => {
+    const value = requireObject(payload);
+    return await mainWindowController?.setCompact(value.compact === true)
+      ?? { compact: false, alwaysOnTop: false };
+  });
+  ipcMain.handle('window:set-always-on-top', async (_event, payload) => {
+    const value = requireObject(payload);
+    return await mainWindowController?.setAlwaysOnTop(value.alwaysOnTop === true)
+      ?? { compact: false, alwaysOnTop: false };
   });
 
   ipcMain.handle('runtime:get-status', () => {
@@ -344,7 +366,12 @@ app.whenReady().then(async () => {
   ipcMain.handle('runtime:stop', () => liveBridge.stop('RENDERER_REQUEST'));
   ipcMain.handle('capture:get-status', () => captureRecorder?.status() ?? null);
   ipcMain.handle('capture:start', async (_event, payload) => {
-    const status = await captureRecorder?.start({ runtime:'overwolf-electron',gameId:DEFAULT_DOTA_GAME_ID,requestedBy:'renderer',...requireObject(payload ?? {}) });
+    const status = await captureRecorder?.start({
+      runtime: 'overwolf-electron',
+      gameId: DEFAULT_DOTA_GAME_ID,
+      requestedBy: 'renderer',
+      ...requireObject(payload ?? {})
+    });
     publishCaptureStatus();
     return status ?? null;
   });
@@ -353,11 +380,26 @@ app.whenReady().then(async () => {
     publishCaptureStatus();
     return status ?? null;
   });
-  ipcMain.handle('capture:open-folder', async () => { await mkdir(recordingsPath(),{recursive:true}); return { opened: (await shell.openPath(recordingsPath())) === '' }; });
-  ipcMain.handle('manual-context:send', (_event,payload) => { const x=requireObject(payload);return applyManualContext(String(x.type??'')); });
-  ipcMain.handle('coach-timer:start', (_event,payload) => { const x=requireObject(payload);if(!Number.isFinite(x.durationSec))throw Object.assign(new Error('durationSec must be finite'),{code:'INVALID_IPC_PAYLOAD'});return applyCoachEvent('COACH_TIMER_STARTED',x); });
-  ipcMain.handle('diagnostics:get', () => ({ runtimeMode:'LIVE_GEP', bridge:liveBridge.snapshot().diagnostics }));
-  ipcMain.handle('diagnostics:export', () => ({ code:'EXPORT_REQUIRES_CAPTURE_REDACTION', message:'Use capture export; private paths are not returned to renderer.' }));
+  ipcMain.handle('capture:open-folder', async () => {
+    await mkdir(recordingsPath(), { recursive: true });
+    return { opened: (await shell.openPath(recordingsPath())) === '' };
+  });
+  ipcMain.handle('manual-context:send', (_event, payload) => {
+    const value = requireObject(payload);
+    return applyManualContext(String(value.type ?? ''));
+  });
+  ipcMain.handle('coach-timer:start', (_event, payload) => {
+    const value = requireObject(payload);
+    if (!Number.isFinite(value.durationSec)) {
+      throw Object.assign(new Error('durationSec must be finite'), { code: 'INVALID_IPC_PAYLOAD' });
+    }
+    return applyCoachEvent('COACH_TIMER_STARTED', value);
+  });
+  ipcMain.handle('diagnostics:get', () => ({ runtimeMode: 'LIVE_GEP', bridge: liveBridge.snapshot().diagnostics }));
+  ipcMain.handle('diagnostics:export', () => ({
+    code: 'EXPORT_REQUIRES_CAPTURE_REDACTION',
+    message: 'Use capture export; private paths are not returned to renderer.'
+  }));
 
   publishOverlaySettings();
   publishLiveSnapshot(liveBridge.snapshot());
