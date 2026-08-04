@@ -1,4 +1,5 @@
 import { readFile } from 'node:fs/promises';
+import { request } from 'node:https';
 import { resolve } from 'node:path';
 
 const root = resolve(import.meta.dirname, '..');
@@ -6,6 +7,8 @@ const packagePath = resolve(root, 'apps/overwolf-electron/package.json');
 const packageJson = JSON.parse(await readFile(packagePath, 'utf8'));
 
 const MINIMUM_NODE = [22, 12, 0];
+const QA_PACKAGES_URL = 'https://electronapi-qa.overwolf.com/v2/packages';
+const QA_PROBE_TIMEOUT_MS = 8_000;
 const errors = [];
 const warnings = [];
 
@@ -20,6 +23,20 @@ function versionAtLeast(actual, minimum) {
     if (actual[index] < minimum[index]) return false;
   }
   return true;
+}
+
+function probeQaPackagesEndpoint() {
+  return new Promise((resolveProbe, rejectProbe) => {
+    const req = request(QA_PACKAGES_URL, { method: 'GET' }, (response) => {
+      response.resume();
+      resolveProbe(response.statusCode ?? 0);
+    });
+    req.setTimeout(QA_PROBE_TIMEOUT_MS, () => {
+      req.destroy(Object.assign(new Error(`timeout after ${QA_PROBE_TIMEOUT_MS}ms`), { code: 'ETIMEDOUT' }));
+    });
+    req.once('error', rejectProbe);
+    req.end();
+  });
 }
 
 if (process.platform !== 'win32') {
@@ -60,6 +77,17 @@ if (!String(packageJson.scripts?.start ?? '').includes('electronapi-qa.overwolf.
   warnings.push('The QA gaming-package channel is not present in the start command.');
 }
 
+let qaEndpointStatus = 'NOT CHECKED';
+try {
+  const statusCode = await probeQaPackagesEndpoint();
+  qaEndpointStatus = `reachable (HTTP ${statusCode || 'unknown'})`;
+} catch (error) {
+  const code = error && typeof error === 'object' && 'code' in error ? String(error.code) : 'UNKNOWN';
+  const message = error instanceof Error ? error.message : String(error);
+  qaEndpointStatus = `UNREACHABLE (${code})`;
+  errors.push(`Cannot establish HTTPS connectivity to ${QA_PACKAGES_URL}: ${message}. A stale cached gaming package may otherwise start and fail to read Dota 2.`);
+}
+
 const credentialStatus = hasConsoleCredentials && hasDevToken
   ? 'CONFLICT'
   : hasConsoleCredentials
@@ -73,6 +101,7 @@ console.log(`Platform: ${process.platform === 'win32' ? 'Windows OK' : process.p
 console.log(`Node.js: ${process.versions.node}${nodeVersion && versionAtLeast(nodeVersion, MINIMUM_NODE) ? ' OK' : ' UNSUPPORTED'}`);
 console.log(`Credentials: ${credentialStatus}`);
 console.log(`Gaming packages: ${[...packages].join(', ') || 'none'}`);
+console.log(`Overwolf QA packages endpoint: ${qaEndpointStatus}`);
 console.log('Privilege rule: Dota Flow and Dota 2 must run at the same privilege level; use normal non-admin PowerShell when Steam/Dota run normally.');
 for (const warning of warnings) console.warn(`WARNING: ${warning}`);
 
