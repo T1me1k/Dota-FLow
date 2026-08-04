@@ -5,7 +5,7 @@ The Electron shell owns one Live Bridge, one overlay window and one real-match c
 ## Requirements
 
 - Windows.
-- Node.js 20 or newer.
+- Node.js 22.12.0 or newer for the pinned build toolchain.
 - PowerShell opened as Administrator.
 - Approved Overwolf developer account.
 - Either `OW_CLI_EMAIL` plus `OW_CLI_API_KEY`, or an approved developer key in `OW_DEV_KEY`.
@@ -28,6 +28,8 @@ Remove-Item Env:OW_CLI_API_KEY -ErrorAction SilentlyContinue
 $env:OW_DEV_KEY = 'your-developer-key'
 ```
 
+Do not leave both credential modes set. The preflight rejects ambiguous credentials because the wrong mode can make the Overwolf package verification fail.
+
 ## First local launch
 
 From the repository root, in the same elevated PowerShell session:
@@ -40,7 +42,7 @@ npm run overwolf:dev
 
 `overwolf:dev` is the canonical launch command. It:
 
-1. validates credentials and the Windows platform;
+1. validates Node.js, credentials and the Windows platform;
 2. builds the web renderer in `LIVE_GEP` mode;
 3. cleans and compiles the Electron adapter;
 4. verifies that the sandboxed preload is CommonJS-compatible;
