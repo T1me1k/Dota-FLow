@@ -29,7 +29,10 @@ jobs:
         run: npm ci
 
       - name: Install Overwolf Electron dependencies
-        run: npm --prefix apps/overwolf-electron install --ignore-scripts --package-lock=false
+        run: npm --prefix apps/overwolf-electron install --ignore-scripts
+
+      - name: Audit Overwolf Electron dependencies
+        run: npm --prefix apps/overwolf-electron audit --audit-level=critical
 
       - name: Core tests
         run: npm test
