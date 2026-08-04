@@ -7,6 +7,7 @@ import {
   OverwolfGepAdapter,
   type GepEnvelope
 } from './overwolf-gep-adapter.js';
+import { DotaGsiAdapter } from './dota-gsi-adapter.js';
 import { RealMatchCaptureRecorder } from './real-match-capture-recorder.js';
 import { createManualContextEnvelope, type ManualContextEnvelope } from '../../../../packages/core/src/manual-context.mjs';
 import { createCoachEventEnvelope, type CoachEventEnvelope } from '../../../../packages/core/src/coach-events.mjs';
@@ -16,9 +17,13 @@ type OverlaySettings = Record<string, unknown>;
 let mainWindow: BrowserWindow | null = null;
 let overlayWindow: BrowserWindow | null = null;
 let captureRecorder: RealMatchCaptureRecorder | null = null;
+let dotaGsiAdapter: DotaGsiAdapter | null = null;
 let gracefulQuitStarted = false;
 let manualContextSequence = 0;
 let coachEventSequence = 0;
+let lastNativeGepDataAt = 0;
+let lastGsiDataAt = 0;
+const DATA_SOURCE_FRESH_MS = 5_000;
 let overlaySettings: OverlaySettings = {
   enabled: true,
   mode: 'COMPACT',
@@ -129,12 +134,45 @@ function publishCaptureStatus(): void {
   mainWindow?.webContents.send('dota-flow:capture-status', captureRecorder?.status() ?? null);
 }
 
+function logRuntimeStatus(envelope: GepEnvelope): void {
+  if (envelope.type !== 'status' || !envelope.payload || typeof envelope.payload !== 'object') return;
+  const payload = envelope.payload as Record<string, unknown>;
+  const mode = String(payload.mode ?? 'runtime').toUpperCase();
+  const connection = String(payload.connection ?? 'unknown');
+  const code = payload.code ? ` ${String(payload.code)}` : '';
+  const message = payload.message ?? payload.warning ?? payload.error;
+  console.log(`[Dota Flow ${mode}] ${connection}${code}${message ? `: ${String(message)}` : ''}`);
+}
+
 function broadcast(envelope: GepEnvelope): void {
+  logRuntimeStatus(envelope);
   mainWindow?.webContents.send('dota-flow:gep', envelope);
   const snapshot = liveBridge.ingestEnvelope(envelope);
   captureRecorder?.record(envelope, snapshot);
   publishLiveSnapshot(snapshot);
   publishCaptureStatus();
+}
+
+function fresh(timestamp: number): boolean {
+  return timestamp > 0 && Date.now() - timestamp <= DATA_SOURCE_FRESH_MS;
+}
+
+function broadcastNativeGep(envelope: GepEnvelope): void {
+  if (envelope.type !== 'status') {
+    lastNativeGepDataAt = Date.now();
+    broadcast(envelope);
+    return;
+  }
+  if (fresh(lastNativeGepDataAt) || !fresh(lastGsiDataAt)) broadcast(envelope);
+}
+
+function broadcastGsi(envelope: GepEnvelope): void {
+  if (envelope.type !== 'status') {
+    lastGsiDataAt = Date.now();
+    if (!fresh(lastNativeGepDataAt)) broadcast(envelope);
+    return;
+  }
+  if (!fresh(lastNativeGepDataAt)) broadcast(envelope);
 }
 
 function applyManualContext(command: string): LiveBridgeSnapshot {
@@ -190,10 +228,31 @@ app.whenReady().then(async () => {
     gameId: DEFAULT_DOTA_GAME_ID,
     autoStarted: true
   });
+
+  dotaGsiAdapter = new DotaGsiAdapter(broadcastGsi);
+  try {
+    await dotaGsiAdapter.start();
+  } catch (error) {
+    console.error('[Dota Flow GSI] Failed to start direct fallback', error);
+    broadcastGsi({
+      type: 'status',
+      gameId: DEFAULT_DOTA_GAME_ID,
+      receivedAt: Date.now(),
+      sourceSequence: 'gsi:start-failed',
+      payload: {
+        mode: 'gsi',
+        available: false,
+        connection: 'disconnected',
+        code: 'GSI_SERVER_START_FAILED',
+        error: error instanceof Error ? error.message : String(error)
+      }
+    });
+  }
+
   await createWindows();
   registerManualContextShortcuts();
 
-  const adapter = new OverwolfGepAdapter(broadcast);
+  const adapter = new OverwolfGepAdapter(broadcastNativeGep);
   await adapter.start();
 
   ipcMain.handle('dota-flow:get-live-snapshot', () => liveBridge.snapshot());
@@ -261,8 +320,15 @@ app.on('before-quit', (event) => {
   event.preventDefault();
   globalShortcut.unregisterAll();
   liveBridge.stop('APP_QUIT');
-  void Promise.resolve(captureRecorder?.stop('APP_QUIT'))
-    .catch((error: unknown) => console.error('Failed to finalize real-match capture', error))
+  void Promise.allSettled([
+    Promise.resolve(captureRecorder?.stop('APP_QUIT')),
+    Promise.resolve(dotaGsiAdapter?.stop())
+  ])
+    .then((results) => {
+      for (const result of results) {
+        if (result.status === 'rejected') console.error('Failed to finalize Dota Flow runtime', result.reason);
+      }
+    })
     .finally(() => app.quit());
 });
 
