@@ -14,6 +14,7 @@ const finalizeBuild = await readFile(resolve(root, 'apps/overwolf-electron/scrip
 const desktopIndex = await readFile(resolve(root, 'apps/desktop/index.html'), 'utf8');
 const bootstrapGuard = await readFile(resolve(root, 'apps/desktop/src/bootstrap-guard.ts'), 'utf8');
 const gepAdapter = await readFile(resolve(root, 'apps/overwolf-electron/src/main/overwolf-gep-adapter.ts'), 'utf8');
+const ciWorkflow = await readFile(resolve(root, '.github/workflows/ci.yml'), 'utf8');
 
 function majorMinor(version) {
   const match = String(version).match(/(\d+)\.(\d+)/);
@@ -79,7 +80,7 @@ test('sandboxed preload is compiled as CommonJS and startup IPC tolerates regist
   assert.doesNotMatch(preload, /exposeInMainWorld\([^\n]*ipcRenderer/);
   assert.match(finalizeBuild, /dist\/preload\/preload\.cjs/);
   assert.match(finalizeBuild, /dist\/preload\/preload\.js/);
-  assert.match(finalizeBuild, /require\\\(\["'\]electron/);
+  assert.match(finalizeBuild, /Compiled preload is not CommonJS/);
   assert.match(finalizeBuild, /copyFile/);
   await assert.rejects(
     readFile(resolve(root, 'apps/overwolf-electron/src/preload/preload.ts'), 'utf8'),
@@ -104,4 +105,10 @@ test('GEP activation retries transient feature registration and reports honest s
   assert.match(gepAdapter, /connection: 'connected'/);
   assert.match(gepAdapter, /GEP_ACTIVATION_FAILED/);
   assert.match(gepAdapter, /this\.#activeGameIds\.delete\(gameId\);\n      await this\.#activateGame\(gep, gameId, 'GAME_DETECTED'\)/);
+});
+
+test('CI validates the real Overwolf adapter instead of only static contracts', () => {
+  assert.match(ciWorkflow, /Install Overwolf Electron dependencies/);
+  assert.match(ciWorkflow, /npm run electron:typecheck/);
+  assert.match(ciWorkflow, /npm run overwolf:build/);
 });
