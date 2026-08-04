@@ -22,11 +22,15 @@
       "overlay"
     ]
   },
+  "engines": {
+    "node": ">=22.12.0"
+  },
   "devDependencies": {
-    "@overwolf/ow-electron": "^39.8.12",
-    "@overwolf/ow-electron-builder": "^26.9.0",
-    "@types/node": "^22.0.0",
-    "electron": "^37.0.0",
-    "typescript": "^5.8.0"
+    "@overwolf/ow-electron": "39.8.12",
+    "@overwolf/ow-electron-builder": "26.9.0",
+    "@overwolf/ow-electron-packages-types": "1.1.5-2",
+    "@types/node": "22.0.0",
+    "electron": "37.0.0",
+    "typescript": "5.8.0"
   }
 }
