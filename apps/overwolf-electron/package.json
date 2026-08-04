@@ -11,7 +11,8 @@
   "scripts": {
     "dev": "npm run build && npm run start",
     "start": "ow-electron . --remote-debugging-port=9222 --owepm-packages-url=https://electronapi-qa.overwolf.com/v2/packages",
-    "build": "tsc -p tsconfig.json",
+    "prebuild": "node scripts/clean-dist.mjs",
+    "build": "tsc -p tsconfig.json && node scripts/finalize-build.mjs",
     "typecheck": "tsc -p ./tsconfig.json --noEmit",
     "build:ow-electron": "ow-electron-builder --publish=never"
   },
@@ -21,11 +22,15 @@
       "overlay"
     ]
   },
+  "engines": {
+    "node": ">=22.12.0"
+  },
   "devDependencies": {
-    "@overwolf/ow-electron": "^39.8.12",
-    "@overwolf/ow-electron-builder": "^26.9.0",
-    "@types/node": "^22.0.0",
-    "electron": "^37.0.0",
-    "typescript": "^5.8.0"
+    "@overwolf/ow-electron": "39.8.12",
+    "@overwolf/ow-electron-builder": "26.9.0",
+    "@overwolf/ow-electron-packages-types": "1.1.5-2",
+    "@types/node": "22.0.0",
+    "electron": "37.10.3",
+    "typescript": "5.8.2"
   }
 }

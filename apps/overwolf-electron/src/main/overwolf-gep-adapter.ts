@@ -46,6 +46,9 @@ export const DOTA_FLOW_FEATURES = [
   'damage'
 ] as const;
 
+const GEP_REGISTRATION_ATTEMPTS = 4;
+const GEP_REGISTRATION_DELAY_MS = 750;
+
 type GepRuntime = {
   setRequiredFeatures(gameId: number, features: string[]): Promise<void>;
   getFeatures?(gameId: number): Promise<string[]>;
@@ -54,6 +57,14 @@ type GepRuntime = {
 };
 
 type DetectEvent = { enable?: () => unknown };
+
+function delay(ms: number): Promise<void> {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+function errorMessage(error: unknown): string {
+  return error instanceof Error ? error.message : String(error);
+}
 
 export class OverwolfGepAdapter {
   readonly #sink: GepSink;
@@ -80,9 +91,34 @@ export class OverwolfGepAdapter {
     });
   }
 
+  async #setRequiredFeaturesWithRetry(gep: GepRuntime, gameId: number, features: string[]): Promise<void> {
+    let lastError: unknown;
+    for (let attempt = 1; attempt <= GEP_REGISTRATION_ATTEMPTS; attempt += 1) {
+      try {
+        await gep.setRequiredFeatures(gameId, features);
+        return;
+      } catch (error) {
+        lastError = error;
+        this.#emit({
+          type: 'status',
+          gameId,
+          payload: {
+            connection: 'registering',
+            code: 'GEP_FEATURE_REGISTRATION_RETRY',
+            attempt,
+            maxAttempts: GEP_REGISTRATION_ATTEMPTS,
+            error: errorMessage(error)
+          }
+        });
+        if (attempt < GEP_REGISTRATION_ATTEMPTS) await delay(GEP_REGISTRATION_DELAY_MS);
+      }
+    }
+    throw lastError;
+  }
+
   async #activateGame(gep: GepRuntime, gameId: number, activationReason: string): Promise<void> {
     if (gameId !== this.#gameId || this.#activeGameIds.has(gameId)) return;
-    this.#activeGameIds.add(gameId);
+
     try {
       let supportedFeatures: string[] = [];
       try {
@@ -91,7 +127,11 @@ export class OverwolfGepAdapter {
         this.#emit({
           type: 'status',
           gameId,
-          payload: { warning: 'GEP getFeatures failed; requesting the configured feature set', error: String(error) }
+          payload: {
+            connection: 'registering',
+            warning: 'GEP getFeatures failed; requesting the configured feature set',
+            error: errorMessage(error)
+          }
         });
       }
 
@@ -103,13 +143,28 @@ export class OverwolfGepAdapter {
         ? DOTA_FLOW_FEATURES.filter((feature) => !supportedSet.has(feature))
         : [];
 
-      await gep.setRequiredFeatures(gameId, requestedFeatures);
+      if (requestedFeatures.length === 0) {
+        this.#emit({
+          type: 'status',
+          gameId,
+          payload: {
+            connection: 'disconnected',
+            code: 'GEP_NO_SUPPORTED_FEATURES',
+            message: 'Overwolf returned no Dota 2 features for this environment.',
+            supportedFeatures
+          }
+        });
+        return;
+      }
+
+      await this.#setRequiredFeaturesWithRetry(gep, gameId, requestedFeatures);
+      this.#activeGameIds.add(gameId);
       this.#emit({
         type: 'status',
         gameId,
         payload: {
           mode: 'overwolf',
-          connection: 'connected',
+          connection: 'registered',
           activationReason,
           features: requestedFeatures,
           supportedFeatures,
@@ -120,11 +175,28 @@ export class OverwolfGepAdapter {
       try {
         const current = await gep.getInfo(gameId);
         this.#emit({ type: 'info-update', gameId, payload: current });
+        this.#emit({
+          type: 'status',
+          gameId,
+          payload: {
+            mode: 'overwolf',
+            connection: 'connected',
+            activationReason,
+            initialInfoReceived: true,
+            features: requestedFeatures,
+            missingFeatures
+          }
+        });
       } catch (error) {
         this.#emit({
           type: 'status',
           gameId,
-          payload: { warning: 'Initial GEP getInfo failed', error: String(error) }
+          payload: {
+            connection: 'waiting-for-game',
+            code: 'GEP_INITIAL_INFO_UNAVAILABLE',
+            warning: 'GEP features are registered, but current Dota 2 info is not available yet.',
+            error: errorMessage(error)
+          }
         });
       }
     } catch (error) {
@@ -132,7 +204,13 @@ export class OverwolfGepAdapter {
       this.#emit({
         type: 'status',
         gameId,
-        payload: { connection: 'disconnected', error: String(error), message: 'Failed to activate Dota 2 GEP features' }
+        payload: {
+          connection: 'disconnected',
+          code: 'GEP_ACTIVATION_FAILED',
+          attempts: GEP_REGISTRATION_ATTEMPTS,
+          error: errorMessage(error),
+          message: 'Failed to activate Dota 2 GEP features'
+        }
       });
     }
   }
@@ -143,7 +221,13 @@ export class OverwolfGepAdapter {
     if (!gep) {
       this.#emit({
         type: 'status',
-        payload: { mode: 'live', available: false, code: 'OVERWOLF_RUNTIME_UNAVAILABLE', message: 'Approved Overwolf GEP runtime is unavailable; LIVE_GEP failed closed.' }
+        payload: {
+          mode: 'live',
+          available: false,
+          connection: 'disconnected',
+          code: 'OVERWOLF_RUNTIME_UNAVAILABLE',
+          message: 'Approved Overwolf GEP runtime is unavailable; LIVE_GEP failed closed.'
+        }
       });
       return;
     }
@@ -156,8 +240,19 @@ export class OverwolfGepAdapter {
     gep.on('error', (...args: unknown[]) => this.#onError(args));
     this.#started = true;
 
-    // Also attempt immediate activation for the case where Dota was already
-    // running before the app started. The game-detected path remains primary.
+    this.#emit({
+      type: 'status',
+      gameId: this.#gameId,
+      payload: {
+        mode: 'overwolf',
+        available: true,
+        connection: 'initializing',
+        message: 'GEP listeners registered; waiting for Dota 2 detection or current info.'
+      }
+    });
+
+    // Also attempt immediate activation when Dota was already running before
+    // the app started. The game-detected path re-registers after event.enable().
     await this.#activateGame(gep, this.#gameId, 'APP_STARTUP');
   }
 
@@ -165,12 +260,28 @@ export class OverwolfGepAdapter {
     const event = args[0] as DetectEvent | undefined;
     const gameId = args.find((value) => typeof value === 'number') as number | undefined;
     if (gameId !== this.#gameId) return;
+
     try {
       await Promise.resolve(event?.enable?.());
-      this.#emit({ type: 'status', gameId, payload: { connection: 'detecting', message: 'Dota 2 detected; enabling GEP' } });
+      this.#emit({
+        type: 'status',
+        gameId,
+        payload: { connection: 'detecting', message: 'Dota 2 detected; enabling GEP' }
+      });
+      this.#activeGameIds.delete(gameId);
       await this.#activateGame(gep, gameId, 'GAME_DETECTED');
     } catch (error) {
-      this.#emit({ type: 'status', gameId, payload: { connection: 'disconnected', error: String(error), message: 'Failed to enable detected Dota 2 process' } });
+      this.#activeGameIds.delete(gameId);
+      this.#emit({
+        type: 'status',
+        gameId,
+        payload: {
+          connection: 'disconnected',
+          code: 'GEP_ENABLE_FAILED',
+          error: errorMessage(error),
+          message: 'Failed to enable detected Dota 2 process'
+        }
+      });
     }
   }
 
@@ -178,7 +289,11 @@ export class OverwolfGepAdapter {
     const gameId = args.find((value) => typeof value === 'number') as number | undefined;
     if (gameId !== this.#gameId) return;
     this.#activeGameIds.delete(gameId);
-    this.#emit({ type: 'status', gameId, payload: { connection: 'disconnected', message: 'Dota 2 exited' } });
+    this.#emit({
+      type: 'status',
+      gameId,
+      payload: { connection: 'disconnected', code: 'GAME_EXIT', message: 'Dota 2 exited' }
+    });
   }
 
   #onElevatedPrivileges(args: unknown[]): void {
@@ -187,14 +302,24 @@ export class OverwolfGepAdapter {
     this.#emit({
       type: 'status',
       gameId,
-      payload: { warning: 'Dota 2 is running elevated; Dota Flow must run with matching privileges' }
+      payload: {
+        connection: 'disconnected',
+        code: 'PRIVILEGE_MISMATCH',
+        warning: 'Dota 2 is running elevated; Dota Flow must run with matching privileges'
+      }
     });
   }
 
   #onError(args: unknown[]): void {
     const gameId = args.find((value) => typeof value === 'number') as number | undefined;
-    const error = args.find((value) => typeof value === 'string') ?? 'Unknown GEP error';
-    this.#emit({ type: 'status', gameId, payload: { error: String(error), connection: 'reconnecting' } });
+    const error = args.find((value) => value instanceof Error)
+      ?? args.find((value) => typeof value === 'string')
+      ?? 'Unknown GEP error';
+    this.#emit({
+      type: 'status',
+      gameId,
+      payload: { code: 'GEP_RUNTIME_ERROR', error: errorMessage(error), connection: 'reconnecting' }
+    });
   }
 
   readonly #onGameEvent = (...args: unknown[]): void => {
