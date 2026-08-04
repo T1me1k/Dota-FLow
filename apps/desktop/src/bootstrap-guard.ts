@@ -1,10 +1,54 @@
+type BootstrapRuntimeApi = {
+  invoke: (channel: string, payload?: unknown) => Promise<unknown>;
+  subscribe: (listener: (snapshot: unknown) => void) => () => void;
+};
+
+type BootstrapWindow = Window & { dotaFlowRuntime?: BootstrapRuntimeApi };
+
 const diagnostic = document.getElementById('boot-diagnostic');
 const root = document.getElementById('root');
 let bootCompleted = false;
 
+const preloadUnavailableSnapshot = {
+  loading: false,
+  runtimeMode: 'LIVE_GEP',
+  status: 'UNAVAILABLE',
+  error: 'OVERWOLF_PRELOAD_UNAVAILABLE: The secure Electron bridge did not load. Rebuild the Overwolf adapter and inspect the PowerShell startup log.',
+  dataQuality: {
+    overall: 'UNAVAILABLE',
+    macro: 'UNAVAILABLE',
+    role: 'UNAVAILABLE'
+  },
+  runtimeMetadata: {
+    source: 'renderer-bootstrap-fallback',
+    preloadAvailable: false
+  }
+};
+
+function installFailClosedRuntimeFallback(): void {
+  const target = window as BootstrapWindow;
+  if (target.dotaFlowRuntime) return;
+
+  console.error('[TRUST] Electron preload bridge unavailable; installing fail-closed diagnostic runtime.');
+  target.dotaFlowRuntime = {
+    invoke: async (channel: string) => {
+      if (channel === 'runtime:get-snapshot') return structuredClone(preloadUnavailableSnapshot);
+      if (channel === 'runtime:get-status') {
+        return { runtimeMode: 'LIVE_GEP', status: 'UNAVAILABLE', error: preloadUnavailableSnapshot.error };
+      }
+      if (channel === 'diagnostics:get') {
+        return { runtimeMode: 'LIVE_GEP', preloadAvailable: false, error: preloadUnavailableSnapshot.error };
+      }
+      throw Object.assign(new Error(preloadUnavailableSnapshot.error), { code: 'OVERWOLF_PRELOAD_UNAVAILABLE' });
+    },
+    subscribe: () => () => undefined
+  };
+}
+
 function showDiagnostic(title: string, detail: string): void {
   if (!diagnostic) return;
   diagnostic.hidden = false;
+  diagnostic.style.display = 'grid';
   const titleNode = diagnostic.querySelector('[data-boot-title]');
   const detailNode = diagnostic.querySelector('[data-boot-detail]');
   if (titleNode) titleNode.textContent = title;
@@ -14,8 +58,13 @@ function showDiagnostic(title: string, detail: string): void {
 function markBootCompleted(): void {
   if (bootCompleted) return;
   bootCompleted = true;
-  if (diagnostic) diagnostic.hidden = true;
+  if (diagnostic) {
+    diagnostic.hidden = true;
+    diagnostic.style.display = 'none';
+  }
 }
+
+installFailClosedRuntimeFallback();
 
 if (root) {
   const observer = new MutationObserver(() => {
