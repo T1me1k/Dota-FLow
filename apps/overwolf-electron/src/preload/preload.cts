@@ -27,11 +27,11 @@ function isHandlerRegistrationRace(error: unknown): boolean {
   return /no handler registered|handler.*not registered|channel.*not found/i.test(message);
 }
 
-async function invokeWithStartupRetry(channel: string, payload?: unknown): Promise<unknown> {
+async function invokeWithStartupRetry(channel: string, ...args: unknown[]): Promise<unknown> {
   let lastError: unknown;
   for (let attempt = 1; attempt <= IPC_RETRY_ATTEMPTS; attempt += 1) {
     try {
-      return await ipcRenderer.invoke(channel, payload);
+      return await ipcRenderer.invoke(channel, ...args);
     } catch (error) {
       lastError = error;
       if (!isHandlerRegistrationRace(error) || attempt === IPC_RETRY_ATTEMPTS) throw error;
