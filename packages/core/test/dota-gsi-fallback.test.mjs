@@ -51,7 +51,7 @@ test('direct Dota GSI snapshots normalize into full canonical game snapshots', (
   assert.equal(state.hero, 'slark');
   assert.equal(state.gameTimeSec, 321);
   assert.equal(state.gold, 2450);
-  assert.equal(state.inventory[0].id, 'power_treads');
+  assert.equal(state.inventory[0].id, 'item_power_treads');
 });
 
 test('Overwolf dev launcher installs and starts the local Dota GSI fallback', async () => {
