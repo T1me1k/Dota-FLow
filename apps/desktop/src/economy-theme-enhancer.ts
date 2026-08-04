@@ -24,8 +24,7 @@ type DotaFlowApi={
   hideOverlay:()=>Promise<unknown>;
   onOverlaySettings:(listener:(settings:unknown)=>void)=>()=>void;
 };
-type RuntimeApi={subscribe:(listener:(snapshot:unknown)=>void)=>()=>void};
-declare global{interface Window{dotaFlow?:DotaFlowApi;dotaFlowRuntime?:RuntimeApi}}
+declare global{interface Window{dotaFlow?:DotaFlowApi}}
 
 const STORAGE_KEY='trust-economy-overlay-settings';
 const defaults:EconomySettings={
@@ -68,9 +67,10 @@ const copy={
   }
 }as const;
 function c(){return copy[language()]}
+function objectValue(value:unknown):Record<string,unknown>{return value&&typeof value==='object'&&!Array.isArray(value)?value as Record<string,unknown>:{}}
 
 function safeSettings(value:unknown):EconomySettings{
-  const raw=value&&typeof value==='object'&&!Array.isArray(value)?value as Record<string,unknown>:{};
+  const raw=objectValue(value);
   return{
     economyEnabled:raw.economyEnabled===true,
     economyMode:['LOCAL_EXACT','ESTIMATED','SPECTATOR_EXACT'].includes(String(raw.economyMode))?raw.economyMode as EconomyMode:defaults.economyMode,
@@ -141,7 +141,7 @@ function renderOverlay(){
   overlayPanel.innerHTML=`<header><div><span>${text.networthLabel}</span><b>TRUST ECONOMY</b></div><i class="economy-live-dot"></i></header><div class="economy-rows">${rows.map(rowHtml).join('')}</div><footer><span>${model.exactCount} ${text.exact}</span><span>${model.estimatedCount} ${text.estimate}</span></footer>`;
 }
 
-async function loadElectronSettings(){try{const value=await window.dotaFlow?.getOverlaySettings();if(value){settings=safeSettings({...settings,...value});persistLocal()}}catch{/* browser preview */}renderSettingsCard();renderOverlay()}
+async function loadElectronSettings(){try{const value=await window.dotaFlow?.getOverlaySettings();if(value){settings=safeSettings({...settings,...objectValue(value)});persistLocal()}}catch{/* browser preview */}renderSettingsCard();renderOverlay()}
 function syncTheme(){const theme=localStorage.getItem('trust-theme');if(theme)document.documentElement.dataset.theme=theme;document.documentElement.lang=localStorage.getItem('trust-language')==='en'?'en':'ru';renderSettingsCard();renderOverlay()}
 function boot(){
   syncTheme();void loadElectronSettings();
@@ -149,7 +149,7 @@ function boot(){
   addEventListener('popstate',()=>queueMicrotask(()=>{renderSettingsCard();renderOverlay()}));
   addEventListener('storage',event=>{if(event.key==='trust-theme'||event.key==='trust-language')syncTheme();if(event.key===STORAGE_KEY){settings=loadLocal();renderSettingsCard();renderOverlay()}});
   offRuntime=window.dotaFlowRuntime?.subscribe(snapshot=>{latestSnapshot=snapshot;renderOverlay()})??null;
-  offSettings=window.dotaFlow?.onOverlaySettings(value=>{settings=safeSettings({...settings,...value});persistLocal();renderSettingsCard();renderOverlay()})??null;
+  offSettings=window.dotaFlow?.onOverlaySettings(value=>{settings=safeSettings({...settings,...objectValue(value)});persistLocal();renderSettingsCard();renderOverlay()})??null;
 }
 
 boot();
