@@ -40,6 +40,7 @@
     "advice:validate": "node scripts/advice-validate.mjs",
     "desktop:typecheck": "npm --prefix apps/desktop run typecheck",
     "electron:typecheck": "npm --prefix apps/overwolf-electron run typecheck",
+    "dota:gsi:install": "node scripts/dota-gsi-install.mjs",
     "overwolf:preflight": "node scripts/overwolf-dev-preflight.mjs",
     "overwolf:install": "npm --prefix apps/overwolf-electron install",
     "overwolf:build": "npm --prefix apps/overwolf-electron run build",
