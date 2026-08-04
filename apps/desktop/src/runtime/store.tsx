@@ -13,6 +13,9 @@ type LiveBridgeWireSnapshot = RuntimeSnapshot & {
     message?: unknown;
   };
   diagnostics?: {
+    summary?: {
+      canonicalEventCount?: unknown;
+    };
     pipeline?: RuntimeSnapshot;
   };
 };
@@ -36,23 +39,34 @@ function normalizeLiveBridgeSnapshot(input: RuntimeSnapshot): RuntimeSnapshot {
   const bridgeState = String(wire.bridge.state ?? '').toUpperCase();
   const pipelineQuality = pipeline.dataQuality ?? {};
   const source = String(pipeline.state?.source ?? '').toLowerCase();
+  const canonicalEventCount = Number(wire.diagnostics?.summary?.canonicalEventCount ?? 0);
+  const hasObservedState = Number.isFinite(canonicalEventCount) && canonicalEventCount > 0;
   const observedQuality = bridgeState === 'LIVE'
     ? 'LIVE'
     : bridgeState === 'DEGRADED' || bridgeState === 'STALE'
       ? 'INFERRED'
       : 'UNAVAILABLE';
+  const rawRole = String(pipeline.state?.role ?? '').toLowerCase();
+  const projectedState = {
+    ...(pipeline.state ?? {}),
+    hero: hasObservedState ? pipeline.state?.hero : undefined,
+    role: hasObservedState && rawRole && rawRole !== 'unknown'
+      ? pipeline.state?.role
+      : undefined
+  };
 
   return {
     ...input,
     ...pipeline,
+    state: projectedState,
     runtimeMode: input.runtimeMode ?? 'LIVE_GEP',
     status: BRIDGE_STATUS_LABELS[bridgeState] ?? input.status ?? 'Connecting',
     macroDecision: pipeline.macroDecision ?? pipeline.decision,
     dataQuality: {
       ...pipelineQuality,
-      overall: pipelineQuality.overall ?? observedQuality,
-      macro: pipelineQuality.macro ?? observedQuality,
-      role: pipelineQuality.role === 'UNKNOWN'
+      overall: hasObservedState ? pipelineQuality.overall ?? observedQuality : 'UNAVAILABLE',
+      macro: hasObservedState ? pipelineQuality.macro ?? observedQuality : 'UNAVAILABLE',
+      role: rawRole === 'unknown' || !hasObservedState
         ? 'UNAVAILABLE'
         : pipelineQuality.role ?? 'UNAVAILABLE'
     },
@@ -65,7 +79,8 @@ function normalizeLiveBridgeSnapshot(input: RuntimeSnapshot): RuntimeSnapshot {
           ? 'OVERWOLF_GEP'
           : 'LIVE_BRIDGE',
       bridgeState,
-      bridgeMessage: String(wire.bridge.message ?? '')
+      bridgeMessage: String(wire.bridge.message ?? ''),
+      canonicalEventCount
     }
   };
 }

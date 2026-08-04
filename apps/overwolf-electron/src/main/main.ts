@@ -14,6 +14,11 @@ import { createCoachEventEnvelope, type CoachEventEnvelope } from '../../../../p
 
 type OverlaySettings = Record<string, unknown>;
 
+type RuntimeWireSnapshot = LiveBridgeSnapshot & {
+  runtimeMode: 'LIVE_GEP';
+  capture: ReturnType<RealMatchCaptureRecorder['status']> | null;
+};
+
 let mainWindow: BrowserWindow | null = null;
 let overlayWindow: BrowserWindow | null = null;
 let captureRecorder: RealMatchCaptureRecorder | null = null;
@@ -34,7 +39,28 @@ let overlaySettings: OverlaySettings = {
 };
 
 const liveBridge = new LiveGepBridge({
-  initialState: { source: 'overwolf' },
+  initialState: {
+    source: 'overwolf',
+    phase: 'idle',
+    role: 'unknown',
+    targetItem: null,
+    buildPlanId: null,
+    context: {
+      enemyCoreDead: false,
+      alliesReady: 0,
+      enemiesVisible: 0,
+      recentDeathSec: null,
+      safeRouteAvailable: false,
+      roshanAvailable: false
+    },
+    roleContext: {
+      safeMoveAvailable: null,
+      teamReady: 0,
+      dangerLevel: 0,
+      visionNeed: 0,
+      meta: { quality: 'UNAVAILABLE', signals: {} }
+    }
+  },
   connectionStaleAfterMs: 15_000,
   dedupeWindowMs: 30_000,
   maxArchives: 10
@@ -116,11 +142,20 @@ async function createWindows(): Promise<void> {
   ]);
 }
 
+function runtimeWireSnapshot(snapshot: LiveBridgeSnapshot): RuntimeWireSnapshot {
+  return {
+    ...snapshot,
+    runtimeMode: 'LIVE_GEP',
+    capture: captureRecorder?.status() ?? null
+  };
+}
+
 function publishLiveSnapshot(snapshot: LiveBridgeSnapshot): void {
-  mainWindow?.webContents.send('dota-flow:live-snapshot', snapshot);
-  overlayWindow?.webContents.send('dota-flow:live-snapshot', snapshot);
-  mainWindow?.webContents.send('runtime:snapshot', { ...snapshot, runtimeMode: 'LIVE_GEP' });
-  overlayWindow?.webContents.send('runtime:snapshot', { ...snapshot, runtimeMode: 'LIVE_GEP' });
+  const wire = runtimeWireSnapshot(snapshot);
+  mainWindow?.webContents.send('dota-flow:live-snapshot', wire);
+  overlayWindow?.webContents.send('dota-flow:live-snapshot', wire);
+  mainWindow?.webContents.send('runtime:snapshot', wire);
+  overlayWindow?.webContents.send('runtime:snapshot', wire);
 }
 
 function requireObject(payload: unknown): Record<string, unknown> { if (!payload || typeof payload !== 'object' || Array.isArray(payload)) throw Object.assign(new Error('Payload must be an object'), { code: 'INVALID_IPC_PAYLOAD' }); return payload as Record<string, unknown>; }
@@ -131,7 +166,10 @@ function publishOverlaySettings(): void {
 }
 
 function publishCaptureStatus(): void {
-  mainWindow?.webContents.send('dota-flow:capture-status', captureRecorder?.status() ?? null);
+  const status = captureRecorder?.status() ?? null;
+  mainWindow?.webContents.send('dota-flow:capture-status', status);
+  overlayWindow?.webContents.send('dota-flow:capture-status', status);
+  publishLiveSnapshot(liveBridge.snapshot());
 }
 
 function logRuntimeStatus(envelope: GepEnvelope): void {
@@ -150,7 +188,6 @@ function broadcast(envelope: GepEnvelope): void {
   const snapshot = liveBridge.ingestEnvelope(envelope);
   captureRecorder?.record(envelope, snapshot);
   publishLiveSnapshot(snapshot);
-  publishCaptureStatus();
 }
 
 function fresh(timestamp: number): boolean {
@@ -159,6 +196,9 @@ function fresh(timestamp: number): boolean {
 
 function broadcastNativeGep(envelope: GepEnvelope): void {
   if (envelope.type !== 'status') {
+    // A healthy direct GSI feed is authoritative while the native package is
+    // failing. Empty or malformed native updates must not suppress it.
+    if (fresh(lastGsiDataAt)) return;
     lastNativeGepDataAt = Date.now();
     broadcast(envelope);
     return;
@@ -187,7 +227,6 @@ function applyManualContext(command: string): LiveBridgeSnapshot {
   const snapshot = liveBridge.ingestEnvelope(envelope);
   captureRecorder?.record(envelope, snapshot);
   publishLiveSnapshot(snapshot);
-  publishCaptureStatus();
   return snapshot;
 }
 
@@ -203,7 +242,6 @@ function applyCoachEvent(eventType: string, payload: Record<string, unknown> = {
   const snapshot = liveBridge.ingestEnvelope(envelope);
   captureRecorder?.record(envelope, snapshot);
   publishLiveSnapshot(snapshot);
-  publishCaptureStatus();
   return snapshot;
 }
 
@@ -255,7 +293,7 @@ app.whenReady().then(async () => {
   const adapter = new OverwolfGepAdapter(broadcastNativeGep);
   await adapter.start();
 
-  ipcMain.handle('dota-flow:get-live-snapshot', () => liveBridge.snapshot());
+  ipcMain.handle('dota-flow:get-live-snapshot', () => runtimeWireSnapshot(liveBridge.snapshot()));
   ipcMain.handle('dota-flow:reset-live-session', () => liveBridge.reset({ reason: 'RENDERER_REQUEST' }));
   ipcMain.handle('dota-flow:get-overlay-settings', () => ({ ...overlaySettings }));
   ipcMain.handle('dota-flow:set-overlay-settings', async (_event: unknown, patch: unknown) => {
@@ -296,13 +334,25 @@ app.whenReady().then(async () => {
     return applyCoachEvent(String(eventType ?? ''), safePayload);
   });
 
-  ipcMain.handle('runtime:get-status', () => ({ runtimeMode: 'LIVE_GEP', status: liveBridge.snapshot().status }));
-  ipcMain.handle('runtime:get-snapshot', () => ({ ...liveBridge.snapshot(), runtimeMode: 'LIVE_GEP' }));
+  ipcMain.handle('runtime:get-status', () => {
+    const snapshot = runtimeWireSnapshot(liveBridge.snapshot());
+    const bridge = snapshot.bridge as { state?: unknown; message?: unknown };
+    return { runtimeMode: snapshot.runtimeMode, status: bridge.state, message: bridge.message };
+  });
+  ipcMain.handle('runtime:get-snapshot', () => runtimeWireSnapshot(liveBridge.snapshot()));
   ipcMain.handle('runtime:start', () => ({ status: 'GEP_INITIALIZING' }));
   ipcMain.handle('runtime:stop', () => liveBridge.stop('RENDERER_REQUEST'));
   ipcMain.handle('capture:get-status', () => captureRecorder?.status() ?? null);
-  ipcMain.handle('capture:start', async (_event, payload) => captureRecorder?.start({ runtime:'overwolf-electron',gameId:DEFAULT_DOTA_GAME_ID,requestedBy:'renderer',...requireObject(payload ?? {}) }));
-  ipcMain.handle('capture:stop', () => captureRecorder?.stop('RENDERER_REQUEST'));
+  ipcMain.handle('capture:start', async (_event, payload) => {
+    const status = await captureRecorder?.start({ runtime:'overwolf-electron',gameId:DEFAULT_DOTA_GAME_ID,requestedBy:'renderer',...requireObject(payload ?? {}) });
+    publishCaptureStatus();
+    return status ?? null;
+  });
+  ipcMain.handle('capture:stop', async () => {
+    const status = await captureRecorder?.stop('RENDERER_REQUEST');
+    publishCaptureStatus();
+    return status ?? null;
+  });
   ipcMain.handle('capture:open-folder', async () => { await mkdir(recordingsPath(),{recursive:true}); return { opened: (await shell.openPath(recordingsPath())) === '' }; });
   ipcMain.handle('manual-context:send', (_event,payload) => { const x=requireObject(payload);return applyManualContext(String(x.type??'')); });
   ipcMain.handle('coach-timer:start', (_event,payload) => { const x=requireObject(payload);if(!Number.isFinite(x.durationSec))throw Object.assign(new Error('durationSec must be finite'),{code:'INVALID_IPC_PAYLOAD'});return applyCoachEvent('COACH_TIMER_STARTED',x); });

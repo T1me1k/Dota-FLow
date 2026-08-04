@@ -14,9 +14,9 @@ function integrationConfig() {
 {
   "uri" "http://127.0.0.1:${GSI_PORT}${GSI_PATH}"
   "timeout" "5.0"
-  "buffer" "0.1"
-  "throttle" "0.1"
-  "heartbeat" "5.0"
+  "buffer" "0.2"
+  "throttle" "0.25"
+  "heartbeat" "2.0"
   "auth"
   {
     "token" "${GSI_TOKEN}"
