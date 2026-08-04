@@ -11,6 +11,7 @@
   "scripts": {
     "dev": "npm run build && npm run start",
     "start": "ow-electron . --remote-debugging-port=9222 --owepm-packages-url=https://electronapi-qa.overwolf.com/v2/packages",
+    "start:gsi": "electron . --remote-debugging-port=9222",
     "prebuild": "node scripts/clean-dist.mjs",
     "build": "tsc -p tsconfig.json && node scripts/finalize-build.mjs",
     "typecheck": "tsc -p ./tsconfig.json --noEmit",
