@@ -21,6 +21,7 @@ type LiveBridgeWireSnapshot = RuntimeSnapshot & {
 };
 
 const RuntimeContext = createContext<RuntimeContextValue | null>(null);
+export const RUNTIME_SNAPSHOT_EVENT = 'dota-flow:runtime-snapshot';
 
 const BRIDGE_STATUS_LABELS: Record<string, string> = {
   WAITING: 'Connecting',
@@ -85,6 +86,10 @@ function normalizeLiveBridgeSnapshot(input: RuntimeSnapshot): RuntimeSnapshot {
   };
 }
 
+function publishSnapshot(snapshot: RuntimeSnapshot): void {
+  window.dispatchEvent(new CustomEvent<RuntimeSnapshot>(RUNTIME_SNAPSHOT_EVENT, { detail: snapshot }));
+}
+
 export function RuntimeProvider({
   provider,
   children
@@ -97,14 +102,20 @@ export function RuntimeProvider({
   useEffect(() => {
     let active = true;
     const applySnapshot = (value: RuntimeSnapshot) => {
-      if (active) setSnapshot(normalizeLiveBridgeSnapshot(value));
+      if (!active) return;
+      const normalized = normalizeLiveBridgeSnapshot(value);
+      setSnapshot(normalized);
+      publishSnapshot(normalized);
     };
 
     provider
       .getSnapshot()
       .then(applySnapshot)
       .catch((error) => {
-        if (active) setSnapshot({ error: String(error) });
+        if (!active) return;
+        const failed = { error: String(error) };
+        setSnapshot(failed);
+        publishSnapshot(failed);
       });
 
     const off = provider.subscribe(applySnapshot);
