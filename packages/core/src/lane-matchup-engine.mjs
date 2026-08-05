@@ -1,3 +1,5 @@
+import { evaluateLaningStance, presentLaningStance } from './laning-stance-engine.mjs';
+
 const ACTIONS = new Set(['HOLD_LANE','SHOVE_LANE','FREEZE_LANE','PULL_LANE','RESET_LANE','PRESSURE_HERO','PRESSURE_TOWER','LEAVE_LANE','ROTATE','CALL_SUPPORT','PROTECT_CORE','SACRIFICE_LANE','RECOVER']);
 const DANGEROUS = new Set(['PRESSURE_HERO','PRESSURE_TOWER','LEAVE_LANE','ROTATE']);
 
@@ -26,18 +28,100 @@ export function normalizeLaneState(state) {
     laneId: c.laneId ?? (state.role === 'mid' ? 'mid' : null), lanePhase: c.lanePhase ?? (state.gameTimeSec < 720 ? 'LANING' : 'POST_LANE'),
     laneEquilibrium: c.laneEquilibrium ?? null, wavePosition: c.wavePosition ?? null, lanePushed: c.lanePushed ?? null,
     lanePriority: c.lanePriority ?? null, ownLevel: c.ownLevel ?? state.level ?? null, opponentLevel: c.opponentLevel ?? null,
-    ownEconomy: c.ownEconomy ?? state.gold ?? null, opponentEconomy: c.opponentEconomy ?? null,
+    ownEconomy: c.ownEconomy ?? state.netWorth ?? state.roleContext?.playerNetWorth ?? state.gold ?? null, opponentEconomy: c.opponentEconomy ?? c.laneOpponentNetWorth ?? null,
     ownResources: c.ownResources ?? { health: state.health, mana: state.mana }, opponentResources: c.opponentResources ?? null,
     killPotential: c.killPotential ?? c.sideLaneKillPotential ?? null, deathRisk: c.deathRisk ?? c.dangerLevel ?? null,
     towerPressure: c.towerPressure ?? c.towerPressureOpportunity ?? null, rotationCost: c.rotationCost ?? null,
     missingHeroesRisk: c.missingHeroesRisk ?? null, supportPresence: c.supportPresence ?? null,
+    alliesNearby: c.alliesNearby ?? null, enemiesNearby: c.enemiesNearby ?? null,
     nextObjectiveTiming: c.nextObjectiveTiming ?? null, confidence: c.confidence ?? null, sources: c.sources ?? c.meta?.signals ?? {}
+  };
+}
+
+function isSupportRole(role) {
+  const normalized = String(role ?? '').toLowerCase();
+  return normalized.includes('support') || normalized === '4' || normalized === '5';
+}
+
+function stanceAction(stance, role, lane) {
+  if (stance === 'RESET') return isSupportRole(role) ? 'PROTECT_CORE' : 'RESET_LANE';
+  if (stance === 'DEFENSIVE') return isSupportRole(role) ? 'PROTECT_CORE' : 'HOLD_LANE';
+  if (stance === 'AGGRESSIVE') return 'PRESSURE_HERO';
+  if (stance === 'TRADE') return isSupportRole(role) ? 'PROTECT_CORE' : 'HOLD_LANE';
+  if (isSupportRole(role)) return lane.lanePushed && lane.supportPresence !== false ? 'PULL_LANE' : 'PROTECT_CORE';
+  return lane.lanePushed === false && (lane.deathRisk ?? 0) < 0.4 ? 'FREEZE_LANE' : 'HOLD_LANE';
+}
+
+function stanceDataQuality(state, lane, stance) {
+  const sourceValues = Object.values(lane.sources ?? {}).map((source) => String(source?.quality ?? source).toUpperCase());
+  if (sourceValues.includes('STALE')) return 'STALE';
+  if (sourceValues.includes('MANUAL')) return 'MANUAL';
+  const liveSource = ['gsi', 'overwolf'].includes(String(state.source ?? '').toLowerCase()) || sourceValues.includes('LIVE');
+  if (liveSource) return stance.missingSignals.length ? 'PARTIAL' : 'LIVE';
+  if (stance.economy.quality === 'OBSERVED') return stance.missingSignals.length ? 'PARTIAL' : 'INFERRED';
+  return stance.economy.quality === 'PARTIAL' ? 'PARTIAL' : 'INFERRED';
+}
+
+function evaluateLiveLaningStance(state, lane) {
+  const roleContext = state.roleContext ?? {};
+  const opponentResources = lane.opponentResources ?? {};
+  const stance = evaluateLaningStance({
+    ...state,
+    roleContext: {
+      ...roleContext,
+      opponentLevel: lane.opponentLevel ?? roleContext.opponentLevel,
+      laneOpponentNetWorth: lane.opponentEconomy ?? roleContext.laneOpponentNetWorth,
+      dangerLevel: lane.deathRisk ?? roleContext.dangerLevel,
+      missingHeroesRisk: lane.missingHeroesRisk ?? roleContext.missingHeroesRisk,
+      alliesNearby: lane.alliesNearby ?? roleContext.alliesNearby,
+      enemiesNearby: lane.enemiesNearby ?? roleContext.enemiesNearby,
+      sideLaneKillPotential: lane.killPotential ?? roleContext.sideLaneKillPotential,
+      opponentHealth: opponentResources.health ?? roleContext.opponentHealth,
+      opponentMana: opponentResources.mana ?? roleContext.opponentMana
+    }
+  });
+  const ru = presentLaningStance(stance, 'ru');
+  const en = presentLaningStance(stance, 'en');
+  const dataQuality = stanceDataQuality(state, lane, stance);
+  const action = stanceAction(stance.action, state.role, lane);
+  const warnings = [];
+  if (dataQuality === 'STALE') warnings.push('Lane context is stale');
+  if (stance.missingSignals.length) warnings.push(`Missing lane signals: ${stance.missingSignals.join(', ')}`);
+  return {
+    action,
+    stance: stance.action,
+    confidence: stance.confidence,
+    reasons: ru.reasons,
+    reasonsEn: en.reasons,
+    warnings,
+    blockers: [],
+    missingSignals: [...stance.missingSignals],
+    dataQuality,
+    generatedAtSec: state.gameTimeSec,
+    laneState: lane,
+    laningEvidence: {
+      hero: stance.hero,
+      role: stance.role,
+      level: stance.level,
+      healthPct: stance.healthPct,
+      manaPct: stance.manaPct,
+      ability: stance.ability,
+      economy: stance.economy,
+      opponent: stance.evidence,
+      hasSustain: stance.hasSustain,
+      thresholds: stance.thresholds
+    },
+    stancePresentationRu: ru,
+    stancePresentationEn: en
   };
 }
 
 export class LaneMatchupEngine {
   evaluate(state) {
     const l = normalizeLaneState(state); const role = state.role ?? 'carry';
+    const activeLaning = l.lanePhase === 'LANING' && state.phase !== 'ended';
+    if (activeLaning) return evaluateLiveLaningStance(state, l);
+
     const missing = ['lanePriority','deathRisk'].filter((k) => l[k] == null);
     if ((l.deathRisk ?? 0) >= 0.75 || state.health / Math.max(1,state.maxHealth) < 0.3) return result(role.includes('support') ? 'PROTECT_CORE' : 'RESET_LANE', state, l, ['Высокий риск смерти важнее давления'], { missing: [] });
     if (role === 'mid' && l.lanePushed && state.level >= 6 && state.ultimateReady && (l.killPotential ?? 0) >= 0.65) return result('ROTATE', state, l, ['Волна подготовлена перед ротацией','Ultimate готов и есть боковая цель'], { missing });
