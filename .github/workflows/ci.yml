@@ -46,5 +46,8 @@ jobs:
       - name: Production build
         run: npm run build
 
+      - name: Renderer bundle budget
+        run: npm run bundle:check
+
       - name: Overwolf Electron build contract
         run: npm run overwolf:build
