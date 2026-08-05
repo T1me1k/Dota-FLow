@@ -1,4 +1,5 @@
 const DEFAULT_BUYBACK_COOLDOWN_SEC = 420;
+const DEFAULT_STALE_AFTER_SEC = 45;
 
 const ITEM_COSTS = Object.freeze({
   item_tango: 90, item_flask: 100, item_clarity: 50, item_faerie_fire: 65,
@@ -14,6 +15,7 @@ const ITEM_COSTS = Object.freeze({
 });
 
 function finite(value) {
+  if (value === null || value === undefined || value === '') return null;
   const number = Number(value);
   return Number.isFinite(number) ? number : null;
 }
@@ -44,16 +46,28 @@ function itemValue(items) {
 
 function localNetWorth(state) {
   const direct = finite(state?.netWorth);
-  if (direct !== null && direct >= 0) return { value: Math.round(direct), quality: 'EXACT', source: 'player.net_worth' };
+  if (direct !== null && direct >= 0) {
+    return {
+      value: Math.round(direct), quality: 'EXACT', source: 'player.net_worth',
+      observedAtSec: finite(state?.economyObservedAtSec), observedAtMs: finite(state?.economyObservedAtMs ?? state?.updatedAt)
+    };
+  }
   const roleContext = finite(state?.roleContext?.playerNetWorth);
-  const roleQuality = String(state?.roleContext?.meta?.signals?.playerNetWorth?.quality ?? '').toUpperCase();
+  const roleSignal = state?.roleContext?.meta?.signals?.playerNetWorth ?? {};
+  const roleQuality = String(roleSignal?.quality ?? '').toUpperCase();
   if (roleContext !== null && roleContext >= 0 && ['LIVE', 'OBSERVED'].includes(roleQuality)) {
-    return { value: Math.round(roleContext), quality: 'EXACT', source: 'role_context' };
+    return {
+      value: Math.round(roleContext), quality: 'EXACT', source: 'role_context',
+      observedAtSec: finite(roleSignal?.observedAtSec), observedAtMs: finite(roleSignal?.observedAtMs ?? state?.updatedAt)
+    };
   }
   const inventory = itemValue(state?.inventory);
   const gold = finite(state?.gold);
   if (gold !== null && inventory.known > 0 && inventory.unknown === 0) {
-    return { value: Math.round(gold + inventory.known), quality: 'ESTIMATE', source: 'gold_plus_known_items' };
+    return {
+      value: Math.round(gold + inventory.known), quality: 'ESTIMATE', source: 'gold_plus_known_items',
+      observedAtSec: finite(state?.economyObservedAtSec), observedAtMs: finite(state?.economyObservedAtMs ?? state?.updatedAt)
+    };
   }
   return { value: null, quality: 'UNAVAILABLE', source: 'missing_local_economy' };
 }
@@ -73,7 +87,25 @@ function teamOf(player) {
   return 'unknown';
 }
 
-function confirmedBuybackRemaining(player, state, gameTimeSec) {
+function evidenceAgeSec(economy, state, settings) {
+  const nowGameSec = finite(state?.gameTimeSec);
+  const observedAtSec = finite(economy?.observedAtSec);
+  if (nowGameSec !== null && observedAtSec !== null) return Math.max(0, nowGameSec - observedAtSec);
+  const observedAtMs = finite(economy?.observedAtMs);
+  const nowMs = finite(settings?.nowMs) ?? Date.now();
+  if (observedAtMs !== null) return Math.max(0, (nowMs - observedAtMs) / 1000);
+  return null;
+}
+
+function withFreshness(economy, state, settings) {
+  if (!economy || !['EXACT', 'ESTIMATE'].includes(economy.quality)) return economy;
+  const staleAfterSec = Math.max(1, finite(settings?.staleAfterSec) ?? DEFAULT_STALE_AFTER_SEC);
+  const ageSec = evidenceAgeSec(economy, state, settings);
+  if (ageSec === null || ageSec <= staleAfterSec) return { ...economy, ageSec };
+  return { ...economy, originalQuality: economy.quality, quality: 'STALE', ageSec };
+}
+
+function confirmedBuybackRemaining(player, gameTimeSec) {
   const explicit = finite(player?.buybackCooldownSec ?? player?.buyback_cooldown);
   if (explicit !== null) return Math.max(0, Math.ceil(explicit));
   const usedAt = finite(player?.buybackUsedAtSec ?? player?.lastBuybackAtSec ?? player?.buyback_used_at);
@@ -82,16 +114,23 @@ function confirmedBuybackRemaining(player, state, gameTimeSec) {
   return Math.max(0, Math.ceil(usedAt + duration - gameTimeSec));
 }
 
-function playerEconomy(player, state, isLocal) {
-  if (isLocal) return localNetWorth(state);
+function playerEconomy(player, state, isLocal, settings) {
+  if (isLocal) return withFreshness(localNetWorth(state), state, settings);
+  const observedAtSec = finite(player?.economyObservedAtSec ?? player?.observedAtSec);
+  const observedAtMs = finite(player?.economyObservedAtMs ?? player?.observedAtMs);
   const direct = finite(player?.netWorth ?? player?.net_worth);
   const exactAllowed = player?.spectatorExact === true || player?.economyQuality === 'EXACT' || state?.phase === 'spectating';
-  if (direct !== null && exactAllowed) return { value: Math.round(direct), quality: 'EXACT', source: 'spectator_exact' };
+  if (direct !== null && exactAllowed) {
+    return withFreshness({ value: Math.round(direct), quality: 'EXACT', source: 'spectator_exact', observedAtSec, observedAtMs }, state, settings);
+  }
 
   const explicitLow = finite(player?.netWorthLow ?? player?.estimatedNetWorthLow);
   const explicitHigh = finite(player?.netWorthHigh ?? player?.estimatedNetWorthHigh);
   if (explicitLow !== null && explicitHigh !== null && explicitHigh >= explicitLow) {
-    return { value: Math.round((explicitLow + explicitHigh) / 2), low: Math.round(explicitLow), high: Math.round(explicitHigh), quality: 'ESTIMATE', source: 'explicit_range' };
+    return withFreshness({
+      value: Math.round((explicitLow + explicitHigh) / 2), low: Math.round(explicitLow), high: Math.round(explicitHigh),
+      quality: 'ESTIMATE', source: 'explicit_range', observedAtSec, observedAtMs
+    }, state, settings);
   }
 
   const inventory = itemValue(player?.inventory ?? player?.items);
@@ -102,17 +141,22 @@ function playerEconomy(player, state, isLocal) {
     const publicFarmFloor = Math.max(0, (lastHits ?? 0) * 38 + (level ?? 1) * 90);
     const base = Math.max(inventory.known, publicFarmFloor);
     const uncertainty = Math.max(900, Math.round(650 + gameMinute * 75 + inventory.unknown * 700));
-    return { value: Math.round(base + uncertainty / 2), low: Math.round(base), high: Math.round(base + uncertainty), quality: 'ESTIMATE', source: 'public_signals' };
+    return withFreshness({
+      value: Math.round(base + uncertainty / 2), low: Math.round(base), high: Math.round(base + uncertainty),
+      quality: 'ESTIMATE', source: 'public_signals', observedAtSec, observedAtMs
+    }, state, settings);
   }
   return { value: null, quality: 'UNAVAILABLE', source: 'missing_public_economy' };
 }
 
-function fallbackRows(state) {
-  const local = localNetWorth(state);
+function fallbackRows(state, settings) {
+  const local = withFreshness(localNetWorth(state), state, settings);
+  const cooldown = finite(state?.buybackCooldownSec);
   return [{
     id: 'local', hero: normalizeHero(state?.hero) || 'unknown', team: state?.team ?? 'unknown',
-    local: true, economy: local, buybackRemainingSec: finite(state?.buybackCooldownSec),
-    buybackQuality: finite(state?.buybackCooldownSec) === null ? 'UNAVAILABLE' : 'EXACT'
+    local: true, economy: local, buybackRemainingSec: cooldown,
+    buybackCost: finite(state?.buybackCost),
+    buybackQuality: cooldown === null ? 'UNAVAILABLE' : 'EXACT'
   }];
 }
 
@@ -123,17 +167,18 @@ export function buildEconomyOverlayModel(state = {}, settings = {}) {
     const local = sameLocalPlayer(player, state);
     const buybackRemainingSec = local
       ? finite(state?.buybackCooldownSec ?? player?.buybackCooldownSec)
-      : confirmedBuybackRemaining(player, state, gameTimeSec);
+      : confirmedBuybackRemaining(player, gameTimeSec);
     return {
-      id: String(player?.steamId ?? player?.steam_id ?? player?.slot ?? index),
+      id: String(player?.steamId ?? player?.steam_id ?? player?.team_slot ?? player?.slot ?? index),
       hero: normalizeHero(player?.hero ?? player?.heroId) || `player_${index + 1}`,
       team: teamOf(player),
       local,
-      economy: playerEconomy(player, state, local),
+      economy: playerEconomy(player, state, local, settings),
       buybackRemainingSec,
+      buybackCost: local ? finite(state?.buybackCost ?? player?.buybackCost) : finite(player?.buybackCost),
       buybackQuality: buybackRemainingSec === null ? 'UNAVAILABLE' : local ? 'EXACT' : 'CONFIRMED'
     };
-  }) : fallbackRows(state);
+  }) : fallbackRows(state, settings);
 
   const localTeam = String(state?.team ?? rows.find((row) => row.local)?.team ?? 'unknown').toLowerCase();
   const filtered = rows.filter((row) => {
@@ -159,6 +204,7 @@ export function buildEconomyOverlayModel(state = {}, settings = {}) {
     localTeam,
     exactCount: sorted.filter((row) => row.economy.quality === 'EXACT').length,
     estimatedCount: sorted.filter((row) => row.economy.quality === 'ESTIMATE').length,
+    staleCount: sorted.filter((row) => row.economy.quality === 'STALE').length,
     unavailableCount: sorted.filter((row) => row.economy.quality === 'UNAVAILABLE').length,
     generatedAt: Date.now()
   };
