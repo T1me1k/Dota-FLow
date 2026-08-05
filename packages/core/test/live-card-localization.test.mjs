@@ -101,20 +101,18 @@ test('confirmed but blocked spike exposes bilingual blockers without hiding the 
 });
 
 test('desktop live-card enhancer consumes the one normalized snapshot stream', async () => {
-  const [index, store, enhancer] = await Promise.all([
+  const [index, store, enhancer, copy] = await Promise.all([
     readFile(resolve(root, 'apps/desktop/index.html'), 'utf8'),
     readFile(resolve(root, 'apps/desktop/src/runtime/store.tsx'), 'utf8'),
-    readFile(resolve(root, 'apps/desktop/src/live-card-enhancer.ts'), 'utf8')
+    readFile(resolve(root, 'apps/desktop/src/live-card-enhancer.ts'), 'utf8'),
+    readFile(resolve(root, 'packages/core/src/live-card-copy.mjs'), 'utf8')
   ]);
   assert.deepEqual(LIVE_CARD_LOCALIZED_HERO_IDS, ['morphling', 'sniper', 'monkey_king']);
   assert.match(index, /live-card-enhancer\.ts/);
   assert.ok(index.indexOf('live-card-enhancer.ts') < index.indexOf('main.tsx'));
   assert.match(store, /dota-flow:runtime-snapshot/);
   assert.match(store, /publishSnapshot\(normalized\)/);
-  assert.match(enhancer, /nameRu/);
-  assert.match(enhancer, /statusDetail/);
-  assert.match(enhancer, /spikeBlockers/);
-  assert.match(enhancer, /activePlan/);
-  assert.match(enhancer, /nextItemReason/);
+  for (const token of ['statusDetail','spikeBlockers','activePlan','nextItemReason']) assert.match(enhancer, new RegExp(token));
+  for (const token of ['nameRu','nameEn','recommendationRu','recommendationEn','activePlanRu','activePlanEn']) assert.match(copy, new RegExp(token));
   assert.doesNotMatch(enhancer, /\.subscribe\(|dotaFlowRuntime/);
 });
