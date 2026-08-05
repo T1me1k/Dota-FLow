@@ -10,8 +10,10 @@ async function source(path){return readFile(resolve(root,path),'utf8')}
 test('desktop loads persistent economy evidence and configurable buyback placement',async()=>{
   const html=await source('apps/desktop/index.html');
   const enhancer=await source('apps/desktop/src/economy-theme-enhancer.ts');
+  const tracker=await source('apps/desktop/src/gsi-buyback-ledger.ts');
   const css=await source('apps/desktop/src/economy-theme-enhancer.css');
   assert.match(html,/economy-theme-enhancer\.ts/);
+  assert.match(html,/gsi-buyback-ledger\.ts/);
   for(const token of ['economyEnabled','LOCAL_EXACT','ESTIMATED','SPECTATOR_EXACT','buybackPlacement','showAllies','showEnemies','NET_WORTH'])assert.match(enhancer,new RegExp(token));
   assert.match(enhancer,/setOverlaySettings/);
   assert.match(enhancer,/showOverlay/);
@@ -21,6 +23,10 @@ test('desktop loads persistent economy evidence and configurable buyback placeme
   assert.match(enhancer,/trust-economy-live-ledger-v1/);
   assert.match(enhancer,/setInterval/);
   assert.match(enhancer,/STALE/);
+  assert.match(tracker,/buybackAvailable/);
+  assert.match(tracker,/state\.available===true&&available===false/);
+  assert.match(tracker,/BUYBACK_COOLDOWN_SEC=420/);
+  assert.match(tracker,/StorageEvent/);
   assert.match(css,/economy-overlay-panel/);
   assert.match(css,/economy-buyback-strip/);
   assert.match(css,/quality-stale/);
