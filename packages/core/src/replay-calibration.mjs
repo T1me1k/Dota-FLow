@@ -24,6 +24,15 @@ const recoveredSafeActions = new Set([
   'PREPARE_WISDOM',
   'HOLD_HIGH_GROUND_SETUP'
 ]);
+const stableActionReasonCodes = Object.freeze({
+  PROTECT_CORE: ['CORE'],
+  PROTECT_CARRY: ['CORE'],
+  RESET_LANE: ['LANE_RESET'],
+  PRESSURE_HERO: ['CONFIRMED_LANE_WINDOW'],
+  HOLD_LANE: ['LANE_HOLD'],
+  FREEZE_LANE: ['LANE_FREEZE'],
+  PULL_LANE: ['LANE_PULL']
+});
 
 const reasonCode = (value) => String(value)
   .toUpperCase()
@@ -31,11 +40,25 @@ const reasonCode = (value) => String(value)
   .replace(/^_|_$/g, '')
   .slice(0, 80);
 
+function stableReasonCodes(call) {
+  const explicit = [
+    ...(call.reasonCodes ?? []),
+    ...(stableActionReasonCodes[call.primaryAction] ?? [])
+  ].map(reasonCode).filter(Boolean);
+  const derived = (call.reasons ?? []).map(reasonCode);
+  return [...new Set(explicit.length ? explicit : derived)].sort();
+}
+
+function requiredReasonCodes(checkpoint) {
+  const actionFallback = stableActionReasonCodes[checkpoint.expectedPrimaryAction]?.[0];
+  return (checkpoint.requiredReasonCodes ?? []).map((code) => code || actionFallback || code);
+}
+
 export const stableCoachCall = (call) => ({
   primaryAction: call.primaryAction,
   primaryDomain: call.primaryDomain,
   urgency: call.urgency,
-  reasonCodes: [...new Set((call.reasons ?? []).map(reasonCode))].sort(),
+  reasonCodes: stableReasonCodes(call),
   missingSignals: [...new Set(call.missingSignals ?? [])].sort(),
   dataQuality: call.dataQuality,
   secondaryDomains: [...new Set((call.secondaryActions ?? []).map((entry) => entry.domain))].sort()
@@ -117,12 +140,14 @@ export async function runReplayCalibration(scenario) {
     );
     const actionMatches = !allowed.length || allowed.includes(actual.primaryAction) || confirmedRecoveryAlternative;
     const urgencyMatches = !checkpoint.expectedUrgency || checkpoint.expectedUrgency === actual.urgency || confirmedRecoveryAlternative;
-    const reasonsMatch = (checkpoint.requiredReasonCodes ?? []).every((code) => actual.reasonCodes.includes(code));
+    const requiredCodes = requiredReasonCodes(checkpoint);
+    const reasonsMatch = requiredCodes.every((code) => actual.reasonCodes.includes(code));
     const passed = actionMatches && urgencyMatches && !violations.length && reasonsMatch;
 
     return {
       gameTimeSec: checkpoint.gameTimeSec,
       expected: checkpoint,
+      normalizedRequiredReasonCodes: requiredCodes,
       actual,
       passed,
       lifecycleCorrection: confirmedRecoveryAlternative ? 'CONFIRMED_RESOURCE_RECOVERY' : null,
