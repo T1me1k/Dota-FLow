@@ -7,6 +7,7 @@
     "test": "node --test packages/core/test/*.test.mjs",
     "dev": "npm --prefix apps/desktop install && npm --prefix apps/desktop run dev",
     "build": "npm --prefix apps/desktop install && npm --prefix apps/desktop run build",
+    "bundle:check": "node scripts/check-renderer-bundle.mjs",
     "typecheck": "npm --prefix apps/desktop install && npm --prefix apps/desktop run typecheck",
     "mock": "npm run build && node apps/mock-dashboard/server.mjs",
     "demo": "npm run build && node apps/mock-dashboard/server.mjs --open",
