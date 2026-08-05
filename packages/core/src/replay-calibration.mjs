@@ -49,6 +49,11 @@ function stableReasonCodes(call) {
   return [...new Set(explicit.length ? explicit : derived)].sort();
 }
 
+function requiredReasonCodes(checkpoint) {
+  const actionFallback = stableActionReasonCodes[checkpoint.expectedPrimaryAction]?.[0];
+  return (checkpoint.requiredReasonCodes ?? []).map((code) => code || actionFallback || code);
+}
+
 export const stableCoachCall = (call) => ({
   primaryAction: call.primaryAction,
   primaryDomain: call.primaryDomain,
@@ -135,12 +140,14 @@ export async function runReplayCalibration(scenario) {
     );
     const actionMatches = !allowed.length || allowed.includes(actual.primaryAction) || confirmedRecoveryAlternative;
     const urgencyMatches = !checkpoint.expectedUrgency || checkpoint.expectedUrgency === actual.urgency || confirmedRecoveryAlternative;
-    const reasonsMatch = (checkpoint.requiredReasonCodes ?? []).every((code) => actual.reasonCodes.includes(code));
+    const requiredCodes = requiredReasonCodes(checkpoint);
+    const reasonsMatch = requiredCodes.every((code) => actual.reasonCodes.includes(code));
     const passed = actionMatches && urgencyMatches && !violations.length && reasonsMatch;
 
     return {
       gameTimeSec: checkpoint.gameTimeSec,
       expected: checkpoint,
+      normalizedRequiredReasonCodes: requiredCodes,
       actual,
       passed,
       lifecycleCorrection: confirmedRecoveryAlternative ? 'CONFIRMED_RESOURCE_RECOVERY' : null,
