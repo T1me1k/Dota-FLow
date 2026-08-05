@@ -1,0 +1,52 @@
+export type FarmRouteQuality='LIVE'|'OBSERVED'|'UNAVAILABLE';
+export type FarmRouteStatus='READY'|'BLOCKED'|'UNAVAILABLE';
+export type FarmNodeType='LANE'|'SMALL'|'MEDIUM'|'LARGE'|'ANCIENT';
+export type FarmRouteNode={
+  id:string;
+  label:string;
+  type:FarmNodeType;
+  expectedGold:number;
+  travelSec:number;
+  clearSec:number;
+  safety:string;
+  risk:number;
+  availabilityQuality:string;
+  safetyQuality:string;
+};
+export type FarmCapability={
+  hero:string;
+  archetype:string;
+  level:number;
+  netWorth:number;
+  healthPct:number;
+  manaPct:number;
+  sustain:number;
+  mobility:number;
+  aoe:number;
+  hasSustainItem:boolean;
+  hasAoeItem:boolean;
+  hasMobilityItem:boolean;
+  ancientEligible:boolean;
+  ancientRequirements:{level:number;netWorth:number;healthPct:number;sustainRequired:boolean};
+};
+export type FarmRouteResult={
+  status:FarmRouteStatus;
+  route:FarmRouteNode[];
+  nextNode:FarmRouteNode|null;
+  instructionRu:string;
+  instructionEn:string;
+  confidence:number;
+  reasons:string[];
+  blockers:string[];
+  missingSignals:string[];
+  dataQuality:FarmRouteQuality;
+  capability:FarmCapability;
+  diagnostics:{inputNodeCount:number;evaluatedNodeCount:number;eligibleNodeCount:number;expansions:number;maxExpansions:number};
+  totalExpectedGold?:number;
+  totalTravelSec?:number;
+  totalClearSec?:number;
+};
+export function buildFarmCapability(state?:Record<string,any>):FarmCapability;
+export function planFarmRoute(state?:Record<string,any>,options?:{nodes?:Record<string,any>[]}):FarmRouteResult;
+export class FarmRouteEngine{evaluate(state?:Record<string,any>,options?:{nodes?:Record<string,any>[]}):FarmRouteResult}
+export const FARM_ROUTE_LIMITS:Readonly<{maxInputNodes:number;maxRouteNodes:number;maxExpansions:number}>;
