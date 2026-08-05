@@ -24,6 +24,15 @@ const recoveredSafeActions = new Set([
   'PREPARE_WISDOM',
   'HOLD_HIGH_GROUND_SETUP'
 ]);
+const stableActionReasonCodes = Object.freeze({
+  PROTECT_CORE: ['CORE'],
+  PROTECT_CARRY: ['CORE'],
+  RESET_LANE: ['LANE_RESET'],
+  PRESSURE_HERO: ['CONFIRMED_LANE_WINDOW'],
+  HOLD_LANE: ['LANE_HOLD'],
+  FREEZE_LANE: ['LANE_FREEZE'],
+  PULL_LANE: ['LANE_PULL']
+});
 
 const reasonCode = (value) => String(value)
   .toUpperCase()
@@ -31,11 +40,20 @@ const reasonCode = (value) => String(value)
   .replace(/^_|_$/g, '')
   .slice(0, 80);
 
+function stableReasonCodes(call) {
+  const explicit = [
+    ...(call.reasonCodes ?? []),
+    ...(stableActionReasonCodes[call.primaryAction] ?? [])
+  ].map(reasonCode).filter(Boolean);
+  const derived = (call.reasons ?? []).map(reasonCode);
+  return [...new Set(explicit.length ? explicit : derived)].sort();
+}
+
 export const stableCoachCall = (call) => ({
   primaryAction: call.primaryAction,
   primaryDomain: call.primaryDomain,
   urgency: call.urgency,
-  reasonCodes: [...new Set((call.reasons ?? []).map(reasonCode))].sort(),
+  reasonCodes: stableReasonCodes(call),
   missingSignals: [...new Set(call.missingSignals ?? [])].sort(),
   dataQuality: call.dataQuality,
   secondaryDomains: [...new Set((call.secondaryActions ?? []).map((entry) => entry.domain))].sort()
