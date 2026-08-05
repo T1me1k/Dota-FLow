@@ -1,6 +1,7 @@
 import { analyzeDraft } from './draft-analyzer.mjs';
 import { getHeroProfile } from './hero-profiles.mjs';
 import { recommendCounterItems } from './counter-item-engine.mjs';
+import { localizedPlanCopy, localizedReasonCopy } from './live-card-copy.mjs';
 
 const ITEM_SIGNALS = Object.freeze({
   item_black_king_bar: { control: 26, burst: 18, magic: 18, label: 'защита от контроля и magic burst' },
@@ -77,9 +78,11 @@ function withPresentation(result, plan, state, { activePlanId = plan?.id ?? null
     ...result,
     activePlanId,
     activePlan: plan?.name ?? null,
+    ...localizedPlanCopy(plan),
     nextItemId: nextItem?.id ?? null,
     nextItem: nextItem?.name ?? null,
     nextItemReason: reason,
+    ...localizedReasonCopy(reason),
     completed: Boolean(plan && !nextItem),
     dataQuality: plan ? (String(state.source ?? '').toLowerCase() === 'gsi' ? 'LIVE' : 'INFERRED') : 'UNAVAILABLE'
   };
