@@ -1,4 +1,4 @@
-import { app, BrowserWindow, screen, type Rectangle } from 'electron';
+import { app, BrowserWindow, screen, systemPreferences, type Rectangle } from 'electron';
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { join } from 'node:path';
 
@@ -40,6 +40,14 @@ function fitBounds(bounds: Rectangle, workArea: Rectangle): Rectangle {
 export function compactBoundsFor(expandedBounds: Rectangle, workArea: Rectangle): Rectangle {
   return fitBounds({ x: expandedBounds.x + expandedBounds.width - COMPACT_WIDTH, y: expandedBounds.y, width: COMPACT_WIDTH, height: COMPACT_HEIGHT }, workArea);
 }
+export function shouldAnimateWindowBounds(): boolean {
+  try {
+    const settings = systemPreferences.getAnimationSettings();
+    return settings.shouldRenderRichAnimation && !settings.prefersReducedMotion;
+  } catch {
+    return true;
+  }
+}
 
 export class MainWindowController {
   readonly #window: BrowserWindow;
@@ -73,12 +81,14 @@ export class MainWindowController {
       this.#window.setMinimumSize(COMPACT_WIDTH, COMPACT_HEIGHT);
       this.#window.setResizable(false);
       const workArea = screen.getDisplayMatching(this.#expandedBounds).workArea;
-      await this.#animateTo(compactBoundsFor(this.#expandedBounds, workArea));
+      const completed = await this.#animateTo(compactBoundsFor(this.#expandedBounds, workArea));
+      if (!completed) return this.getState();
     } else {
       this.#state.compact = false;
       this.#window.setResizable(true);
       this.#window.setMinimumSize(COMPACT_WIDTH, COMPACT_HEIGHT);
-      await this.#animateTo(this.#expandedTarget());
+      const completed = await this.#animateTo(this.#expandedTarget());
+      if (!completed) return this.getState();
       this.#window.setMinimumSize(FULL_MIN_WIDTH, FULL_MIN_HEIGHT);
     }
     await this.#persist();
@@ -114,18 +124,23 @@ export class MainWindowController {
       this.#window.setVisibleOnAllWorkspaces(false);
     }
   }
-  async #animateTo(target: Rectangle): Promise<void> {
+  async #animateTo(target: Rectangle): Promise<boolean> {
     const animationId = ++this.#animationId;
+    if (this.#window.isDestroyed()) return false;
+    if (!shouldAnimateWindowBounds()) {
+      this.#window.setBounds(target);
+      return true;
+    }
     const start = this.#window.getBounds();
     const startedAt = Date.now();
-    await new Promise<void>((resolve) => {
+    return await new Promise<boolean>((resolve) => {
       const timer = setInterval(() => {
-        if (animationId !== this.#animationId || this.#window.isDestroyed()) { clearInterval(timer); resolve(); return; }
+        if (animationId !== this.#animationId || this.#window.isDestroyed()) { clearInterval(timer); resolve(false); return; }
         const progress = Math.min(1, (Date.now() - startedAt) / ANIMATION_DURATION_MS);
         const eased = 1 - Math.pow(1 - progress, 3);
         const interpolate = (from: number, to: number) => Math.round(from + (to - from) * eased);
         this.#window.setBounds({ x: interpolate(start.x, target.x), y: interpolate(start.y, target.y), width: interpolate(start.width, target.width), height: interpolate(start.height, target.height) });
-        if (progress >= 1) { clearInterval(timer); this.#window.setBounds(target); resolve(); }
+        if (progress >= 1) { clearInterval(timer); this.#window.setBounds(target); resolve(true); }
       }, 16);
     });
   }
