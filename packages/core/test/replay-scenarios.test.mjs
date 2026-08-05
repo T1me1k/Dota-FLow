@@ -1,6 +1,19 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { listReplayScenarios, runReplaySuite } from '../src/replay-calibration.mjs';
+import { listReplayScenarios, runReplaySuite, stableCoachCall } from '../src/replay-calibration.mjs';
+
+test('localized coaching reasons do not replace stable machine reason codes', () => {
+  const stable = stableCoachCall({
+    primaryAction: 'PROTECT_CORE',
+    primaryDomain: 'LANE',
+    urgency: 'CRITICAL',
+    reasons: ['Сохраняй ресурсы core и безопасную дистанцию'],
+    missingSignals: [],
+    dataQuality: 'INFERRED',
+    secondaryActions: []
+  });
+  assert.deepEqual(stable.reasonCodes, ['CORE']);
+});
 
 test('all 30 replay scenarios and 90 checkpoints pass', async () => {
   const scenarios = await listReplayScenarios();
