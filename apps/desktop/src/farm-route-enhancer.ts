@@ -32,11 +32,11 @@ function ensureCard():HTMLElement|null{
   return card;
 }
 
-function setText(root:ParentNode,selector:string,value:unknown){const element=root.querySelector<HTMLElement>(selector);if(element)element.textContent=escapeText(value)}
+function setText(root:ParentNode,selector:string,value:unknown){const element=root.querySelector<HTMLElement>(selector);const next=escapeText(value);if(element&&element.textContent!==next)element.textContent=next}
 function statusClass(status:string){return status==='READY'?'green':status==='BLOCKED'?'orange':'muted'}
 
 function renderList(list:HTMLOListElement,route:FarmRouteNode[]){
-  const signature=JSON.stringify(route.map(node=>[node.id,node.travelSec,node.clearSec,node.safety]));
+  const signature=JSON.stringify([language(),route.map(node=>[node.id,node.travelSec,node.clearSec,node.safety,node.expectedGold])]);
   if(list.dataset.signature===signature)return;
   list.dataset.signature=signature;
   list.replaceChildren(...route.map((node,index)=>{
@@ -60,7 +60,7 @@ function render(){
   setText(card,'[data-farm-route-kicker]',c().kicker);
   setText(card,'[data-farm-route-title]',routeInstruction(route));
   const badge=card.querySelector<HTMLElement>('[data-farm-route-status]');
-  if(badge){badge.className=`badge ${statusClass(status)}`;badge.textContent=status}
+  if(badge){const nextClass=`badge ${statusClass(status)}`;if(badge.className!==nextClass)badge.className=nextClass;if(badge.textContent!==status)badge.textContent=status}
   const summary=status==='READY'&&route.nextNode
     ? `${route.nextNode.label} · ${route.nextNode.expectedGold} ${c().gold}`
     : c().noLive;
