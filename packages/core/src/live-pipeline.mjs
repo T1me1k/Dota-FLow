@@ -8,6 +8,7 @@ import { buildCoachSuiteSnapshot } from './coach-suite.mjs';
 import { LaneMatchupEngine } from './lane-matchup-engine.mjs';
 import { ObjectiveEngine } from './objective-engine.mjs';
 import { AdaptiveBuildCoordinator } from './adaptive-build-advisor.mjs';
+import { FarmRouteEngine } from './farm-route-engine.mjs';
 import { evaluateRoleV2 } from './role-engine/index.mjs';
 import { DecisionOrchestratorCoordinator } from './decision-orchestrator.mjs';
 import { presentPowerSpike } from './power-spike-presentation.mjs';
@@ -50,12 +51,14 @@ export class GameEventPipeline {
     this.laneEngine = new LaneMatchupEngine();
     this.objectiveEngine = new ObjectiveEngine();
     this.buildCoordinator = new AdaptiveBuildCoordinator(this.coordinatorOptions?.build ?? {});
+    this.farmRouteEngine = new FarmRouteEngine();
     this.orchestrator = new DecisionOrchestratorCoordinator(this.coordinatorOptions?.orchestrator ?? {});
     this.decision = this.coordinator.update(this.state);
     this.roleDecision = evaluateRoleV2(this.state);
     this.laneDecision = this.laneEngine.evaluate(this.state);
     this.objectiveDecision = this.objectiveEngine.evaluate(this.state);
     this.adaptiveBuild = this.buildCoordinator.update(this.state);
+    this.farmRoute = this.farmRouteEngine.evaluate(this.state);
     this.decisionHistory = [];
     this.roleDecisionHistory = [];
     this.laneDecisionHistory = [];
@@ -90,6 +93,7 @@ export class GameEventPipeline {
     this.laneDecision = this.laneEngine.evaluate(this.state);
     this.objectiveDecision = this.objectiveEngine.evaluate(this.state);
     this.adaptiveBuild = this.buildCoordinator.update(this.state);
+    this.farmRoute = this.farmRouteEngine.evaluate(this.state);
     this.coachCall = this.updateCoachCall(event.type);
     this.eventCount += 1;
 
@@ -121,10 +125,12 @@ export class GameEventPipeline {
       objectiveDecision: this.objectiveDecision,
       powerSpike: presentPowerSpike(this.decision?.powerState ?? null),
       adaptiveBuild: this.adaptiveBuild,
+      farmRoute: this.farmRoute,
       dataQuality: {
         lane: this.laneDecision?.dataQuality,
         objective: this.objectiveDecision?.dataQuality,
-        role: this.state.roleContext?.meta?.quality ?? 'UNKNOWN'
+        role: this.state.roleContext?.meta?.quality ?? 'UNKNOWN',
+        farmRoute: this.farmRoute?.dataQuality ?? 'UNAVAILABLE'
       },
       decisionHistory: [...this.decisionHistory],
       roleDecisionHistory: [...this.roleDecisionHistory],
@@ -146,11 +152,13 @@ export class GameEventPipeline {
       laneDecision: this.laneDecision,
       objectiveDecision: this.objectiveDecision,
       adaptiveBuild: this.adaptiveBuild,
+      farmRoute: this.farmRoute,
       coachProfile: this.state.coachProfile,
       dataQuality: {
         lane: this.laneDecision?.dataQuality,
         objective: this.objectiveDecision?.dataQuality,
-        role: this.state.roleContext?.meta?.quality ?? 'UNKNOWN'
+        role: this.state.roleContext?.meta?.quality ?? 'UNKNOWN',
+        farmRoute: this.farmRoute?.dataQuality ?? 'UNAVAILABLE'
       }
     }, reason);
   }
