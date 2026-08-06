@@ -9,6 +9,7 @@ function settingsPath(){return join(app.getPath('userData'),'overlay-settings.js
 function findOverlayWindow(){return BrowserWindow.getAllWindows().find(window=>window.webContents.getURL().includes('/overlay'))??null}
 function apply(raw:unknown){latestSettings=normalizeEconomyOverlaySettings(raw);return applyEconomyOverlayWindow(findOverlayWindow(),latestSettings)}
 async function loadSettings(){try{return apply(JSON.parse(await readFile(settingsPath(),'utf8')))}catch{return apply({})}}
+function shouldShow(settings:EconomyOverlaySettings){return settings.economyEnabled||(settings.lastSeenEnabled===true&&settings.lastSeenOverlayEnabled!==false)}
 
 const originalHandle=ipcMain.handle.bind(ipcMain);
 (ipcMain as typeof ipcMain&{handle:typeof ipcMain.handle}).handle=((channel:string,listener:any)=>{
@@ -16,7 +17,7 @@ const originalHandle=ipcMain.handle.bind(ipcMain);
     return originalHandle(channel,async(...args:any[])=>{const result=await listener(...args);apply(result);return result});
   }
   if(channel==='dota-flow:show-overlay'){
-    return originalHandle(channel,async(...args:any[])=>{const result=await listener(...args);const current=latestSettings??await loadSettings();if(current.economyEnabled)apply(current);return result});
+    return originalHandle(channel,async(...args:any[])=>{const result=await listener(...args);const current=latestSettings??await loadSettings();if(shouldShow(current))apply(current);return result});
   }
   if(channel==='dota-flow:hide-overlay'){
     return originalHandle(channel,async(...args:any[])=>{const result=await listener(...args);findOverlayWindow()?.hide();return result});
