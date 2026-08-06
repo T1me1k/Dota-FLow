@@ -220,6 +220,7 @@ export class DotaGsiAdapter {
   #server: Server | null = null;
   #sourceSequence = 0;
   #connected = false;
+  #acceptingSnapshots = false;
   #latestSnapshot: DotaGsiSnapshot | null = null;
   #emitTimer: ReturnType<typeof setTimeout> | null = null;
   #lastSnapshotEmittedAt = 0;
@@ -237,6 +238,7 @@ export class DotaGsiAdapter {
   }
 
   #emit(envelope: Omit<GepEnvelope, 'receivedAt' | 'sourceSequence'>): void {
+    if (!this.#acceptingSnapshots) return;
     this.#sourceSequence += 1;
     this.#sink({
       ...envelope,
@@ -249,7 +251,7 @@ export class DotaGsiAdapter {
     const snapshot = this.#latestSnapshot;
     this.#latestSnapshot = null;
     this.#emitTimer = null;
-    if (!snapshot) return;
+    if (!this.#acceptingSnapshots || !snapshot) return;
     this.#lastSnapshotEmittedAt = Date.now();
     this.#emit({
       type: 'game-event',
@@ -262,6 +264,7 @@ export class DotaGsiAdapter {
   }
 
   #queueSnapshot(snapshot: DotaGsiSnapshot): void {
+    if (!this.#acceptingSnapshots) return;
     this.#latestSnapshot = snapshot;
     const elapsed = Date.now() - this.#lastSnapshotEmittedAt;
     if (this.#lastSnapshotEmittedAt === 0 || elapsed >= this.#emitIntervalMs) {
@@ -277,22 +280,31 @@ export class DotaGsiAdapter {
 
   async start(): Promise<void> {
     if (this.#server) return;
+    this.#acceptingSnapshots = true;
     this.#server = createServer(this.#onRequest);
-    await new Promise<void>((resolve, reject) => {
+    try {
+      await new Promise<void>((resolve, reject) => {
+        const server = this.#server;
+        if (!server) return reject(new Error('GSI server was not created'));
+        const onError = (error: Error) => {
+          server.removeListener('listening', onListening);
+          reject(error);
+        };
+        const onListening = () => {
+          server.removeListener('error', onError);
+          resolve();
+        };
+        server.once('error', onError);
+        server.once('listening', onListening);
+        server.listen(this.#port, this.#host);
+      });
+    } catch (error) {
+      this.#acceptingSnapshots = false;
       const server = this.#server;
-      if (!server) return reject(new Error('GSI server was not created'));
-      const onError = (error: Error) => {
-        server.removeListener('listening', onListening);
-        reject(error);
-      };
-      const onListening = () => {
-        server.removeListener('error', onError);
-        resolve();
-      };
-      server.once('error', onError);
-      server.once('listening', onListening);
-      server.listen(this.#port, this.#host);
-    });
+      this.#server = null;
+      server?.close();
+      throw error;
+    }
     console.log(`[Dota Flow GSI] Listening on http://${this.#host}:${this.#port}${this.#path}`);
     console.log(`[Dota Flow GSI] Renderer update limit: ${Math.round(1000 / this.#emitIntervalMs)} Hz.`);
     this.#emit({
@@ -309,6 +321,8 @@ export class DotaGsiAdapter {
   }
 
   async stop(): Promise<void> {
+    this.#acceptingSnapshots = false;
+    this.#connected = false;
     if (this.#emitTimer) clearTimeout(this.#emitTimer);
     this.#emitTimer = null;
     this.#latestSnapshot = null;
@@ -322,6 +336,10 @@ export class DotaGsiAdapter {
     const url = new URL(request.url ?? '/', `http://${this.#host}:${this.#port}`);
     if (request.method !== 'POST' || url.pathname !== this.#path) {
       writeJson(response, 404, { ok: false, code: 'NOT_FOUND' });
+      return;
+    }
+    if (!this.#acceptingSnapshots) {
+      writeJson(response, 503, { ok: false, code: 'GSI_STOPPING' });
       return;
     }
 
@@ -341,6 +359,10 @@ export class DotaGsiAdapter {
     });
     request.on('end', () => {
       try {
+        if (!this.#acceptingSnapshots) {
+          writeJson(response, 503, { ok: false, code: 'GSI_STOPPING' });
+          return;
+        }
         const snapshot = JSON.parse(Buffer.concat(chunks).toString('utf8')) as DotaGsiSnapshot;
         const token = nonEmptyString(snapshot.auth?.token);
         if (token !== this.#token) {
@@ -369,7 +391,7 @@ export class DotaGsiAdapter {
         response.end();
       } catch (error) {
         console.error('[Dota Flow GSI] Invalid payload', error);
-        writeJson(response, 400, { ok: false, code: 'INVALID_JSON' });
+        if (!response.headersSent) writeJson(response, 400, { ok: false, code: 'INVALID_JSON' });
       }
     });
   };
