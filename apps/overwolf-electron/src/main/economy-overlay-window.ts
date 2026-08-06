@@ -11,6 +11,10 @@ export type EconomyOverlaySettings={
   showAllies:boolean;
   showEnemies:boolean;
   buybackPlacement:'ROW'|'TOP'|'OFF';
+  lastSeenEnabled?:boolean;
+  lastSeenOverlayEnabled?:boolean;
+  lastSeenShowVisible?:boolean;
+  lastSeenSampleHz?:2|4|6;
   mode?:string;
   reasonLimit?:number;
   minConfidence?:number;
@@ -29,6 +33,10 @@ export const DEFAULT_ECONOMY_OVERLAY_SETTINGS:EconomyOverlaySettings={
   showAllies:true,
   showEnemies:true,
   buybackPlacement:'ROW',
+  lastSeenEnabled:false,
+  lastSeenOverlayEnabled:true,
+  lastSeenShowVisible:true,
+  lastSeenSampleHz:4,
   mode:'COMPACT',
   reasonLimit:2,
   minConfidence:.42,
@@ -41,6 +49,7 @@ export function normalizeEconomyOverlaySettings(value:unknown):EconomyOverlaySet
   const scale=['SMALL','MEDIUM','LARGE'].includes(String(raw.scale))?String(raw.scale) as EconomyOverlaySettings['scale']:'MEDIUM';
   const economyMode=['LOCAL_EXACT','ESTIMATED','SPECTATOR_EXACT'].includes(String(raw.economyMode))?String(raw.economyMode) as EconomyOverlaySettings['economyMode']:'LOCAL_EXACT';
   const buybackPlacement=['ROW','TOP','OFF'].includes(String(raw.buybackPlacement))?String(raw.buybackPlacement) as EconomyOverlaySettings['buybackPlacement']:'ROW';
+  const sample=Number(raw.lastSeenSampleHz);
   return{
     ...DEFAULT_ECONOMY_OVERLAY_SETTINGS,
     ...raw,
@@ -52,12 +61,21 @@ export function normalizeEconomyOverlaySettings(value:unknown):EconomyOverlaySet
     sort:String(raw.sort)==='NET_WORTH'?'NET_WORTH':'TEAM',
     showAllies:raw.showAllies!==false,
     showEnemies:raw.showEnemies!==false,
-    buybackPlacement
+    buybackPlacement,
+    lastSeenEnabled:raw.lastSeenEnabled===true,
+    lastSeenOverlayEnabled:raw.lastSeenOverlayEnabled!==false,
+    lastSeenShowVisible:raw.lastSeenShowVisible!==false,
+    lastSeenSampleHz:(sample===2||sample===6?sample:4) as 2|4|6
   };
 }
 
 export function economyOverlayBounds(settings:EconomyOverlaySettings){
   const workArea=screen.getPrimaryDisplay().workArea;
+  const visibilityOnly=settings.lastSeenEnabled&&settings.lastSeenOverlayEnabled&& !settings.economyEnabled;
+  if(visibilityOnly){
+    const dimensions=settings.scale==='SMALL'?{width:520,height:112}:settings.scale==='LARGE'?{width:760,height:154}:{width:660,height:132};
+    return{...dimensions,x:Math.round(workArea.x+(workArea.width-dimensions.width)/2),y:workArea.y+18};
+  }
   const dimensions=settings.scale==='SMALL'?{width:300,height:500}:settings.scale==='LARGE'?{width:420,height:650}:{width:360,height:580};
   const margin=20;
   const x=settings.side==='RIGHT'?workArea.x+workArea.width-dimensions.width-margin:workArea.x+margin;
@@ -70,6 +88,8 @@ export function applyEconomyOverlayWindow(window:BrowserWindow|null,rawSettings:
   if(!window||window.isDestroyed())return settings;
   window.setBounds(economyOverlayBounds(settings),true);
   window.setOpacity(settings.opacity);
-  if(settings.economyEnabled)window.showInactive();else window.hide();
+  const showEconomy=settings.economyEnabled;
+  const showLastSeen=settings.lastSeenEnabled&&settings.lastSeenOverlayEnabled;
+  if(showEconomy||showLastSeen)window.showInactive();else window.hide();
   return settings;
 }

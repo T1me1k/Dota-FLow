@@ -9,6 +9,7 @@ import { LaneMatchupEngine } from './lane-matchup-engine.mjs';
 import { ObjectiveEngine } from './objective-engine.mjs';
 import { AdaptiveBuildCoordinator } from './adaptive-build-advisor.mjs';
 import { FarmRouteEngine } from './farm-route-engine.mjs';
+import { EnemyLastSeenTracker } from './enemy-last-seen-engine.mjs';
 import { evaluateRoleV2 } from './role-engine/index.mjs';
 import { DecisionOrchestratorCoordinator } from './decision-orchestrator.mjs';
 import { presentPowerSpike } from './power-spike-presentation.mjs';
@@ -52,6 +53,7 @@ export class GameEventPipeline {
     this.objectiveEngine = new ObjectiveEngine();
     this.buildCoordinator = new AdaptiveBuildCoordinator(this.coordinatorOptions?.build ?? {});
     this.farmRouteEngine = new FarmRouteEngine();
+    this.enemyLastSeenTracker = new EnemyLastSeenTracker(this.coordinatorOptions?.enemyLastSeen ?? {});
     this.orchestrator = new DecisionOrchestratorCoordinator(this.coordinatorOptions?.orchestrator ?? {});
     this.decision = this.coordinator.update(this.state);
     this.roleDecision = evaluateRoleV2(this.state);
@@ -59,6 +61,7 @@ export class GameEventPipeline {
     this.objectiveDecision = this.objectiveEngine.evaluate(this.state);
     this.adaptiveBuild = this.buildCoordinator.update(this.state);
     this.farmRoute = this.farmRouteEngine.evaluate(this.state);
+    this.enemyLastSeen = this.enemyLastSeenTracker.update(this.state);
     this.decisionHistory = [];
     this.roleDecisionHistory = [];
     this.laneDecisionHistory = [];
@@ -75,6 +78,7 @@ export class GameEventPipeline {
       this.coordinator = new StableDecisionCoordinator(this.coordinatorOptions);
       this.legacyRoleFallback = new StableRoleDecisionCoordinator(this.coordinatorOptions?.role ?? {});
       this.buildCoordinator = new AdaptiveBuildCoordinator(this.coordinatorOptions?.build ?? {});
+      this.enemyLastSeenTracker.reset(event?.payload?.matchId ?? null);
       this.orchestrator.reset();
       this.decisionHistory = [];
       this.roleDecisionHistory = [];
@@ -94,6 +98,7 @@ export class GameEventPipeline {
     this.objectiveDecision = this.objectiveEngine.evaluate(this.state);
     this.adaptiveBuild = this.buildCoordinator.update(this.state);
     this.farmRoute = this.farmRouteEngine.evaluate(this.state);
+    this.enemyLastSeen = this.enemyLastSeenTracker.update(this.state);
     this.coachCall = this.updateCoachCall(event.type);
     this.eventCount += 1;
 
@@ -126,11 +131,13 @@ export class GameEventPipeline {
       powerSpike: presentPowerSpike(this.decision?.powerState ?? null),
       adaptiveBuild: this.adaptiveBuild,
       farmRoute: this.farmRoute,
+      enemyLastSeen: this.enemyLastSeen,
       dataQuality: {
         lane: this.laneDecision?.dataQuality,
         objective: this.objectiveDecision?.dataQuality,
         role: this.state.roleContext?.meta?.quality ?? 'UNKNOWN',
-        farmRoute: this.farmRoute?.dataQuality ?? 'UNAVAILABLE'
+        farmRoute: this.farmRoute?.dataQuality ?? 'UNAVAILABLE',
+        enemyVisibility: this.enemyLastSeen?.dataQuality ?? 'UNAVAILABLE'
       },
       decisionHistory: [...this.decisionHistory],
       roleDecisionHistory: [...this.roleDecisionHistory],
@@ -153,12 +160,14 @@ export class GameEventPipeline {
       objectiveDecision: this.objectiveDecision,
       adaptiveBuild: this.adaptiveBuild,
       farmRoute: this.farmRoute,
+      enemyLastSeen: this.enemyLastSeen,
       coachProfile: this.state.coachProfile,
       dataQuality: {
         lane: this.laneDecision?.dataQuality,
         objective: this.objectiveDecision?.dataQuality,
         role: this.state.roleContext?.meta?.quality ?? 'UNKNOWN',
-        farmRoute: this.farmRoute?.dataQuality ?? 'UNAVAILABLE'
+        farmRoute: this.farmRoute?.dataQuality ?? 'UNAVAILABLE',
+        enemyVisibility: this.enemyLastSeen?.dataQuality ?? 'UNAVAILABLE'
       }
     }, reason);
   }
