@@ -86,7 +86,7 @@ test('new match clears all previous last-seen state',()=>{
 });
 
 test('live pipeline exposes last-seen data and independent quality',()=>{
-  const pipeline=createGameEventPipeline({initialState:state({visible:true})});
+  const pipeline=createGameEventPipeline({initialState:state({visible:true,observedAtMs:Date.now()})});
   const snapshot=pipeline.snapshot();
   assert.equal(snapshot.enemyLastSeen.rows[0].status,'VISIBLE');
   assert.equal(snapshot.dataQuality.enemyVisibility,'LIVE');
