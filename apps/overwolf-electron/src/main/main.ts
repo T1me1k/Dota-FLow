@@ -41,52 +41,71 @@ async function loadOverlaySettings(): Promise<void> {
   try { const value = JSON.parse(await readFile(overlaySettingsPath(), 'utf8')) as unknown; if (value && typeof value === 'object' && !Array.isArray(value)) overlaySettings = { ...overlaySettings, ...(value as OverlaySettings) }; } catch { /* optional settings */ }
 }
 async function persistOverlaySettings(): Promise<void> { await mkdir(app.getPath('userData'), { recursive: true }); await writeFile(overlaySettingsPath(), `${JSON.stringify(overlaySettings, null, 2)}\n`, 'utf8'); }
+function canUseWindow(window: BrowserWindow | null): window is BrowserWindow { return Boolean(window && !window.isDestroyed() && !window.webContents.isDestroyed()); }
+function sendToWindow(window: BrowserWindow | null, channel: string, payload: unknown): void {
+  if (gracefulQuitStarted || !canUseWindow(window)) return;
+  try { window.webContents.send(channel, payload); }
+  catch (error) { if (canUseWindow(window)) console.error(`[Dota Flow IPC] Failed to send ${channel}`, error); }
+}
 
 async function createWindows(): Promise<void> {
   const preload = join(import.meta.dirname, '../preload/preload.js');
   const mainUrl = process.env.DOTA_FLOW_RENDERER_URL ?? 'http://127.0.0.1:4173/live';
   const overlayUrl = process.env.DOTA_FLOW_OVERLAY_URL ?? 'http://127.0.0.1:4173/overlay';
-  mainWindow = new BrowserWindow({
+  const createdMainWindow = new BrowserWindow({
     width: 1180, height: 760, minWidth: 420, minHeight: 150,
     frame: false, titleBarStyle: 'hidden', backgroundColor: '#090d0a',
     webPreferences: { preload, contextIsolation: true, nodeIntegration: false }
   });
-  mainWindow.setMenu(null);
-  mainWindowController = await MainWindowController.create(mainWindow);
+  mainWindow = createdMainWindow;
+  createdMainWindow.setMenu(null);
+  mainWindowController = await MainWindowController.create(createdMainWindow);
+  createdMainWindow.once('closed', () => {
+    if (mainWindow === createdMainWindow) mainWindow = null;
+    mainWindowController = null;
+  });
   const overlayWidth = 460, overlayHeight = 184, workArea = screen.getPrimaryDisplay().workArea;
-  overlayWindow = new BrowserWindow({
+  const createdOverlayWindow = new BrowserWindow({
     width: overlayWidth, height: overlayHeight,
     x: Math.round(workArea.x + (workArea.width - overlayWidth) / 2), y: workArea.y + 24,
     transparent: true, frame: false, resizable: false, movable: false, focusable: false, hasShadow: false,
     alwaysOnTop: true, show: false, skipTaskbar: true,
     webPreferences: { preload, contextIsolation: true, nodeIntegration: false }
   });
-  overlayWindow.setAlwaysOnTop(true, 'screen-saver');
-  overlayWindow.setVisibleOnAllWorkspaces(true, { visibleOnFullScreen: true });
-  overlayWindow.setIgnoreMouseEvents(true, { forward: true });
-  await Promise.all([mainWindow.loadURL(mainUrl), overlayWindow.loadURL(overlayUrl)]);
+  overlayWindow = createdOverlayWindow;
+  createdOverlayWindow.setAlwaysOnTop(true, 'screen-saver');
+  createdOverlayWindow.setVisibleOnAllWorkspaces(true, { visibleOnFullScreen: true });
+  createdOverlayWindow.setIgnoreMouseEvents(true, { forward: true });
+  createdOverlayWindow.once('closed', () => { if (overlayWindow === createdOverlayWindow) overlayWindow = null; });
+  await Promise.all([createdMainWindow.loadURL(mainUrl), createdOverlayWindow.loadURL(overlayUrl)]);
 }
 function runtimeWireSnapshot(snapshot: LiveBridgeSnapshot): RuntimeWireSnapshot { return { ...snapshot, runtimeMode: 'LIVE_GEP', capture: captureRecorder?.status() ?? null }; }
 function publishLiveSnapshot(snapshot: LiveBridgeSnapshot): void {
   const wire = runtimeWireSnapshot(snapshot);
-  mainWindow?.webContents.send('dota-flow:live-snapshot', wire); overlayWindow?.webContents.send('dota-flow:live-snapshot', wire);
-  mainWindow?.webContents.send('runtime:snapshot', wire); overlayWindow?.webContents.send('runtime:snapshot', wire);
+  sendToWindow(mainWindow, 'dota-flow:live-snapshot', wire); sendToWindow(overlayWindow, 'dota-flow:live-snapshot', wire);
+  sendToWindow(mainWindow, 'runtime:snapshot', wire); sendToWindow(overlayWindow, 'runtime:snapshot', wire);
 }
 function requireObject(payload: unknown): Record<string, unknown> { if (!payload || typeof payload !== 'object' || Array.isArray(payload)) throw Object.assign(new Error('Payload must be an object'), { code: 'INVALID_IPC_PAYLOAD' }); return payload as Record<string, unknown>; }
-function publishOverlaySettings(): void { mainWindow?.webContents.send('dota-flow:overlay-settings', overlaySettings); overlayWindow?.webContents.send('dota-flow:overlay-settings', overlaySettings); }
-function publishCaptureStatus(): void { const status = captureRecorder?.status() ?? null; mainWindow?.webContents.send('dota-flow:capture-status', status); overlayWindow?.webContents.send('dota-flow:capture-status', status); publishLiveSnapshot(liveBridge.snapshot()); }
+function publishOverlaySettings(): void { sendToWindow(mainWindow, 'dota-flow:overlay-settings', overlaySettings); sendToWindow(overlayWindow, 'dota-flow:overlay-settings', overlaySettings); }
+function publishCaptureStatus(): void { const status = captureRecorder?.status() ?? null; sendToWindow(mainWindow, 'dota-flow:capture-status', status); sendToWindow(overlayWindow, 'dota-flow:capture-status', status); publishLiveSnapshot(liveBridge.snapshot()); }
 function logRuntimeStatus(envelope: GepEnvelope): void {
   if (envelope.type !== 'status' || !envelope.payload || typeof envelope.payload !== 'object') return;
   const payload = envelope.payload as Record<string, unknown>, mode = String(payload.mode ?? 'runtime').toUpperCase(), connection = String(payload.connection ?? 'unknown'), code = payload.code ? ` ${String(payload.code)}` : '', message = payload.message ?? payload.warning ?? payload.error;
   console.log(`[Dota Flow ${mode}] ${connection}${code}${message ? `: ${String(message)}` : ''}`);
 }
-function broadcast(envelope: GepEnvelope): void { logRuntimeStatus(envelope); mainWindow?.webContents.send('dota-flow:gep', envelope); const snapshot = liveBridge.ingestEnvelope(envelope); captureRecorder?.record(envelope, snapshot); publishLiveSnapshot(snapshot); }
+function broadcast(envelope: GepEnvelope): void {
+  if (gracefulQuitStarted) return;
+  logRuntimeStatus(envelope); sendToWindow(mainWindow, 'dota-flow:gep', envelope);
+  const snapshot = liveBridge.ingestEnvelope(envelope); captureRecorder?.record(envelope, snapshot); publishLiveSnapshot(snapshot);
+}
 function fresh(timestamp: number): boolean { return timestamp > 0 && Date.now() - timestamp <= DATA_SOURCE_FRESH_MS; }
 function broadcastNativeGep(envelope: GepEnvelope): void {
+  if (gracefulQuitStarted) return;
   if (envelope.type !== 'status') { if (fresh(lastGsiDataAt)) return; lastNativeGepDataAt = Date.now(); broadcast(envelope); return; }
   if (fresh(lastNativeGepDataAt) || !fresh(lastGsiDataAt)) broadcast(envelope);
 }
 function broadcastGsi(envelope: GepEnvelope): void {
+  if (gracefulQuitStarted) return;
   if (envelope.type !== 'status') { lastGsiDataAt = Date.now(); if (!fresh(lastNativeGepDataAt)) broadcast(envelope); return; }
   if (!fresh(lastNativeGepDataAt)) broadcast(envelope);
 }
@@ -127,7 +146,8 @@ app.whenReady().then(async () => {
   ipcMain.handle('dota-flow:reset-live-session', () => liveBridge.reset({ reason: 'RENDERER_REQUEST' }));
   ipcMain.handle('dota-flow:get-overlay-settings', () => ({ ...overlaySettings }));
   ipcMain.handle('dota-flow:set-overlay-settings', async (_event: unknown, patch: unknown) => { if (patch && typeof patch === 'object' && !Array.isArray(patch)) { overlaySettings = { ...overlaySettings, ...(patch as OverlaySettings) }; await persistOverlaySettings(); publishOverlaySettings(); } return { ...overlaySettings }; });
-  ipcMain.handle('dota-flow:show-overlay', () => overlayWindow?.showInactive()); ipcMain.handle('dota-flow:hide-overlay', () => overlayWindow?.hide());
+  ipcMain.handle('dota-flow:show-overlay', () => { if (canUseWindow(overlayWindow)) overlayWindow.showInactive(); });
+  ipcMain.handle('dota-flow:hide-overlay', () => { if (canUseWindow(overlayWindow)) overlayWindow.hide(); });
   ipcMain.handle('dota-flow:get-capture-status', () => captureRecorder?.status() ?? null);
   ipcMain.handle('dota-flow:start-capture', async () => { const status = await captureRecorder?.start({ runtime: 'overwolf-electron', gameId: DEFAULT_DOTA_GAME_ID, requestedBy: 'renderer' }); publishCaptureStatus(); return status ?? null; });
   ipcMain.handle('dota-flow:stop-capture', async () => { const status = await captureRecorder?.stop('RENDERER_REQUEST'); publishCaptureStatus(); return status ?? null; });

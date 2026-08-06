@@ -11,7 +11,7 @@ test('main coaching window starts compact and uses safe frameless controls', asy
     read('apps/desktop/src/WindowFrame.tsx'),
     read('apps/desktop/src/window-frame.css')
   ]);
-  assert.match(main, /MainWindowController\.create\(mainWindow\)/);
+  assert.match(main, /MainWindowController\.create\((?:mainWindow|createdMainWindow)\)/);
   assert.match(main, /frame: false/);
   assert.match(main, /titleBarStyle: 'hidden'/);
   assert.match(main, /window:close/);
