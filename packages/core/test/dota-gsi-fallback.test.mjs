@@ -116,7 +116,11 @@ test('Overwolf dev launcher installs and starts the local Dota GSI fallback', as
   assert.match(installer, /"items" "1"/);
   assert.match(installer, /"throttle" "0\.25"/);
   assert.match(main, /new DotaGsiAdapter\(broadcastGsi\)/);
-  assert.match(main, /if \(fresh\(lastGsiDataAt\)\) return/);
+  assert.match(main, /if \(fresh\(lastGsiDataAt\)\)\s*\{[\s\S]*?return;[\s\S]*?\}/);
+  const cosmeticObservationIndex = main.indexOf('observeCosmeticWeather(envelope)');
+  const gsiSuppressionIndex = main.indexOf('if (fresh(lastGsiDataAt))');
+  assert.ok(cosmeticObservationIndex >= 0 && cosmeticObservationIndex < gsiSuppressionIndex,
+    'approved cosmetic telemetry must be observed before GSI suppresses native GEP canonical ingestion');
   assert.match(main, /capture:\s*captureRecorder\?\.status\(\) \?\? null/);
   assert.match(main, /roshanAvailable:\s*false/);
   assert.match(adapter, /GSI_CONNECTED/);

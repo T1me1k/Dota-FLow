@@ -1,0 +1,255 @@
+body.blood-moon-weather-page {
+  margin: 0;
+  overflow: hidden;
+  background: transparent !important;
+}
+body.blood-moon-weather-page #root,
+body.blood-moon-weather-page #boot-diagnostic {
+  position: fixed !important;
+  width: 1px !important;
+  height: 1px !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+  overflow: hidden !important;
+}
+
+#blood-moon-root {
+  --blood: 150, 14, 22;
+  --ember: 255, 82, 34;
+  --lightning-strength: 1;
+  position: fixed;
+  inset: 0;
+  z-index: 2147483000;
+  pointer-events: none;
+  overflow: hidden;
+  contain: strict;
+}
+.blood-moon-scene {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 1800ms cubic-bezier(.2,.7,.2,1);
+  will-change: opacity;
+}
+#blood-moon-root.blood-moon-active .blood-moon-scene { opacity: 1; }
+
+.blood-moon-grade,
+.blood-moon-vignette,
+.blood-moon-stars,
+.blood-moon-lightning,
+.blood-moon-haze,
+.blood-moon-ash-layer {
+  position: absolute;
+  inset: 0;
+}
+.blood-moon-grade {
+  background:
+    radial-gradient(circle at 50% 48%, rgba(var(--blood), 0) 18%, rgba(var(--blood), .018) 46%, rgba(24, 0, 4, .13) 100%),
+    linear-gradient(180deg, rgba(64, 2, 7, .075), rgba(25, 0, 3, .03) 42%, rgba(80, 2, 8, .055));
+  mix-blend-mode: multiply;
+}
+.blood-moon-vignette {
+  background:
+    radial-gradient(ellipse at center, transparent 48%, rgba(40, 0, 5, .035) 66%, rgba(30, 0, 3, .13) 100%),
+    linear-gradient(90deg, rgba(35,0,3,.09), transparent 14%, transparent 86%, rgba(35,0,3,.09));
+}
+
+.blood-moon-moon {
+  position: absolute;
+  top: 6.5vh;
+  right: 7vw;
+  width: clamp(92px, 10.5vw, 210px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  opacity: .54;
+  transform: translateZ(0);
+  filter: drop-shadow(0 0 22px rgba(var(--blood), .22)) drop-shadow(0 0 64px rgba(var(--blood), .14));
+  background:
+    radial-gradient(circle at 34% 27%, rgba(255,218,196,.17) 0 3%, transparent 4%),
+    radial-gradient(circle at 61% 66%, rgba(28,0,0,.28) 0 8%, transparent 9%),
+    radial-gradient(circle at 65% 31%, rgba(48,0,0,.25) 0 5%, transparent 6%),
+    radial-gradient(circle at 39% 57%, rgba(53,0,0,.21) 0 10%, transparent 11%),
+    radial-gradient(circle at 50% 45%, #d53332 0%, #922020 47%, #4f080b 73%, #170104 100%);
+  box-shadow: inset -17px -12px 25px rgba(0,0,0,.45), inset 8px 6px 16px rgba(255,157,120,.08);
+}
+.blood-moon-moon::before {
+  content: '';
+  position: absolute;
+  inset: -34%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(var(--blood), .16), rgba(var(--blood), .04) 38%, transparent 67%);
+  animation: blood-moon-breathe 7s ease-in-out infinite;
+}
+.blood-moon-moon i {
+  position: absolute;
+  inset: 11%;
+  border-radius: 50%;
+  border: 1px solid rgba(255,170,150,.08);
+  opacity: .55;
+}
+#blood-moon-root.blood-moon-eclipse .blood-moon-moon {
+  opacity: .78;
+  filter: drop-shadow(0 0 35px rgba(232,20,24,.34)) drop-shadow(0 0 100px rgba(116,0,12,.22));
+}
+#blood-moon-root.blood-moon-eclipse .blood-moon-moon::after {
+  content: '';
+  position: absolute;
+  inset: 13%;
+  border-radius: 50%;
+  background: radial-gradient(circle at 42% 38%, #090002, #010001 72%);
+  box-shadow: 12px 7px 18px rgba(0,0,0,.58);
+}
+
+.blood-moon-stars {
+  opacity: .22;
+  background-image:
+    radial-gradient(circle at 8% 13%, rgba(255,190,170,.8) 0 1px, transparent 1.4px),
+    radial-gradient(circle at 22% 28%, rgba(255,126,111,.65) 0 1px, transparent 1.5px),
+    radial-gradient(circle at 48% 9%, rgba(255,211,185,.72) 0 1px, transparent 1.35px),
+    radial-gradient(circle at 69% 18%, rgba(255,135,119,.58) 0 1px, transparent 1.4px),
+    radial-gradient(circle at 88% 32%, rgba(255,210,190,.72) 0 1px, transparent 1.5px),
+    radial-gradient(circle at 37% 36%, rgba(255,115,102,.52) 0 1px, transparent 1.4px),
+    radial-gradient(circle at 79% 7%, rgba(255,223,205,.65) 0 1px, transparent 1.5px);
+  animation: blood-moon-stars 5.5s ease-in-out infinite alternate;
+}
+
+.blood-moon-haze {
+  filter: blur(42px);
+  opacity: .16;
+  transform: translate3d(0,0,0);
+  will-change: transform;
+}
+.blood-moon-haze-a {
+  inset: auto -12vw -12vh -14vw;
+  height: 47vh;
+  background: radial-gradient(ellipse at 35% 80%, rgba(var(--blood), .29), rgba(59,0,6,.08) 46%, transparent 73%);
+  animation: blood-moon-haze-a 16s ease-in-out infinite alternate;
+}
+.blood-moon-haze-b {
+  inset: -8vh -20vw auto 27vw;
+  height: 37vh;
+  background: radial-gradient(ellipse at 60% 0%, rgba(var(--blood), .16), rgba(74,0,7,.045) 52%, transparent 75%);
+  animation: blood-moon-haze-b 21s ease-in-out infinite alternate;
+}
+
+.blood-moon-ash-layer { overflow: hidden; }
+.blood-moon-ash {
+  --x: 50vw;
+  --size: 3px;
+  --delay: -2s;
+  --duration: 12s;
+  --drift: 8vw;
+  --opacity: .4;
+  --blur: 0px;
+  position: absolute;
+  left: var(--x);
+  top: -10vh;
+  width: var(--size);
+  height: calc(var(--size) * .55);
+  border-radius: 55% 40% 55% 36%;
+  opacity: var(--opacity);
+  background: radial-gradient(circle at 30% 30%, rgba(255,187,116,.95), rgba(var(--ember), .76) 38%, rgba(111,11,14,.58) 73%, transparent 100%);
+  box-shadow: 0 0 calc(var(--size) * 2.2) rgba(var(--ember), .28);
+  filter: blur(var(--blur));
+  animation: blood-moon-fall var(--duration) linear var(--delay) infinite;
+  will-change: transform;
+}
+
+.blood-moon-lightning {
+  opacity: 0;
+  background:
+    radial-gradient(ellipse at 72% 8%, rgba(255,219,210,.32), rgba(255,83,70,.07) 32%, transparent 60%),
+    linear-gradient(180deg, rgba(255,241,232,.1), rgba(255,52,47,.035) 45%, transparent 75%);
+  mix-blend-mode: screen;
+}
+#blood-moon-root.blood-moon-strike .blood-moon-lightning {
+  animation: blood-moon-lightning 410ms steps(1,end) 1;
+}
+
+#blood-moon-root[data-intensity='subtle'] .blood-moon-grade { opacity: .72; }
+#blood-moon-root[data-intensity='subtle'] .blood-moon-haze { opacity: .10; }
+#blood-moon-root[data-intensity='subtle'] .blood-moon-moon { opacity: .42; transform: scale(.88); transform-origin: top right; }
+#blood-moon-root[data-intensity='normal'] .blood-moon-grade { opacity: .92; }
+#blood-moon-root[data-intensity='normal'] .blood-moon-haze { opacity: .17; }
+#blood-moon-root[data-intensity='cinematic'] .blood-moon-grade { opacity: 1; }
+#blood-moon-root[data-intensity='cinematic'] .blood-moon-haze { opacity: .23; }
+#blood-moon-root[data-intensity='cinematic'] .blood-moon-moon { opacity: .68; transform: scale(1.12); transform-origin: top right; }
+
+@keyframes blood-moon-fall {
+  0% { transform: translate3d(0,-12vh,0) rotate(0deg); }
+  38% { transform: translate3d(calc(var(--drift) * .45),38vh,0) rotate(170deg); }
+  72% { transform: translate3d(calc(var(--drift) * .74),78vh,0) rotate(286deg); }
+  100% { transform: translate3d(var(--drift),116vh,0) rotate(420deg); }
+}
+@keyframes blood-moon-breathe {
+  0%,100% { transform: scale(.97); opacity: .72; }
+  50% { transform: scale(1.06); opacity: 1; }
+}
+@keyframes blood-moon-stars { from { opacity: .13; } to { opacity: .28; } }
+@keyframes blood-moon-haze-a { from { transform: translate3d(-4vw,2vh,0) scale(1); } to { transform: translate3d(8vw,-3vh,0) scale(1.12); } }
+@keyframes blood-moon-haze-b { from { transform: translate3d(4vw,0,0) scale(.95); } to { transform: translate3d(-7vw,4vh,0) scale(1.08); } }
+@keyframes blood-moon-lightning {
+  0% { opacity: calc(.48 * var(--lightning-strength)); }
+  14% { opacity: 0; }
+  22% { opacity: calc(.92 * var(--lightning-strength)); }
+  33% { opacity: .06; }
+  47% { opacity: calc(.28 * var(--lightning-strength)); }
+  100% { opacity: 0; }
+}
+
+.blood-moon-settings-card {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+.blood-moon-settings-card::after {
+  content: '';
+  position: absolute;
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  right: -105px;
+  top: -118px;
+  background: radial-gradient(circle, rgba(205,38,42,.16), rgba(117,9,18,.055) 46%, transparent 70%);
+  pointer-events: none;
+  z-index: -1;
+}
+.blood-moon-card-head { display: flex; align-items: center; gap: 14px; margin-bottom: 10px; }
+.blood-moon-card-head h2 { margin: 1px 0 0; }
+.blood-moon-card-orb {
+  width: 42px;
+  height: 42px;
+  flex: 0 0 42px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 38% 30%, #e86358, #8e2027 48%, #37060c 76%, #090103 100%);
+  box-shadow: 0 0 24px rgba(190,32,42,.24), inset -7px -5px 11px rgba(0,0,0,.38);
+}
+.blood-moon-settings-controls { display: grid; gap: 10px; margin-top: 16px; }
+.blood-moon-check,
+.blood-moon-field {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  min-height: 38px;
+}
+.blood-moon-check { justify-content: flex-start; }
+.blood-moon-check input { width: 17px; height: 17px; }
+.blood-moon-field select { min-width: 180px; }
+.blood-moon-safety {
+  margin: 15px 0 0;
+  padding-top: 12px;
+  border-top: 1px solid rgba(255,255,255,.06);
+  font-size: 12px;
+  line-height: 1.5;
+  opacity: .67;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .blood-moon-ash,
+  .blood-moon-moon::before,
+  .blood-moon-stars,
+  .blood-moon-haze { animation: none !important; }
+  .blood-moon-scene { transition-duration: 180ms; }
+  #blood-moon-root.blood-moon-strike .blood-moon-lightning { animation-duration: 160ms; }
+}
